@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-public class Adaptor<T: AnyObject>: NSObject {
+public final class Adaptor<T: AnyObject>: NSObject {
     weak var view: T?
     required init(withView view: T) {
         self.view = view
@@ -17,8 +17,8 @@ public class Adaptor<T: AnyObject>: NSObject {
 }
  
 protocol AdaptorProtocol: AnyObject {
-    associatedtype T
-    var adaptor: T { get }
+    associatedtype T: AnyObject
+    var adaptor: Adaptor<T> { get }
     func useAdaptor()
 }
 
