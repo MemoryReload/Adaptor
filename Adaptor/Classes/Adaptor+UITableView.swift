@@ -11,9 +11,9 @@ private var dataSourceKey = "DataSource"
 
 extension Adaptor where T: UITableView {
     //MARK: DataHandling
-    public var dataSource:[SectionViewHolder]? {
+    public var dataSource:[TableSectionViewHolder<TableCellViewHolder<UITableViewCell>,UITableViewHeaderFooterView>]? {
         get {
-            return objc_getAssociatedObject(self, &dataSourceKey) as! [SectionViewHolder]?
+            return objc_getAssociatedObject(self, &dataSourceKey) as! [TableSectionViewHolder]?
         }
         set {
             objc_setAssociatedObject(self, &dataSourceKey, newValue, .OBJC_ASSOCIATION_RETAIN)
@@ -32,7 +32,7 @@ extension Adaptor where T: UITableView {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
         guard let cellClass = cellHolder?.cellClass else { return UITableViewCell() }
-        if let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(cellClass)) {
+        if let cell = cellClass.dequeue(from: tableView, withIdentifier: NSStringFromClass(cellClass)) {
             cell.update(data: cellHolder?.cellData)
             return cell
         }
@@ -44,42 +44,44 @@ extension Adaptor where T: UITableView {
     //MARK: Cell
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
-        if let heightCallback = cellHolder?.cellHeight {
-            return heightCallback(cellHolder?.cellData)
-        }
-        return UITableViewAutomaticDimension
+        guard let height = cellHolder?.cellHeight else { return UITableViewAutomaticDimension }
+        return height
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
-        cellHolder?.willDisplayWith(tableView: tableView, cell: cell, index: indexPath)
+        cellHolder?.willDisplayWith(container: tableView, cell: cell, index: indexPath)
     }
     
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
-        cellHolder?.didEndDisplayWith(tableView: tableView, cell: cell, index: indexPath)
+        cellHolder?.didEndDisplayWith(container: tableView, cell: cell, index: indexPath)
     }
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        guard let cell = tableView.cellForRow(at: indexPath) else { return nil}
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
-        cellHolder?.willSelectWith(tableView: tableView, index: indexPath)
+        cellHolder?.willSelectWith(container: tableView, cell:cell , index: indexPath)
         return indexPath
     }
 
     func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
+        guard let cell = tableView.cellForRow(at: indexPath) else { return nil}
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
-        cellHolder?.willDeselectWith(tableView: tableView,  index: indexPath)
+        cellHolder?.willDeselectWith(container: tableView, cell: cell, index: indexPath)
         return indexPath
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
-        cellHolder?.didSelectWith(tableView: tableView, index: indexPath)
+        cellHolder?.didSelectWith(container: tableView, cell: cell, index: indexPath)
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
-        cellHolder?.didDeselectWith(tableView: tableView, index: indexPath)
+        cellHolder?.didDeselectWith(container: tableView, cell: cell, index: indexPath)
     }
     
     //MARK: Section Header
@@ -93,12 +95,12 @@ extension Adaptor where T: UITableView {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let sectionHolder = dataSource?[section]
-        guard let headerViewClass  = sectionHolder?.headerViewClass else { return nil }
-        if let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: NSStringFromClass(headerViewClass)) {
+        guard let headerViewClass  = sectionHolder?.headerViewClass  else { return nil }
+        if let headerView = headerViewClass.dequeue(from: tableView, withIdentifier: NSStringFromClass(headerViewClass)) {
             headerView.update(data: sectionHolder?.headerData)
             return headerView
         }
-        let headerView:UIView = headerViewClass.init(frame:CGRect.zero)
+        let headerView = headerViewClass.init(reuseIdentifier:NSStringFromClass(headerViewClass))
         headerView.update(data: sectionHolder?.headerData)
         return headerView
     }
@@ -115,11 +117,11 @@ extension Adaptor where T: UITableView {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let sectionHolder = dataSource?[section]
         guard let footerViewClass  = sectionHolder?.footerViewClass else { return nil }
-        if let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: NSStringFromClass(footerViewClass)) {
+        if let footerView = footerViewClass.dequeue(from: tableView, withIdentifier: NSStringFromClass(footerViewClass)) {
             footerView.update(data: sectionHolder?.footerData)
             return footerView
         }
-        let footerView:UIView = footerViewClass.init(frame:CGRect.zero)
+        let footerView = footerViewClass.init(reuseIdentifier:NSStringFromClass(footerViewClass))
         footerView.update(data: sectionHolder?.footerData)
         return footerView
     }

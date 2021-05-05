@@ -9,29 +9,18 @@ import Foundation
 
 typealias ViewHeightClosure = (Any?) -> CGFloat
 
-protocol ViewUpdateProtocol {
-    func update(data:Any?)
-}
-
-extension UIView: ViewUpdateProtocol
-{
-    func update(data:Any?) {
-        assert(false, "subclass override stub!")
-    }
-}
-
-public struct SectionViewHolder {
+public struct TableSectionViewHolder<T: CellViewHolderBaseProtocol & CellViewHolderEventProtocol, U: TableCellViewUpdateProtocol > {
     
     var headerData: Any?
     var headerHeight: ViewHeightClosure
-    var headerViewClass: UIView.Type
+    var headerViewClass: U.Type
     
     
     var footerData: Any?
     var footerHeight: ViewHeightClosure
-    var footerViewClass: UIView.Type
+    var footerViewClass: U.Type
     
-    var cellHodlers: [CellViewHolder]?
+    var cellHodlers: [T]?
     var collapsed: Bool = false
     var cellCounts: Int {
         get{
