@@ -16,7 +16,7 @@ public final class Adaptor<T: AnyObject>: NSObject {
     }
 }
  
-protocol AdaptorProtocol: AnyObject {
+public protocol AdaptorProtocol: AnyObject {
     associatedtype T: AnyObject
     var adaptor: Adaptor<T> { get }
     func useAdaptor()
@@ -26,7 +26,7 @@ private var adaptorKey = "Adaptor"
 
 extension AdaptorProtocol
 {
-    var adaptor: Adaptor<Self> {
+    public var adaptor: Adaptor<Self> {
         get {
             if let adaptor = objc_getAssociatedObject(self, &adaptorKey) {
                 return adaptor as! Adaptor<Self>
@@ -39,14 +39,14 @@ extension AdaptorProtocol
 }
 
 extension UITableView: AdaptorProtocol {
-    func useAdaptor() {
+    public func useAdaptor() {
         self.delegate = adaptor as? UITableViewDelegate
         self.dataSource = adaptor as? UITableViewDataSource
     }
 }
 
 extension UICollectionView: AdaptorProtocol {
-    func useAdaptor() {
+    public func useAdaptor() {
         self.delegate = adaptor as? UICollectionViewDelegate
         self.dataSource = adaptor as? UICollectionViewDataSource
     }

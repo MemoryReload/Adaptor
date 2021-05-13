@@ -11,7 +11,7 @@ public protocol CellViewHolderBaseProtocol {
     associatedtype CellClass
     
     var cellData: Any? { get set }
-    var cellClass: CellClass.Type { get set }
+    var cellClass: CellClass.Type? { get set }
 }
 
 public protocol CellViewHolderEventProtocol {

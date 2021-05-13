@@ -7,20 +7,18 @@
 
 import Foundation
 
-//typealias ViewHeightClosure = (Any?) -> CGFloat
-
-public struct CollectionSectionViewHolder<T: CellViewHolderBaseProtocol & CellViewHolderEventProtocol, U: CollectionReusableViewUpdateProtocol > {
+public class CollectionSectionViewHolder: SectionViewHolderBaseProtocol  {
     
-    var headerData: Any?
-    var headerViewClass: U.Type
+    public var headerData: Any?
+    public var headerViewClass: UICollectionReusableView.Type?
     
     
-    var footerData: Any?
-    var footerViewClass: U.Type
+    public var footerData: Any?
+    public var footerViewClass: UICollectionReusableView.Type?
     
-    var cellHodlers: [T]?
-    var collapsed: Bool = false
-    var cellCounts: Int {
+    public var cellHodlers: [CollectionCellViewHolder]?
+    public var collapsed: Bool = false
+    public var cellCounts: Int {
         get{
             if collapsed {
                 return 0
@@ -28,4 +26,9 @@ public struct CollectionSectionViewHolder<T: CellViewHolderBaseProtocol & CellVi
             return cellHodlers?.count ?? 0
         }
     }
+}
+
+
+extension CollectionSectionViewHolder: SectionViewHolderEventProtocol {
+    
 }

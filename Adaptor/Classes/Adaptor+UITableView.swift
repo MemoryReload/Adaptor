@@ -11,7 +11,7 @@ private var dataSourceKey = "DataSource"
 
 extension Adaptor where T: UITableView {
     //MARK: DataHandling
-    public var dataSource:[TableSectionViewHolder<TableCellViewHolder<UITableViewCell>,UITableViewHeaderFooterView>]? {
+    public var dataSource:[TableSectionViewHolder]? {
         get {
             return objc_getAssociatedObject(self, &dataSourceKey) as! [TableSectionViewHolder]?
         }

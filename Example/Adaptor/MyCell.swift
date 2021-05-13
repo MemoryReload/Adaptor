@@ -14,11 +14,3 @@ class MyCell: UITableViewCell
 {
     
 }
-
-extension TableCellViewHolder where T == MyCell {
-    var cellHeight: CGFloat {
-        return 20
-    }
-    
-    func willDisplayWith(container: UITableView, cell: T, index: IndexPath) { }
-}

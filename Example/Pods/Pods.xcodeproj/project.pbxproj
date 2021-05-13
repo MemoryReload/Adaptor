@@ -52,6 +52,7 @@
 		59BF9ABA8BB14E0E4E345D13AB6D49FB /* ExampleMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AAC35DDA6405D32FA0526DEB205E9 /* ExampleMetadata.swift */; };
 		5B6F70DDD4C63CF6ED95291BCB633494 /* ContainElementSatisfying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F46181740138A92A0B7FCE7E8ECE607 /* ContainElementSatisfying.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		602E3758C0EF64AF6B7FCEA05BF5B9B9 /* Expectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231889EA66F2EF212C06F43E04D61B86 /* Expectation.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
+		63A57409264D302500B36B91 /* SectionViewHolderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A57408264D302500B36B91 /* SectionViewHolderProtocol.swift */; };
 		64E26D7D025AC4462DFA8BA66B38C9D8 /* HaveCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4967FEA1387F54C885240CECC218DF15 /* HaveCount.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		65AFB883DC33E616E6102F5AEAE9D706 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EBC8F300895E39EA0DF6D6B2B5E6BCD /* XCTest.framework */; };
 		72FB8CEABF346A37D54CC08647489A98 /* ThrowAssertion.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6EE2BFEE0CDF94C98E529F7AE9E50D /* ThrowAssertion.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
@@ -227,6 +228,7 @@
 		6162A95C1568E1D4B129D6FE1090EFA0 /* BeAnInstanceOf.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeAnInstanceOf.swift; path = Sources/Nimble/Matchers/BeAnInstanceOf.swift; sourceTree = "<group>"; };
 		618493BCA98C0773B1245A2F563A6E8E /* Callsite.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Callsite.swift; path = Sources/Quick/Callsite.swift; sourceTree = "<group>"; };
 		637766238BDCE72CD1391DC53DAD2A35 /* QuickSelectedTestSuiteBuilder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = QuickSelectedTestSuiteBuilder.swift; path = Sources/Quick/QuickSelectedTestSuiteBuilder.swift; sourceTree = "<group>"; };
+		63A57408264D302500B36B91 /* SectionViewHolderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SectionViewHolderProtocol.swift; path = Adaptor/Classes/SectionViewHolderProtocol.swift; sourceTree = "<group>"; };
 		68C671F91C5B38250E669AA8DE3F8DFC /* Equal.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Equal.swift; path = Sources/Nimble/Matchers/Equal.swift; sourceTree = "<group>"; };
 		69F4FFB8824BD342281F72C24E037285 /* BeLessThanOrEqual.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeLessThanOrEqual.swift; path = Sources/Nimble/Matchers/BeLessThanOrEqual.swift; sourceTree = "<group>"; };
 		6B3BC6622F60E97187633640F2033BA8 /* Pods_Adaptor_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Adaptor_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -422,9 +424,10 @@
 			isa = PBXGroup;
 			children = (
 				51BBB96BEA7D182171B54D18131191DF /* Adaptor.swift */,
-				B3294E1D2D2E38398BB9A149338DE954 /* Adaptor+UITableView.swift */,
 				3FC83486F71EE77089F080B60675DE4F /* Adaptor+UICollectionView.swift */,
+				B3294E1D2D2E38398BB9A149338DE954 /* Adaptor+UITableView.swift */,
 				5620854E06DB7E3B854CAE8C907C6C5A /* CellViewHolderProtocol.swift */,
+				63A57408264D302500B36B91 /* SectionViewHolderProtocol.swift */,
 				4E7007991A224C34F436BFDE3244D449 /* CellViewUpdateProtocol.swift */,
 				CD0B612F8390092D1A9412ECB58C86A5 /* CollectionCellViewHolder.swift */,
 				A6182BAA4C5FD69BF843F32AC151A082 /* CollectionSectionViewHodler.swift */,
@@ -905,6 +908,7 @@
 				9950CB49279BE61BAD604F54277EC232 /* CollectionCellViewHolder.swift in Sources */,
 				2B4A71E1D1E79D45A7583C13E4B402C3 /* CollectionSectionViewHodler.swift in Sources */,
 				F5F6FA1CAA3C7E5EC08DFE227DEAC5F1 /* TableCellViewHolder.swift in Sources */,
+				63A57409264D302500B36B91 /* SectionViewHolderProtocol.swift in Sources */,
 				AA85DCA3B50BE72228E2E9058AACCAF3 /* TableSectionViewHolder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

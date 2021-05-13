@@ -7,22 +7,22 @@
 
 import Foundation
 
-typealias ViewHeightClosure = (Any?) -> CGFloat
+public typealias ViewHeightClosure = (Any?) -> CGFloat
 
-public struct TableSectionViewHolder<T: CellViewHolderBaseProtocol & CellViewHolderEventProtocol, U: TableCellViewUpdateProtocol > {
+public class TableSectionViewHolder: SectionViewHolderBaseProtocol {
     
-    var headerData: Any?
-    var headerHeight: ViewHeightClosure
-    var headerViewClass: U.Type
+    public var headerData: Any?
+    public var headerHeight: ViewHeightClosure?
+    public var headerViewClass: UITableViewHeaderFooterView.Type?
     
     
-    var footerData: Any?
-    var footerHeight: ViewHeightClosure
-    var footerViewClass: U.Type
+    public var footerData: Any?
+    public var footerHeight: ViewHeightClosure?
+    public var footerViewClass: UITableViewHeaderFooterView.Type?
     
-    var cellHodlers: [T]?
-    var collapsed: Bool = false
-    var cellCounts: Int {
+    public var cellHodlers: [TableCellViewHolder]?
+    public var collapsed: Bool = false
+    public var cellCounts: Int {
         get{
             if collapsed {
                 return 0
@@ -30,4 +30,8 @@ public struct TableSectionViewHolder<T: CellViewHolderBaseProtocol & CellViewHol
             return cellHodlers?.count ?? 0
         }
     }
+}
+
+extension TableSectionViewHolder: SectionViewHolderEventProtocol {
+    
 }
