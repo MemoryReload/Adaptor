@@ -12,5 +12,10 @@ import Adaptor
 
 class MyCell: UITableViewCell
 {
-    
+    override class func awakeFromNib() {
+        print("Dada! it works")
+    }
+    override func update(data: Any?) {
+        self.textLabel?.text = data as? String ?? "-"
+    }
 }

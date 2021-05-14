@@ -10,6 +10,7 @@ import UIKit
 
 public final class Adaptor<T: AnyObject>: NSObject {
     weak var view: T?
+    var context: AdaptorContextReusableProtocol?
     required init(withView view: T) {
         self.view = view
         super.init()
@@ -32,7 +33,7 @@ extension AdaptorProtocol
                 return adaptor as! Adaptor<Self>
             }
             let adaptor = Adaptor(withView: self)
-            objc_setAssociatedObject(Self.self, &adaptorKey, adaptor, .OBJC_ASSOCIATION_RETAIN)
+            objc_setAssociatedObject(self, &adaptorKey, adaptor, .OBJC_ASSOCIATION_RETAIN)
             return adaptor
         }
     }
@@ -40,8 +41,17 @@ extension AdaptorProtocol
 
 extension UITableView: AdaptorProtocol {
     public func useAdaptor() {
+        print("\(self) \(adaptor) \(self.adaptor)")
         self.delegate = adaptor as? UITableViewDelegate
         self.dataSource = adaptor as? UITableViewDataSource
+    }
+    
+    public func registerCell(cellClass: UITableViewCell.Type){
+        self.register(cellClass, forCellReuseIdentifier: NSStringFromClass(cellClass))
+    }
+    
+    public func registerSectionView(viewClass: UITableViewHeaderFooterView.Type){
+        self.register(viewClass, forHeaderFooterViewReuseIdentifier: NSStringFromClass(viewClass))
     }
 }
 
@@ -49,5 +59,13 @@ extension UICollectionView: AdaptorProtocol {
     public func useAdaptor() {
         self.delegate = adaptor as? UICollectionViewDelegate
         self.dataSource = adaptor as? UICollectionViewDataSource
+    }
+    
+    public func registerCell(cellClass: UICollectionViewCell.Type){
+        self.register(cellClass, forCellWithReuseIdentifier: NSStringFromClass(cellClass))
+    }
+    
+    public func regiserReusableView(viewClass: UICollectionReusableView.Type, forSupplementaryViewOfKind kind: String) {
+        self.register(viewClass, forSupplementaryViewOfKind: kind, withReuseIdentifier: NSStringFromClass(viewClass))
     }
 }

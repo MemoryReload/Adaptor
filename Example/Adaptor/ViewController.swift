@@ -14,6 +14,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        table.registerCell(cellClass: MyCell.self)
+        table.registerSectionView(viewClass: MySection.self)
         table.useAdaptor()
         // Do any additional setup after loading the view, typically from a nib.
         table.adaptor.dataSource = getData()
@@ -22,11 +24,27 @@ class ViewController: UIViewController {
 
     func getData() ->
     [TableSectionViewHolder] {
-        var cellHolders: [TableCellViewHolder]
-        for i in 0..<4 {
-            
+        var sectionHolders: [TableSectionViewHolder] = []
+        for i in 1...3 {
+            var cellHolders: [TableCellViewHolder] = []
+            for j in 1...4 {
+                let cellHolder = TableCellViewHolder()
+                cellHolder.cellClass = MyCell.self
+                cellHolder.cellData = "section:\(i) row:\(j)"
+                cellHolder.cellHeight = 80
+                cellHolders.append(cellHolder)
+            }
+            let sectionHolder = TableSectionViewHolder()
+            sectionHolder.headerViewClass = MySection.self
+            sectionHolder.headerHeight = 20
+            sectionHolder.headerData = "header: \(i)"
+            sectionHolder.footerViewClass = MySection.self
+            sectionHolder.footerHeight = 20
+            sectionHolder.footerData = "footer: \(i)"
+            sectionHolder.cellHodlers = cellHolders
+            sectionHolders.append(sectionHolder)
         }
-        return []
+        return sectionHolders
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

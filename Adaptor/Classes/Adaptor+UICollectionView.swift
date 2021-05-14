@@ -21,15 +21,6 @@ extension Adaptor where T: UICollectionView {
         }
     }
     
-    public var delegate: CollectionAdaptorProtocol? {
-        get {
-            return objc_getAssociatedObject(self, &delegateKey) as? CollectionAdaptorProtocol
-        }
-        set {
-            objc_setAssociatedObject(self, &delegateKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
-        }
-    }
-    
     //MARK: DataSource
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return dataSource?.count ?? 0
@@ -60,12 +51,11 @@ extension Adaptor where T: UICollectionView {
             footerView.update(data: sectionViewHolder.footerData)
             return footerView
         }else {
-            assert(false, "Custom supplementary view is not supported for now")
-            return UICollectionReusableView(frame: CGRect.zero)
+            guard let context = self.context else {
+                print("Warning: You're supposed to provide the context for fetching other kinds of supplementary element!")
+                return UICollectionReusableView(frame: CGRect.zero)
+            }
+            return context.collectionView(collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)
         }
     }
-}
-
-public protocol CollectionAdaptorProtocol: AnyObject {
-    
 }

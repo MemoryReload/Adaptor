@@ -87,8 +87,8 @@ extension Adaptor where T: UITableView {
     //MARK: Section Header
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let sectionHolder = dataSource?[section]
-        if let heightCallback = sectionHolder?.headerHeight  {
-            return heightCallback(sectionHolder?.headerData)
+        if let height = sectionHolder?.headerHeight  {
+            return height
         }
         return UITableViewAutomaticDimension
     }
@@ -108,8 +108,8 @@ extension Adaptor where T: UITableView {
     //MARK: Section Footer
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         let sectionHolder = dataSource?[section]
-        if let heightCallback = sectionHolder?.footerHeight  {
-            return heightCallback(sectionHolder?.footerData)
+        if let height = sectionHolder?.footerHeight  {
+            return height
         }
         return UITableViewAutomaticDimension
     }

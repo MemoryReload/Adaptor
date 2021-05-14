@@ -26,6 +26,7 @@ public class CollectionSectionViewHolder: SectionViewHolderBaseProtocol  {
             return cellHodlers?.count ?? 0
         }
     }
+    public init() { }
 }
 
 
