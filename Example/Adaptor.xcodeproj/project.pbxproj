@@ -16,6 +16,7 @@
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		63885C27264E1FDF00D8A480 /* MySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63885C26264E1FDF00D8A480 /* MySection.swift */; };
+		63885C2B264E8EF800D8A480 /* MySection.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63885C2A264E8EF800D8A480 /* MySection.xib */; };
 		63B6854A263FDAE100A9BB67 /* MyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B68549263FDAE100A9BB67 /* MyCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +45,7 @@
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		63885C26264E1FDF00D8A480 /* MySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySection.swift; sourceTree = "<group>"; };
+		63885C2A264E8EF800D8A480 /* MySection.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MySection.xib; sourceTree = "<group>"; };
 		63B68549263FDAE100A9BB67 /* MyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCell.swift; sourceTree = "<group>"; };
 		65486F315CD2980612E28B68 /* Pods-Adaptor_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Adaptor_Tests.release.xcconfig"; path = "Target Support Files/Pods-Adaptor_Tests/Pods-Adaptor_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		6FF91E51BA28FED02C903616 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 				63B68549263FDAE100A9BB67 /* MyCell.swift */,
 				63885C26264E1FDF00D8A480 /* MySection.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
+				63885C2A264E8EF800D8A480 /* MySection.xib */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
@@ -254,6 +257,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
+				63885C2B264E8EF800D8A480 /* MySection.xib in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 			);

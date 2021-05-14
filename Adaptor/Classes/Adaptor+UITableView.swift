@@ -9,7 +9,7 @@ import Foundation
 
 private var dataSourceKey = "DataSource"
 
-extension Adaptor where T: UITableView {
+extension TableAdaptor: UITableViewDataSource {
     //MARK: DataHandling
     public var dataSource:[TableSectionViewHolder]? {
         get {
@@ -21,15 +21,15 @@ extension Adaptor where T: UITableView {
     }
     
     //MARK: DataSource
-    func numberOfSections(in tableView: UITableView) -> Int {
+    public func numberOfSections(in tableView: UITableView) -> Int {
         return dataSource?.count ?? 0
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource?[section].cellCounts ?? 0
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
         guard let cellClass = cellHolder?.cellClass else { return UITableViewCell() }
         if let cell = cellClass.dequeue(from: tableView, withIdentifier: NSStringFromClass(cellClass)) {
@@ -40,52 +40,54 @@ extension Adaptor where T: UITableView {
         cell.update(data: cellHolder?.cellData)
         return cell
     }
+}
+
+extension TableAdaptor: UITableViewDelegate {
     //MARK: ViewDelegate
     //MARK: Cell
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
         guard let height = cellHolder?.cellHeight else { return UITableViewAutomaticDimension }
         return height
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
         cellHolder?.willDisplayWith(container: tableView, cell: cell, index: indexPath)
     }
     
-    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
         cellHolder?.didEndDisplayWith(container: tableView, cell: cell, index: indexPath)
     }
     
-    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+    public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         guard let cell = tableView.cellForRow(at: indexPath) else { return nil}
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
         cellHolder?.willSelectWith(container: tableView, cell:cell , index: indexPath)
         return indexPath
     }
 
-    func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
+    public func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
         guard let cell = tableView.cellForRow(at: indexPath) else { return nil}
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
         cellHolder?.willDeselectWith(container: tableView, cell: cell, index: indexPath)
         return indexPath
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
         cellHolder?.didSelectWith(container: tableView, cell: cell, index: indexPath)
     }
     
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
         cellHolder?.didDeselectWith(container: tableView, cell: cell, index: indexPath)
     }
-    
     //MARK: Section Header
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let sectionHolder = dataSource?[section]
         if let height = sectionHolder?.headerHeight  {
             return height
@@ -93,7 +95,7 @@ extension Adaptor where T: UITableView {
         return UITableViewAutomaticDimension
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let sectionHolder = dataSource?[section]
         guard let headerViewClass  = sectionHolder?.headerViewClass  else { return nil }
         if let headerView = headerViewClass.dequeue(from: tableView, withIdentifier: NSStringFromClass(headerViewClass)) {
@@ -106,7 +108,7 @@ extension Adaptor where T: UITableView {
     }
     
     //MARK: Section Footer
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         let sectionHolder = dataSource?[section]
         if let height = sectionHolder?.footerHeight  {
             return height
@@ -114,7 +116,7 @@ extension Adaptor where T: UITableView {
         return UITableViewAutomaticDimension
     }
 
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let sectionHolder = dataSource?[section]
         guard let footerViewClass  = sectionHolder?.footerViewClass else { return nil }
         if let footerView = footerViewClass.dequeue(from: tableView, withIdentifier: NSStringFromClass(footerViewClass)) {
@@ -125,5 +127,4 @@ extension Adaptor where T: UITableView {
         footerView.update(data: sectionHolder?.footerData)
         return footerView
     }
-    
 }

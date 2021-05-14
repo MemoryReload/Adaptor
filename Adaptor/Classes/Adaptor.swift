@@ -8,42 +8,48 @@
 import Foundation
 import UIKit
 
-public final class Adaptor<T: AnyObject>: NSObject {
-    weak var view: T?
-    var context: AdaptorContextReusableProtocol?
-    required init(withView view: T) {
-        self.view = view
-        super.init()
+public protocol AdaptingProtocol {
+    var context: AdaptorContextReusableProtocol? { get set }
+    init(withView view: UIView)
+}
+
+public class TableAdaptor:NSObject, AdaptingProtocol {
+    weak var view: UITableView?
+    public var context: AdaptorContextReusableProtocol?
+    required public init(withView view: UIView) {
+        self.view = view as? UITableView
     }
 }
- 
+
+public class CollectionAdaptor:NSObject, AdaptingProtocol {
+    weak var view: UICollectionView?
+    public var context: AdaptorContextReusableProtocol?
+    required public init(withView view: UIView) {
+        self.view = view as? UICollectionView
+    }
+}
+
 public protocol AdaptorProtocol: AnyObject {
-    associatedtype T: AnyObject
-    var adaptor: Adaptor<T> { get }
     func useAdaptor()
 }
 
 private var adaptorKey = "Adaptor"
 
-extension AdaptorProtocol
-{
-    public var adaptor: Adaptor<Self> {
+extension UITableView: AdaptorProtocol {
+    public var adaptor: TableAdaptor {
         get {
             if let adaptor = objc_getAssociatedObject(self, &adaptorKey) {
-                return adaptor as! Adaptor<Self>
+                return adaptor as! TableAdaptor
             }
-            let adaptor = Adaptor(withView: self)
+            let adaptor = TableAdaptor(withView: self)
             objc_setAssociatedObject(self, &adaptorKey, adaptor, .OBJC_ASSOCIATION_RETAIN)
             return adaptor
         }
     }
-}
-
-extension UITableView: AdaptorProtocol {
+    
     public func useAdaptor() {
-        print("\(self) \(adaptor) \(self.adaptor)")
-        self.delegate = adaptor as? UITableViewDelegate
-        self.dataSource = adaptor as? UITableViewDataSource
+        self.delegate = adaptor
+        self.dataSource = adaptor
     }
     
     public func registerCell(cellClass: UITableViewCell.Type){
@@ -56,9 +62,20 @@ extension UITableView: AdaptorProtocol {
 }
 
 extension UICollectionView: AdaptorProtocol {
+    public var adaptor: CollectionAdaptor {
+        get {
+            if let adaptor = objc_getAssociatedObject(self, &adaptorKey) {
+                return adaptor as! CollectionAdaptor
+            }
+            let adaptor = CollectionAdaptor(withView: self)
+            objc_setAssociatedObject(self, &adaptorKey, adaptor, .OBJC_ASSOCIATION_RETAIN)
+            return adaptor
+        }
+    }
+    
     public func useAdaptor() {
-        self.delegate = adaptor as? UICollectionViewDelegate
-        self.dataSource = adaptor as? UICollectionViewDataSource
+        self.delegate = adaptor
+        self.dataSource = adaptor
     }
     
     public func registerCell(cellClass: UICollectionViewCell.Type){

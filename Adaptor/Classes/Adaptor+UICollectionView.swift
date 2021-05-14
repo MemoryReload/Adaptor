@@ -10,7 +10,7 @@ import Foundation
 private var dataSourceKey = "DataSource"
 private var delegateKey = "DelegateKey"
 
-extension Adaptor where T: UICollectionView {
+extension CollectionAdaptor: UICollectionViewDataSource{
     //MARK: DataHandling
     public var dataSource:[CollectionSectionViewHolder]? {
         get {
@@ -22,15 +22,15 @@ extension Adaptor where T: UICollectionView {
     }
     
     //MARK: DataSource
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    private func numberOfSections(in collectionView: UICollectionView) -> Int {
         return dataSource?.count ?? 0
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dataSource?[section].cellCounts ?? 0
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
         guard let cellClass = cellHolder?.cellClass else { return UICollectionViewCell() }
         let cell = cellClass.dequeue(from: collectionView, withIdentifier: NSStringFromClass(cellClass), indexPath: indexPath)
@@ -58,4 +58,8 @@ extension Adaptor where T: UICollectionView {
             return context.collectionView(collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)
         }
     }
+}
+
+extension CollectionAdaptor: UICollectionViewDelegate {
+    
 }

@@ -11,8 +11,14 @@ import UIKit
 import Adaptor
 
 class MySection: UITableViewHeaderFooterView {
+    @IBOutlet var contentView: UIView!
+    @IBOutlet weak var titleLabel: UILabel!
     override func awakeFromNib() {
-        
+        print("Dada! it works")
+    }
+    
+    override func update(data: Any?) {
+        titleLabel.text = data as? String
     }
 }
 

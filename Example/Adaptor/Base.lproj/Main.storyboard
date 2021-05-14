@@ -23,11 +23,6 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="aG2-qO-3FN">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <view key="tableFooterView" contentMode="scaleToFill" id="xJN-2g-Xk7" customClass="MySection" customModule="Adaptor_Example" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="92.500000346790671" width="375" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="EaV-3x-xum" customClass="MyCell" customModule="Adaptor_Example" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="24.5" width="375" height="43.5"/>
@@ -54,7 +49,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="105" y="81"/>
+            <point key="canvasLocation" x="104.8" y="80.50974512743629"/>
         </scene>
     </scenes>
     <resources>
