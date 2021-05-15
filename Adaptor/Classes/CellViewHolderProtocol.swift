@@ -21,10 +21,14 @@ public protocol CellViewHolderEventProtocol {
     func willDisplayWith(container: ContainerClass, cell: CellClass, index:IndexPath)
     func didEndDisplayWith(container: ContainerClass, cell: CellClass, index:IndexPath)
     
-    func willSelectWith(container: ContainerClass, cell: CellClass, index:IndexPath)
-    func didSelectWith(container: ContainerClass, cell: CellClass, index:IndexPath)
-    
-    func willDeselectWith(container: ContainerClass, cell: CellClass, index:IndexPath)
-    func didDeselectWith(container: ContainerClass, cell: CellClass, index:IndexPath)
+    func shouldSelectWith(container: ContainerClass, cell: CellClass, index:IndexPath) -> Bool
+    func shouldDeselectWith(container: ContainerClass, cell: CellClass, index:IndexPath) -> Bool
 }
 
+public protocol TableCellViewHolderEventProtocol: CellViewHolderEventProtocol  {
+    
+}
+
+public protocol CollectionCellViewHolderEventProtocol: CellViewHolderEventProtocol {
+    
+}

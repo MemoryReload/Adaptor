@@ -408,17 +408,17 @@
 		4CD75550B05B90DED65BF61CCC154C5E /* Adaptor */ = {
 			isa = PBXGroup;
 			children = (
+				96B9159119F12910477D5CF25D8EB20F /* ViewUpdateProtocol.swift */,
 				73472FD7C7052656E77A4EFD716E283C /* Adaptor.swift */,
 				63885C28264E472900D8A480 /* AdaptorContextProtocol.swift */,
 				66D1FFD4DE8211FE9A9C9D5DAD3E20FD /* Adaptor+UICollectionView.swift */,
 				69B407950A5F6B6320D37E4C39BE359A /* Adaptor+UITableView.swift */,
 				087EB8F80026D3ACDF6F8B6BD80CBBFB /* CellViewHolderProtocol.swift */,
-				BC0FE8A355F3C850BB78902EF4FEEEE5 /* CollectionCellViewHolder.swift */,
-				F5B262EEF049D388338B4DF633C9EB9B /* CollectionSectionViewHodler.swift */,
-				7002F8DF57C4078E7699A12E3B411B43 /* SectionViewHolderProtocol.swift */,
 				565968C86C7F0DEE12B1DD5E1D6DD377 /* TableCellViewHolder.swift */,
+				BC0FE8A355F3C850BB78902EF4FEEEE5 /* CollectionCellViewHolder.swift */,
+				7002F8DF57C4078E7699A12E3B411B43 /* SectionViewHolderProtocol.swift */,
 				1B3E6163448F9E8C0E4F52C0C2C66BFD /* TableSectionViewHolder.swift */,
-				96B9159119F12910477D5CF25D8EB20F /* ViewUpdateProtocol.swift */,
+				F5B262EEF049D388338B4DF633C9EB9B /* CollectionSectionViewHodler.swift */,
 				A178DC9257E3098D2DA047EA785B35DA /* Pod */,
 				F4CC79292B55EAE357284AACB3F52366 /* Support Files */,
 			);

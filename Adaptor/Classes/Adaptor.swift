@@ -9,49 +9,81 @@ import Foundation
 import UIKit
 
 public protocol AdaptingProtocol {
-    var context: AdaptorContextReusableProtocol? { get set }
-    init(withView view: UIView)
+    associatedtype V
+    associatedtype D
+    associatedtype C
+    
+    var view: V? { get }
+    var context: C { get set }
+    var dataSource:[D]? { get set }
 }
 
-public class TableAdaptor:NSObject, AdaptingProtocol {
-    weak var view: UITableView?
-    public var context: AdaptorContextReusableProtocol?
-    required public init(withView view: UIView) {
-        self.view = view as? UITableView
-    }
+public protocol TableAdaptingProtocol: AdaptingProtocol, UITableViewDataSource, UITableViewDelegate { }
+
+public protocol CollectionAdaptingProtocol: AdaptingProtocol, UICollectionViewDataSource, UICollectionViewDelegate { }
+
+public class TableAdaptor: NSObject, TableAdaptingProtocol {
+    weak public fileprivate(set) var view: UITableView?
+    public var context: AdaptorContextProtocol?
+    public var dataSource:[TableSectionViewHolder]?
 }
 
 public class CollectionAdaptor:NSObject, AdaptingProtocol {
-    weak var view: UICollectionView?
+    weak public fileprivate(set) var view: UICollectionView?
     public var context: AdaptorContextReusableProtocol?
-    required public init(withView view: UIView) {
-        self.view = view as? UICollectionView
-    }
+    public var dataSource:[CollectionSectionViewHolder]?
 }
 
+
+//MARK: AdaptorProtocol
+
 public protocol AdaptorProtocol: AnyObject {
-    func useAdaptor()
+    associatedtype T
+    var adaptor: T? { get }
+    func useAdaptor(_ adaptor: T?)
 }
 
 private var adaptorKey = "Adaptor"
 
 extension UITableView: AdaptorProtocol {
-    public var adaptor: TableAdaptor {
+    public private(set) var adaptor: TableAdaptor? {
         get {
-            if let adaptor = objc_getAssociatedObject(self, &adaptorKey) {
-                return adaptor as! TableAdaptor
-            }
-            let adaptor = TableAdaptor(withView: self)
-            objc_setAssociatedObject(self, &adaptorKey, adaptor, .OBJC_ASSOCIATION_RETAIN)
-            return adaptor
+            return objc_getAssociatedObject(self, &adaptorKey) as? TableAdaptor
+        }
+        set {
+            objc_setAssociatedObject(self, &adaptorKey, newValue, .OBJC_ASSOCIATION_RETAIN)
         }
     }
     
-    public func useAdaptor() {
+    public func useAdaptor(_ adaptor: TableAdaptor? = TableAdaptor()) {
+        self.adaptor = adaptor
+        self.adaptor?.view = self
         self.delegate = adaptor
         self.dataSource = adaptor
     }
+}
+
+extension UICollectionView: AdaptorProtocol {
+    public private(set) var adaptor: CollectionAdaptor? {
+        get {
+            return objc_getAssociatedObject(self, &adaptorKey) as? CollectionAdaptor
+        }
+        set {
+            objc_setAssociatedObject(self, &adaptorKey, newValue, .OBJC_ASSOCIATION_RETAIN)
+        }
+    }
     
+    public func useAdaptor(_ adaptor: CollectionAdaptor? = CollectionAdaptor()) {
+        self.adaptor = adaptor
+        self.adaptor?.view = self
+        self.delegate = adaptor
+        self.dataSource = adaptor
+    }
+}
+
+//MARK: View Register
+
+extension UITableView {
     public func registerCell(cellClass: UITableViewCell.Type){
         self.register(cellClass, forCellReuseIdentifier: NSStringFromClass(cellClass))
     }
@@ -61,23 +93,7 @@ extension UITableView: AdaptorProtocol {
     }
 }
 
-extension UICollectionView: AdaptorProtocol {
-    public var adaptor: CollectionAdaptor {
-        get {
-            if let adaptor = objc_getAssociatedObject(self, &adaptorKey) {
-                return adaptor as! CollectionAdaptor
-            }
-            let adaptor = CollectionAdaptor(withView: self)
-            objc_setAssociatedObject(self, &adaptorKey, adaptor, .OBJC_ASSOCIATION_RETAIN)
-            return adaptor
-        }
-    }
-    
-    public func useAdaptor() {
-        self.delegate = adaptor
-        self.dataSource = adaptor
-    }
-    
+extension UICollectionView {
     public func registerCell(cellClass: UICollectionViewCell.Type){
         self.register(cellClass, forCellWithReuseIdentifier: NSStringFromClass(cellClass))
     }

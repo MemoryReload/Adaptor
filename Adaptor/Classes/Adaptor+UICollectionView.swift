@@ -11,16 +11,6 @@ private var dataSourceKey = "DataSource"
 private var delegateKey = "DelegateKey"
 
 extension CollectionAdaptor: UICollectionViewDataSource{
-    //MARK: DataHandling
-    public var dataSource:[CollectionSectionViewHolder]? {
-        get {
-            return objc_getAssociatedObject(self, &dataSourceKey) as? [CollectionSectionViewHolder]
-        }
-        set {
-            objc_setAssociatedObject(self, &dataSourceKey, newValue, .OBJC_ASSOCIATION_RETAIN)
-        }
-    }
-    
     //MARK: DataSource
     private func numberOfSections(in collectionView: UICollectionView) -> Int {
         return dataSource?.count ?? 0
@@ -38,7 +28,7 @@ extension CollectionAdaptor: UICollectionViewDataSource{
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let sectionViewHolder = dataSource?[indexPath.section] else { return UICollectionReusableView(frame: CGRect.zero) }
         if kind == UICollectionElementKindSectionHeader {
            guard let headerClass = sectionViewHolder.headerViewClass else { return UICollectionReusableView(frame: CGRect.zero) }
@@ -61,5 +51,66 @@ extension CollectionAdaptor: UICollectionViewDataSource{
 }
 
 extension CollectionAdaptor: UICollectionViewDelegate {
+    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
+        cellHolder?.willDisplayWith(container: collectionView, cell: cell, index: indexPath)
+    }
     
+    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
+        cellHolder?.didEndDisplayWith(container: collectionView, cell: cell, index: indexPath)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
+        guard let sectionViewHolder = dataSource?[indexPath.section] else { return }
+        if elementKind == UICollectionElementKindSectionHeader {
+            sectionViewHolder.willDisplayWith(container: collectionView, header: view, forSection: indexPath.section)
+        }else if elementKind == UICollectionElementKindSectionFooter {
+            sectionViewHolder.willDisplayWith(container: collectionView, footer: view, forSection: indexPath.section)
+        }else {
+            guard let context = self.context else {
+                print("Warning: You're supposed to provide the context for fetching other kinds of supplementary element!")
+            }
+            
+        }
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
+        guard let sectionViewHolder = dataSource?[indexPath.section] else { return }
+        if elementKind == UICollectionElementKindSectionHeader {
+            sectionViewHolder.didEndDisplayWith(container: collectionView, header: view, forSection: indexPath.section)
+        }else if elementKind == UICollectionElementKindSectionFooter {
+            sectionViewHolder.didEndDisplayWith(container: collectionView, footer: view, forSection: indexPath.section)
+        }else {
+            guard let context = self.context else {
+                print("Warning: You're supposed to provide the context for fetching other kinds of supplementary element!")
+            }
+            
+        }
+    }
+    
+    
+    public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return false}
+        let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
+        return cellHolder?.shouldSelectWith(container: collectionView, cell: cell, index: indexPath) ?? false
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return false}
+        let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
+        return cellHolder?.shouldDeselectWith(container: collectionView, cell: cell, index: indexPath) ?? false
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+        let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
+        cellHolder?.didSelectWith(container: collectionView, cell:cell , index: indexPath)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+        let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
+        cellHolder?.didDeselectWith(container: collectionView, cell: cell, index: indexPath)
+    }
 }

@@ -31,6 +31,11 @@ public class TableSectionViewHolder: SectionViewHolderBaseProtocol {
     public init() { }
 }
 
-extension TableSectionViewHolder: SectionViewHolderEventProtocol {
+extension TableSectionViewHolder: TableSectionViewHolderEventProtocol {
     
+    @objc public func willDisplayWith(container: UITableView, header: UITableViewHeaderFooterView, forSection section: Int) { }
+    @objc public func didEndDisplayWith(container: UITableView, header: UITableViewHeaderFooterView, forSection section: Int) { }
+    
+    @objc public func willDisplayWith(container: UITableView, footer: UITableViewHeaderFooterView, forSection section: Int) { }
+    @objc public func didEndDisplayWith(container: UITableView, footer: UITableViewHeaderFooterView, forSection section: Int) { }
 }

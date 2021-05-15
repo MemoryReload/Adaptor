@@ -17,15 +17,15 @@ open class TableCellViewHolder: CellViewHolderBaseProtocol {
     public init() { }
 }
 
-extension TableCellViewHolder: CellViewHolderEventProtocol {
+extension TableCellViewHolder: TableCellViewHolderEventProtocol {
     public typealias ContainerClass = UITableView
     
     @objc public func willDisplayWith(container: UITableView, cell: UITableViewCell, index: IndexPath) { }
     @objc public func didEndDisplayWith(container: UITableView, cell: UITableViewCell, index: IndexPath) { }
     
-    @objc public func willSelectWith(container: UITableView, cell: UITableViewCell, index: IndexPath) { }
-    @objc public func didSelectWith(container: UITableView, cell: UITableViewCell, index: IndexPath) { }
+    @objc public func shouldSelectWith(container: UITableView, cell: UITableViewCell, index: IndexPath) -> Bool { return true }
+    @objc public func shouldDeselectWith(container: UITableView, cell: UITableViewCell, index: IndexPath) -> Bool { return true }
     
-    @objc public func willDeselectWith(container: UITableView, cell: UITableViewCell, index: IndexPath) { }
+    @objc public func didSelectWith(container: UITableView, cell: UITableViewCell, index: IndexPath) { }
     @objc public func didDeselectWith(container: UITableView, cell: UITableViewCell, index: IndexPath) { }
 }

@@ -10,16 +10,6 @@ import Foundation
 private var dataSourceKey = "DataSource"
 
 extension TableAdaptor: UITableViewDataSource {
-    //MARK: DataHandling
-    public var dataSource:[TableSectionViewHolder]? {
-        get {
-            return objc_getAssociatedObject(self, &dataSourceKey) as! [TableSectionViewHolder]?
-        }
-        set {
-            objc_setAssociatedObject(self, &dataSourceKey, newValue, .OBJC_ASSOCIATION_RETAIN)
-        }
-    }
-    
     //MARK: DataSource
     public func numberOfSections(in tableView: UITableView) -> Int {
         return dataSource?.count ?? 0
@@ -64,15 +54,15 @@ extension TableAdaptor: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         guard let cell = tableView.cellForRow(at: indexPath) else { return nil}
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
-        cellHolder?.willSelectWith(container: tableView, cell:cell , index: indexPath)
-        return indexPath
+        let shouldSelect = cellHolder?.shouldSelectWith(container: tableView, cell: cell, index: indexPath) ?? false
+        return shouldSelect ? indexPath : nil
     }
 
     public func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
         guard let cell = tableView.cellForRow(at: indexPath) else { return nil}
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
-        cellHolder?.willDeselectWith(container: tableView, cell: cell, index: indexPath)
-        return indexPath
+        let shouldSelect = cellHolder?.shouldDeselectWith(container: tableView, cell: cell, index: indexPath) ?? false
+        return shouldSelect ? indexPath : nil
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

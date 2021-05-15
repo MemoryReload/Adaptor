@@ -18,7 +18,7 @@ class ViewController: UIViewController {
         table.registerSectionView(viewClass: MySection.self)
         table.useAdaptor()
         // Do any additional setup after loading the view, typically from a nib.
-        table.adaptor.dataSource = getData()
+        table.adaptor?.dataSource = getData()
         table.reloadData()
     }
 
@@ -42,6 +42,9 @@ class ViewController: UIViewController {
             sectionHolder.footerHeight = 20
             sectionHolder.footerData = "footer: \(i)"
             sectionHolder.cellHodlers = cellHolders
+            if i == 2  {
+                sectionHolder.collapsed = true
+            }
             sectionHolders.append(sectionHolder)
         }
         return sectionHolders

@@ -30,6 +30,10 @@ public class CollectionSectionViewHolder: SectionViewHolderBaseProtocol  {
 }
 
 
-extension CollectionSectionViewHolder: SectionViewHolderEventProtocol {
+extension CollectionSectionViewHolder: CollectionSectionViewHolderEventProtocol {
+    @objc public func willDisplayWith(container: UICollectionView, header: UICollectionReusableView, forSection section: Int) { }
+    @objc public func didEndDisplayWith(container: UICollectionView, header: UICollectionReusableView, forSection section: Int) { }
     
+    @objc public func willDisplayWith(container: UICollectionView, footer: UICollectionReusableView, forSection section: Int) {}
+    @objc public func didEndDisplayWith(container: UICollectionView, footer: UICollectionReusableView, forSection section: Int) { }
 }

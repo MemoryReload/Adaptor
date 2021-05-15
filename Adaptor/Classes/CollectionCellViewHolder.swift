@@ -15,17 +15,17 @@ public class CollectionCellViewHolder: CellViewHolderBaseProtocol {
     public var cellClass: UICollectionViewCell.Type?
 }
 
-extension CollectionCellViewHolder: CellViewHolderEventProtocol {
+extension CollectionCellViewHolder: CollectionCellViewHolderEventProtocol {
     public typealias ContainerClass = UICollectionView
     
-    public func willDisplayWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
-    public func didEndDisplayWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
+    @objc public func willDisplayWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
+    @objc public func didEndDisplayWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
     
-    public func willSelectWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
-    public func didSelectWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
+    @objc public func shouldSelectWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) -> Bool { true}
+    @objc public func shouldDeselectWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) -> Bool { true }
     
-    public func willDeselectWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
-    public func didDeselectWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
+    @objc public func didSelectWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
+    @objc public func didDeselectWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
 }
 
 

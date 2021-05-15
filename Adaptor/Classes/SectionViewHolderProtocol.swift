@@ -24,5 +24,20 @@ public protocol SectionViewHolderBaseProtocol {
 }
 
 public protocol SectionViewHolderEventProtocol {
+    associatedtype SectionViewClass
+    associatedtype ContainerClass
+    
+    func willDisplayWith(container: ContainerClass, header:SectionViewClass, forSection section: Int )
+    func didEndDisplayWith(container: ContainerClass, header:SectionViewClass, forSection section: Int )
+    
+    func willDisplayWith(container: ContainerClass, footer:SectionViewClass, forSection section: Int )
+    func didEndDisplayWith(container: ContainerClass, footer:SectionViewClass, forSection section: Int )
+}
+
+public protocol TableSectionViewHolderEventProtocol: SectionViewHolderEventProtocol  {
+    
+}
+
+public protocol CollectionSectionViewHolderEventProtocol: SectionViewHolderEventProtocol {
     
 }
