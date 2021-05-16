@@ -69,9 +69,10 @@ extension CollectionAdaptor: UICollectionViewDelegate {
             sectionViewHolder.willDisplayWith(container: collectionView, footer: view, forSection: indexPath.section)
         }else {
             guard let context = self.context else {
-                print("Warning: You're supposed to provide the context for fetching other kinds of supplementary element!")
+                print("Warning: You're supposed to provide the context for handling other kinds of supplementary element event!")
+                return
             }
-            
+            context.collectionView(collectionView, willDisplaySupplementaryView: view, forElementKind: elementKind, at: indexPath)
         }
     }
     
@@ -83,9 +84,10 @@ extension CollectionAdaptor: UICollectionViewDelegate {
             sectionViewHolder.didEndDisplayWith(container: collectionView, footer: view, forSection: indexPath.section)
         }else {
             guard let context = self.context else {
-                print("Warning: You're supposed to provide the context for fetching other kinds of supplementary element!")
+                print("Warning: You're supposed to provide the context for handling other kinds of supplementary element event!")
+                return
             }
-            
+            context.collectionView(collectionView, didEndDisplayingSupplementaryView: view, forElementOfKind: elementKind, at: indexPath)
         }
     }
     

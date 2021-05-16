@@ -13,6 +13,10 @@ public protocol AdaptorContextProtocol: NSObjectProtocol {
 
 public protocol AdaptorContextReusableProtocol: AdaptorContextProtocol {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath)
+    
+    func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath)
 }
 
 extension AdaptorContextReusableProtocol {
