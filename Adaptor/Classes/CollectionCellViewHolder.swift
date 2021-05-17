@@ -16,6 +16,7 @@ public class CollectionCellViewHolder: CellViewHolderBaseProtocol {
 }
 
 extension CollectionCellViewHolder: CollectionCellViewHolderEventProtocol {
+    
     public typealias ContainerClass = UICollectionView
     
     @objc public func willDisplayWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
@@ -26,6 +27,8 @@ extension CollectionCellViewHolder: CollectionCellViewHolderEventProtocol {
     
     @objc public func didSelectWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
     @objc public func didDeselectWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
+    
+    @objc public func handleEvent(withName name: ViewCustomEventName, container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
 }
 
 

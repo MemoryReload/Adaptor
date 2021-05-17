@@ -32,6 +32,9 @@ public protocol SectionViewHolderEventProtocol {
     
     func willDisplayWith(container: ContainerClass, footer:SectionViewClass, forSection section: Int )
     func didEndDisplayWith(container: ContainerClass, footer:SectionViewClass, forSection section: Int )
+    
+    func handleEvent(withName name: ViewCustomEventName, container: ContainerClass, header:SectionViewClass, forSection section: Int)
+    func handleEvent(withName name: ViewCustomEventName, container: ContainerClass, footer:SectionViewClass, forSection section: Int)
 }
 
 public protocol TableSectionViewHolderEventProtocol: SectionViewHolderEventProtocol  {

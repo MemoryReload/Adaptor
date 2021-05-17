@@ -24,6 +24,7 @@ extension CollectionAdaptor: UICollectionViewDataSource{
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
         guard let cellClass = cellHolder?.cellClass else { return UICollectionViewCell() }
         let cell = cellClass.dequeue(from: collectionView, withIdentifier: NSStringFromClass(cellClass), indexPath: indexPath)
+        cell.cellEventHandler = self
         cell.update(data: cellHolder?.cellData)
         return cell
     }
@@ -33,11 +34,17 @@ extension CollectionAdaptor: UICollectionViewDataSource{
         if kind == UICollectionElementKindSectionHeader {
            guard let headerClass = sectionViewHolder.headerViewClass else { return UICollectionReusableView(frame: CGRect.zero) }
            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(headerClass), for: indexPath)
+            headerView.indexPath = indexPath
+            headerView.kind = kind
+            headerView.sectionEventHandler = self
             headerView.update(data: sectionViewHolder.headerData)
             return headerView
         }else if kind == UICollectionElementKindSectionFooter {
             guard let footerClass = sectionViewHolder.footerViewClass else { return UICollectionReusableView(frame: CGRect.zero) }
             let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionFooter, withReuseIdentifier: NSStringFromClass(footerClass), for: indexPath)
+            footerView.indexPath = indexPath
+            footerView.kind = kind
+            footerView.sectionEventHandler = self
             footerView.update(data: sectionViewHolder.footerData)
             return footerView
         }else {
@@ -45,7 +52,12 @@ extension CollectionAdaptor: UICollectionViewDataSource{
                 print("Warning: You're supposed to provide the context for fetching other kinds of supplementary element!")
                 return UICollectionReusableView(frame: CGRect.zero)
             }
-            return context.collectionView(collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)
+            let reusableView = context.collectionView(collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)
+            reusableView.indexPath = indexPath
+            reusableView.kind = kind
+            reusableView.sectionEventHandler = self
+            reusableView.update(data: sectionViewHolder.footerData)
+            return reusableView
         }
     }
 }
@@ -114,5 +126,31 @@ extension CollectionAdaptor: UICollectionViewDelegate {
         guard let cell = collectionView.cellForItem(at: indexPath) else { return }
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
         cellHolder?.didDeselectWith(container: collectionView, cell: cell, index: indexPath)
+    }
+}
+
+extension CollectionAdaptor: ViewCustomEventhandling {
+    typealias CellClass = UICollectionViewCell
+    typealias SectionViewClass = UICollectionReusableView
+    
+    func handleEvent(withName name: ViewCustomEventName, cell: UICollectionViewCell) {
+        guard let collection = view, let indexPath = collection.indexPath(for: cell) else { return }
+        let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
+        cellHolder?.handleEvent(withName: name, container: collection, cell: cell, index: indexPath)
+    }
+    
+    func handleEvent(withName name: ViewCustomEventName, sectionView: UICollectionReusableView) {
+        guard let collection = view, let indexPath = sectionView.indexPath, let kind = sectionView.kind else { return }
+        if kind == UICollectionElementKindSectionHeader {
+            dataSource?[indexPath.section].handleEvent(withName: name, container: collection, header: sectionView, forSection: indexPath.section)
+        }else if kind == UICollectionElementKindSectionFooter {
+            dataSource?[indexPath.section].handleEvent(withName: name, container: collection, footer: sectionView, forSection: indexPath.section)
+        }else {
+            guard let context = self.context else {
+                print("Warning: You're supposed to provide the context for handling other kinds of supplementary element event!")
+                return
+            }
+            context.collectionViewHandleEvent(withName: name, collection, viewForSupplementaryElementOfKind: kind, at: indexPath)
+        }
     }
 }

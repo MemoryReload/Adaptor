@@ -23,6 +23,8 @@ public protocol CellViewHolderEventProtocol {
     
     func shouldSelectWith(container: ContainerClass, cell: CellClass, index:IndexPath) -> Bool
     func shouldDeselectWith(container: ContainerClass, cell: CellClass, index:IndexPath) -> Bool
+    
+    func handleEvent(withName name: ViewCustomEventName, container: ContainerClass, cell: CellClass, index:IndexPath)
 }
 
 public protocol TableCellViewHolderEventProtocol: CellViewHolderEventProtocol  {

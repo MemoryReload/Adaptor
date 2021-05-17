@@ -36,4 +36,7 @@ extension CollectionSectionViewHolder: CollectionSectionViewHolderEventProtocol 
     
     @objc public func willDisplayWith(container: UICollectionView, footer: UICollectionReusableView, forSection section: Int) {}
     @objc public func didEndDisplayWith(container: UICollectionView, footer: UICollectionReusableView, forSection section: Int) { }
+    
+    @objc public func handleEvent(withName name: ViewCustomEventName, container: UICollectionView, header: UICollectionReusableView, forSection section: Int) { }
+    @objc public func handleEvent(withName name: ViewCustomEventName, container: UICollectionView, footer: UICollectionReusableView, forSection section: Int) { }
 }

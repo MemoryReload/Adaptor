@@ -28,4 +28,6 @@ extension TableCellViewHolder: TableCellViewHolderEventProtocol {
     
     @objc public func didSelectWith(container: UITableView, cell: UITableViewCell, index: IndexPath) { }
     @objc public func didDeselectWith(container: UITableView, cell: UITableViewCell, index: IndexPath) { }
+    
+    @objc public func handleEvent(withName name: ViewCustomEventName, container: UITableView, cell: UITableViewCell, index: IndexPath) { }
 }

@@ -23,10 +23,12 @@ extension TableAdaptor: UITableViewDataSource {
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
         guard let cellClass = cellHolder?.cellClass else { return UITableViewCell() }
         if let cell = cellClass.dequeue(from: tableView, withIdentifier: NSStringFromClass(cellClass)) {
+            cell.cellEventHandler = self
             cell.update(data: cellHolder?.cellData)
             return cell
         }
         let cell = cellClass.init(style: .default, reuseIdentifier: NSStringFromClass(cellClass))
+        cell.cellEventHandler = self
         cell.update(data: cellHolder?.cellData)
         return cell
     }
@@ -89,10 +91,16 @@ extension TableAdaptor: UITableViewDelegate {
         let sectionHolder = dataSource?[section]
         guard let headerViewClass  = sectionHolder?.headerViewClass  else { return nil }
         if let headerView = headerViewClass.dequeue(from: tableView, withIdentifier: NSStringFromClass(headerViewClass)) {
+            headerView.index = section
+            headerView.type = .Header
+            headerView.sectionEventHandler = self
             headerView.update(data: sectionHolder?.headerData)
             return headerView
         }
         let headerView = headerViewClass.init(reuseIdentifier:NSStringFromClass(headerViewClass))
+        headerView.index = section
+        headerView.type = .Header
+        headerView.sectionEventHandler = self
         headerView.update(data: sectionHolder?.headerData)
         return headerView
     }
@@ -110,11 +118,39 @@ extension TableAdaptor: UITableViewDelegate {
         let sectionHolder = dataSource?[section]
         guard let footerViewClass  = sectionHolder?.footerViewClass else { return nil }
         if let footerView = footerViewClass.dequeue(from: tableView, withIdentifier: NSStringFromClass(footerViewClass)) {
+            footerView.index = section
+            footerView.type = .Footer
+            footerView.sectionEventHandler = self
             footerView.update(data: sectionHolder?.footerData)
             return footerView
         }
         let footerView = footerViewClass.init(reuseIdentifier:NSStringFromClass(footerViewClass))
+        footerView.index = section
+        footerView.type = .Footer
+        footerView.sectionEventHandler = self
         footerView.update(data: sectionHolder?.footerData)
         return footerView
+    }
+}
+
+extension TableAdaptor: ViewCustomEventhandling
+{
+    typealias CellClass = UITableViewCell
+    typealias SectionViewClass = UITableViewHeaderFooterView
+    
+    func handleEvent(withName name: ViewCustomEventName, cell: UITableViewCell) {
+        guard let table = view, let indexPath = table.indexPath(for: cell) else { return }
+        let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
+        cellHolder?.handleEvent(withName: name, container: table, cell: cell, index: indexPath)
+    }
+    
+    func handleEvent(withName name: ViewCustomEventName, sectionView: UITableViewHeaderFooterView) {
+        guard let table = view, let index = sectionView.index, let type = sectionView.type else { return }
+        switch type {
+        case .Header:
+            dataSource?[index].handleEvent(withName: name, container: table, header: sectionView, forSection: index)
+        case .Footer:
+            dataSource?[index].handleEvent(withName: name, container: table, footer: sectionView, forSection: index)
+        }
     }
 }

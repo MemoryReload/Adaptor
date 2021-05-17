@@ -17,6 +17,8 @@ public protocol AdaptorContextReusableProtocol: AdaptorContextProtocol {
     func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath)
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath)
+    
+    func collectionViewHandleEvent(withName name: ViewCustomEventName, _ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath)
 }
 
 extension AdaptorContextReusableProtocol {
@@ -24,4 +26,10 @@ extension AdaptorContextReusableProtocol {
         assert(false, "subclass override stub!")
         return UICollectionReusableView(frame: CGRect.zero)
     }
+    
+    public func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) { }
+    
+    public func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) { }
+    
+    public func collectionViewHandleEvent(withName name: ViewCustomEventName, _ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) { }
 }
