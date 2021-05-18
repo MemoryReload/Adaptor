@@ -9,9 +9,9 @@ import Foundation
 
 public typealias ViewCustomEventName = String
 
-let SectionExpandEvent: ViewCustomEventName = "SectionExpand"
-let SectionCollapseEvent: ViewCustomEventName = "SectionCollapse"
-let CellRemovedEvent: ViewCustomEventName = "CellRemoved"
+public let SectionExpandEvent: ViewCustomEventName = "SectionExpand"
+public let SectionCollapseEvent: ViewCustomEventName = "SectionCollapse"
+public let CellRemovedEvent: ViewCustomEventName = "CellRemoved"
 
 protocol ViewCustomEventhandling {
     associatedtype CellClass
@@ -109,10 +109,10 @@ extension UITableViewHeaderFooterView: SectionViewEventSending {
     
     var type: TableSectionViewType? {
         get {
-            return objc_getAssociatedObject(self, &sectionIndexKey) as? TableSectionViewType
+            return objc_getAssociatedObject(self, &sectionTypeKey) as? TableSectionViewType
         }
         set {
-            objc_setAssociatedObject(self, &sectionIndexKey, newValue, .OBJC_ASSOCIATION_RETAIN)
+            objc_setAssociatedObject(self, &sectionTypeKey, newValue, .OBJC_ASSOCIATION_RETAIN)
         }
     }
     
@@ -163,5 +163,30 @@ extension UICollectionReusableView: CollectionReusableViewEventSending {
     
     func sendEvent(withName name: ViewCustomEventName, sectionView: UICollectionReusableView) {
         sectionEventHandler?.handleEvent(withName: name, sectionView: sectionView)
+    }
+}
+
+
+extension UITableViewCell {
+    public func sendEvent(withName name: ViewCustomEventName) {
+        sendEvent(withName: name, cell: self)
+    }
+}
+
+extension UITableViewHeaderFooterView {
+    public func sendEvent(withName name: ViewCustomEventName) {
+        sendEvent(withName: name, sectionView: self)
+    }
+}
+
+extension UICollectionReusableView {
+    @objc public func sendEvent(withName name: ViewCustomEventName) {
+        sendEvent(withName: name, sectionView: self)
+    }
+}
+
+extension UICollectionViewCell {
+    public override func sendEvent(withName name: ViewCustomEventName) {
+        sendEvent(withName: name, cell: self)
     }
 }

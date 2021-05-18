@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MySection" customModule="Adaptor_Example" customModuleProvider="target">
             <connections>
+                <outlet property="actionButton" destination="JZY-10-V5l" id="fWm-VP-HZb"/>
                 <outlet property="content" destination="iN0-l3-epB" id="yyf-kW-jUV"/>
                 <outlet property="titleLabel" destination="O8F-AY-DpC" id="rFP-XS-l49"/>
             </connections>
@@ -25,9 +26,17 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JZY-10-V5l">
+                    <rect key="frame" x="337" y="433" width="30" height="30"/>
+                    <connections>
+                        <action selector="doAction:" destination="-1" eventType="touchUpInside" id="p4S-Ux-1bY"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstItem="JZY-10-V5l" firstAttribute="centerY" secondItem="O8F-AY-DpC" secondAttribute="centerY" id="9QX-v3-1VM"/>
+                <constraint firstAttribute="trailing" secondItem="JZY-10-V5l" secondAttribute="trailing" constant="47" id="UQL-eG-EID"/>
                 <constraint firstItem="O8F-AY-DpC" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" id="ZPE-9p-vqP"/>
                 <constraint firstItem="O8F-AY-DpC" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="lAW-6r-xdM"/>
             </constraints>

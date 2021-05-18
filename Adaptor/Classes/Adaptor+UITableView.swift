@@ -20,7 +20,7 @@ extension TableAdaptor: UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
+        let cellHolder = dataSource?[indexPath.section].cellHodlers[indexPath.row]
         guard let cellClass = cellHolder?.cellClass else { return UITableViewCell() }
         if let cell = cellClass.dequeue(from: tableView, withIdentifier: NSStringFromClass(cellClass)) {
             cell.cellEventHandler = self
@@ -38,44 +38,44 @@ extension TableAdaptor: UITableViewDelegate {
     //MARK: ViewDelegate
     //MARK: Cell
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
+        let cellHolder = dataSource?[indexPath.section].cellHodlers[indexPath.row]
         guard let height = cellHolder?.cellHeight else { return UITableViewAutomaticDimension }
         return height
     }
     
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
+        let cellHolder = dataSource?[indexPath.section].cellHodlers[indexPath.row]
         cellHolder?.willDisplayWith(container: tableView, cell: cell, index: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
+        let cellHolder = dataSource?[indexPath.section].cellHodlers[indexPath.row]
         cellHolder?.didEndDisplayWith(container: tableView, cell: cell, index: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         guard let cell = tableView.cellForRow(at: indexPath) else { return nil}
-        let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
+        let cellHolder = dataSource?[indexPath.section].cellHodlers[indexPath.row]
         let shouldSelect = cellHolder?.shouldSelectWith(container: tableView, cell: cell, index: indexPath) ?? false
         return shouldSelect ? indexPath : nil
     }
 
     public func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
         guard let cell = tableView.cellForRow(at: indexPath) else { return nil}
-        let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
+        let cellHolder = dataSource?[indexPath.section].cellHodlers[indexPath.row]
         let shouldSelect = cellHolder?.shouldDeselectWith(container: tableView, cell: cell, index: indexPath) ?? false
         return shouldSelect ? indexPath : nil
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
-        let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
+        let cellHolder = dataSource?[indexPath.section].cellHodlers[indexPath.row]
         cellHolder?.didSelectWith(container: tableView, cell: cell, index: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
-        let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
+        let cellHolder = dataSource?[indexPath.section].cellHodlers[indexPath.row]
         cellHolder?.didDeselectWith(container: tableView, cell: cell, index: indexPath)
     }
     //MARK: Section Header
@@ -88,20 +88,19 @@ extension TableAdaptor: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let sectionHolder = dataSource?[section]
-        guard let headerViewClass  = sectionHolder?.headerViewClass  else { return nil }
+        guard let sectionHolder = dataSource?[section], let headerViewClass  = sectionHolder.headerViewClass  else { return nil }
         if let headerView = headerViewClass.dequeue(from: tableView, withIdentifier: NSStringFromClass(headerViewClass)) {
             headerView.index = section
             headerView.type = .Header
             headerView.sectionEventHandler = self
-            headerView.update(data: sectionHolder?.headerData)
+            headerView.update(data: sectionHolder.headerData, collasped: sectionHolder.collapsed, count: sectionHolder.cellHodlers.count)
             return headerView
         }
         let headerView = headerViewClass.init(reuseIdentifier:NSStringFromClass(headerViewClass))
         headerView.index = section
         headerView.type = .Header
         headerView.sectionEventHandler = self
-        headerView.update(data: sectionHolder?.headerData)
+        headerView.update(data: sectionHolder.headerData, collasped: sectionHolder.collapsed, count: sectionHolder.cellHodlers.count)
         return headerView
     }
     
@@ -115,20 +114,20 @@ extension TableAdaptor: UITableViewDelegate {
     }
 
     public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let sectionHolder = dataSource?[section]
-        guard let footerViewClass  = sectionHolder?.footerViewClass else { return nil }
+        
+        guard let sectionHolder = dataSource?[section], let footerViewClass  = sectionHolder.footerViewClass else { return nil }
         if let footerView = footerViewClass.dequeue(from: tableView, withIdentifier: NSStringFromClass(footerViewClass)) {
             footerView.index = section
             footerView.type = .Footer
             footerView.sectionEventHandler = self
-            footerView.update(data: sectionHolder?.footerData)
+            footerView.update(data: sectionHolder.footerData, collasped: sectionHolder.collapsed, count: sectionHolder.cellHodlers.count)
             return footerView
         }
         let footerView = footerViewClass.init(reuseIdentifier:NSStringFromClass(footerViewClass))
         footerView.index = section
         footerView.type = .Footer
         footerView.sectionEventHandler = self
-        footerView.update(data: sectionHolder?.footerData)
+        footerView.update(data: sectionHolder.footerData, collasped: sectionHolder.collapsed, count: sectionHolder.cellHodlers.count)
         return footerView
     }
 }
@@ -141,7 +140,7 @@ extension TableAdaptor: ViewCustomEventhandling
     func handleEvent(withName name: ViewCustomEventName, cell: UITableViewCell) {
         if handle(cell: cell, event: name) { return }
         guard let table = view, let indexPath = table.indexPath(for: cell) else { return }
-        let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
+        let cellHolder = dataSource?[indexPath.section].cellHodlers[indexPath.row]
         cellHolder?.handleEvent(withName: name, container: table, cell: cell, index: indexPath)
     }
     
@@ -159,7 +158,7 @@ extension TableAdaptor: ViewCustomEventhandling
     
     @objc public func handle(cell: UITableViewCell, event: ViewCustomEventName) -> Bool {
         if event == CellRemovedEvent, let indexPath = self.view?.indexPath(for: cell) {
-            self.dataSource?[indexPath.section].cellHodlers?.remove(at: indexPath.row)
+            self.dataSource?[indexPath.section].cellHodlers.remove(at: indexPath.row)
             self.view?.deleteRows(at: [indexPath], with: .automatic)
             return true
         }else {

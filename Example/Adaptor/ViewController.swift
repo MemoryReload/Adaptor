@@ -26,26 +26,21 @@ class ViewController: UIViewController {
     [TableSectionViewHolder] {
         var sectionHolders: [TableSectionViewHolder] = []
         for i in 1...3 {
-            var cellHolders: [TableCellViewHolder] = []
-            for j in 1...4 {
-                let cellHolder = TableCellViewHolder()
-                cellHolder.cellClass = MyCell.self
-                cellHolder.cellData = "section:\(i) row:\(j)"
-                cellHolder.cellHeight = 80
-                cellHolders.append(cellHolder)
-            }
             let sectionHolder = TableSectionViewHolder()
             sectionHolder.headerViewClass = MySection.self
             sectionHolder.headerHeight = 20
-            sectionHolder.headerData = "header: \(i)"
-            sectionHolder.footerViewClass = MySection.self
-            sectionHolder.footerHeight = 20
-            sectionHolder.footerData = "footer: \(i)"
-            sectionHolder.cellHodlers = cellHolders
-            if i == 2  {
-                sectionHolder.collapsed = true
-            }
+            sectionHolder.headerData = "header\(i)"
+//            sectionHolder.footerViewClass = MySection.self
+//            sectionHolder.footerHeight = 20
+//            sectionHolder.footerData = "footer: \(i)"
             sectionHolders.append(sectionHolder)
+            for j in 1...4 {
+                let cellHolder = TableCellViewHolder()
+                cellHolder.cellClass = MyCell.self
+                cellHolder.cellData = "row:\(j)"
+                cellHolder.cellHeight = 80
+                sectionHolder.cellHodlers.append(cellHolder)
+            }
         }
         return sectionHolders
     }

@@ -7,8 +7,12 @@
 
 import Foundation
 
-public protocol ViewUpdateProtocol {
+public protocol CellUpdateProtocol {
     func update(data:Any?)
+}
+
+public protocol SectionViewUpdateProtocol {
+    func update(data:Any?, collasped:Bool, count: Int)
 }
 
 protocol TableCellViewReuseProtocol {
@@ -26,7 +30,7 @@ protocol CollectionCellViewReuseProtocol
     static func dequeue(from container:UICollectionView, withIdentifier: String, indexPath: IndexPath ) -> UICollectionViewCell
 }
 
-extension UITableViewCell: TableCellViewReuseProtocol, ViewUpdateProtocol
+extension UITableViewCell: TableCellViewReuseProtocol, CellUpdateProtocol
 {
     public typealias V =  UITableViewCell
     
@@ -39,7 +43,7 @@ extension UITableViewCell: TableCellViewReuseProtocol, ViewUpdateProtocol
     }
 }
 
-extension UITableViewHeaderFooterView: TableCellViewReuseProtocol, ViewUpdateProtocol
+extension UITableViewHeaderFooterView: TableCellViewReuseProtocol, SectionViewUpdateProtocol
 {
     public typealias V = UITableViewHeaderFooterView
     
@@ -47,27 +51,31 @@ extension UITableViewHeaderFooterView: TableCellViewReuseProtocol, ViewUpdatePro
         container.dequeueReusableHeaderFooterView(withIdentifier: withIdentifier)
     }
     
-    @objc open func update(data:Any?) {
+    @objc open func update(data: Any?, collasped: Bool, count: Int) {
         assert(false, "subclass override stub!")
     }
 }
 
 
-extension UICollectionReusableView: CollectionReusableViewReuseProtocol, ViewUpdateProtocol {
+extension UICollectionReusableView: CollectionReusableViewReuseProtocol, SectionViewUpdateProtocol {
     public typealias V = UICollectionReusableView
     
     static func dequeue(from container: UICollectionView, ofKind elementKind: String, withReuseIdentifier identifier: String, for indexPath: IndexPath) -> UICollectionReusableView {
         container.dequeueReusableSupplementaryView(ofKind: elementKind, withReuseIdentifier: identifier, for: indexPath)
     }
     
-    @objc open func update(data:Any?) {
+    @objc open func update(data: Any?, collasped: Bool, count: Int) {
         assert(false, "subclass override stub!")
     }
 }
 
-extension UICollectionViewCell: CollectionCellViewReuseProtocol
+extension UICollectionViewCell: CollectionCellViewReuseProtocol, CellUpdateProtocol
 {
     static func dequeue(from container: UICollectionView, withIdentifier: String, indexPath: IndexPath) -> UICollectionViewCell {
         container.dequeueReusableCell(withReuseIdentifier: withIdentifier, for: indexPath)
+    }
+    
+    @objc open func update(data:Any?) {
+        assert(false, "subclass override stub!")
     }
 }

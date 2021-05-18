@@ -18,14 +18,14 @@ public class TableSectionViewHolder: SectionViewHolderBaseProtocol {
     public var footerHeight: CGFloat?
     public var footerViewClass: UITableViewHeaderFooterView.Type?
     
-    public var cellHodlers: [TableCellViewHolder]?
+    public var cellHodlers: [TableCellViewHolder] = []
     public var collapsed: Bool = false
     public var cellCounts: Int {
         get{
             if collapsed {
                 return 0
             }
-            return cellHodlers?.count ?? 0
+            return cellHodlers.count
         }
     }
     public init() { }
