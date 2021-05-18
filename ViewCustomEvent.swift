@@ -9,6 +9,10 @@ import Foundation
 
 public typealias ViewCustomEventName = String
 
+let SectionExpandEvent: ViewCustomEventName = "SectionExpand"
+let SectionCollapseEvent: ViewCustomEventName = "SectionCollapse"
+let CellRemovedEvent: ViewCustomEventName = "CellRemoved"
+
 protocol ViewCustomEventhandling {
     associatedtype CellClass
     associatedtype SectionViewClass

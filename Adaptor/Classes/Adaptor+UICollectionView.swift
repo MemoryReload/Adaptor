@@ -134,6 +134,7 @@ extension CollectionAdaptor: ViewCustomEventhandling {
     typealias SectionViewClass = UICollectionReusableView
     
     func handleEvent(withName name: ViewCustomEventName, cell: UICollectionViewCell) {
+        if handle(cell: cell, event: name) { return }
         guard let collection = view, let indexPath = collection.indexPath(for: cell) else { return }
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
         cellHolder?.handleEvent(withName: name, container: collection, cell: cell, index: indexPath)
@@ -142,8 +143,10 @@ extension CollectionAdaptor: ViewCustomEventhandling {
     func handleEvent(withName name: ViewCustomEventName, sectionView: UICollectionReusableView) {
         guard let collection = view, let indexPath = sectionView.indexPath, let kind = sectionView.kind else { return }
         if kind == UICollectionElementKindSectionHeader {
+            if handle(sectionHeader: sectionView, event: name) { return }
             dataSource?[indexPath.section].handleEvent(withName: name, container: collection, header: sectionView, forSection: indexPath.section)
         }else if kind == UICollectionElementKindSectionFooter {
+            if handle(sectionFooter: sectionView, event: name) { return }
             dataSource?[indexPath.section].handleEvent(withName: name, container: collection, footer: sectionView, forSection: indexPath.section)
         }else {
             guard let context = self.context else {
@@ -151,6 +154,43 @@ extension CollectionAdaptor: ViewCustomEventhandling {
                 return
             }
             context.collectionViewHandleEvent(withName: name, collection, viewForSupplementaryElementOfKind: kind, at: indexPath)
+        }
+    }
+    
+    @objc public func handle(cell: UICollectionViewCell, event: ViewCustomEventName) -> Bool {
+        if event == CellRemovedEvent, let indexPath = self.view?.indexPath(for: cell) {
+            self.dataSource?[indexPath.section].cellHodlers?.remove(at: indexPath.row)
+            self.view?.deleteItems(at: [indexPath])
+            return true
+        }
+        return false
+    }
+    
+    @objc public func handle(sectionHeader: UICollectionReusableView, event: ViewCustomEventName) -> Bool {
+        if event  == SectionExpandEvent, let indexPath = sectionHeader.indexPath {
+            self.dataSource?[indexPath.section].collapsed = false
+            self.view?.reloadSections([indexPath.section])
+            return true
+        }else if event == SectionCollapseEvent, let indexPath = sectionHeader.indexPath {
+            self.dataSource?[indexPath.section].collapsed = false
+            self.view?.reloadSections([indexPath.section])
+            return true
+        }else {
+            return false
+        }
+    }
+    
+    @objc public func handle(sectionFooter: UICollectionReusableView, event: ViewCustomEventName) -> Bool {
+        if event  == SectionExpandEvent, let indexPath = sectionFooter.indexPath {
+            self.dataSource?[indexPath.section].collapsed = false
+            self.view?.reloadSections([indexPath.section])
+            return true
+        }else if event == SectionCollapseEvent, let indexPath = sectionFooter.indexPath {
+            self.dataSource?[indexPath.section].collapsed = false
+            self.view?.reloadSections([indexPath.section])
+            return true
+        }else {
+            return false
         }
     }
 }

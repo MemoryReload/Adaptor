@@ -139,6 +139,7 @@ extension TableAdaptor: ViewCustomEventhandling
     typealias SectionViewClass = UITableViewHeaderFooterView
     
     func handleEvent(withName name: ViewCustomEventName, cell: UITableViewCell) {
+        if handle(cell: cell, event: name) { return }
         guard let table = view, let indexPath = table.indexPath(for: cell) else { return }
         let cellHolder = dataSource?[indexPath.section].cellHodlers?[indexPath.row]
         cellHolder?.handleEvent(withName: name, container: table, cell: cell, index: indexPath)
@@ -148,9 +149,49 @@ extension TableAdaptor: ViewCustomEventhandling
         guard let table = view, let index = sectionView.index, let type = sectionView.type else { return }
         switch type {
         case .Header:
+            if handle(sectionHeader: sectionView, event: name) { return }
             dataSource?[index].handleEvent(withName: name, container: table, header: sectionView, forSection: index)
         case .Footer:
+            if handle(sectionFooter: sectionView, event: name) { return }
             dataSource?[index].handleEvent(withName: name, container: table, footer: sectionView, forSection: index)
+        }
+    }
+    
+    @objc public func handle(cell: UITableViewCell, event: ViewCustomEventName) -> Bool {
+        if event == CellRemovedEvent, let indexPath = self.view?.indexPath(for: cell) {
+            self.dataSource?[indexPath.section].cellHodlers?.remove(at: indexPath.row)
+            self.view?.deleteRows(at: [indexPath], with: .automatic)
+            return true
+        }else {
+            return false
+        }
+    }
+    
+    @objc public func handle(sectionHeader: UITableViewHeaderFooterView, event: ViewCustomEventName) -> Bool {
+        if event  == SectionExpandEvent, let index = sectionHeader.index {
+            self.dataSource?[index].collapsed = false
+            self.view?.reloadSections([index], with: .automatic)
+            return true
+        }else if event == SectionCollapseEvent, let index = sectionHeader.index {
+            self.dataSource?[index].collapsed = true
+            self.view?.reloadSections([index], with: .automatic)
+            return true
+        }else {
+            return false
+        }
+    }
+    
+    @objc public func handle(sectionFooter: UITableViewHeaderFooterView, event: ViewCustomEventName) -> Bool {
+        if event  == SectionExpandEvent, let index = sectionFooter.index {
+            self.dataSource?[index].collapsed = false
+            self.view?.reloadSections([index], with: .automatic)
+            return true
+        }else if event == SectionCollapseEvent, let index = sectionFooter.index {
+            self.dataSource?[index].collapsed = true
+            self.view?.reloadSections([index], with: .automatic)
+            return true
+        }else {
+            return false
         }
     }
 }
