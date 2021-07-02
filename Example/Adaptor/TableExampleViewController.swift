@@ -9,7 +9,7 @@
 import UIKit
 import Adaptor
 
-class ViewController: UIViewController {
+class TableExampleViewController: UIViewController {
     @IBOutlet weak var table: UITableView!
     
     override func viewDidLoad() {
@@ -28,7 +28,7 @@ class ViewController: UIViewController {
         for i in 1...3 {
             let sectionHolder = TableSectionViewHolder()
             sectionHolder.headerViewClass = MySection.self
-            sectionHolder.headerHeight = 20
+            sectionHolder.headerHeight = 44
             sectionHolder.headerData = "header\(i)"
 //            sectionHolder.footerViewClass = MySection.self
 //            sectionHolder.footerHeight = 20
@@ -44,6 +44,7 @@ class ViewController: UIViewController {
         }
         return sectionHolders
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

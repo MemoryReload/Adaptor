@@ -12,7 +12,7 @@ private var delegateKey = "DelegateKey"
 
 extension CollectionAdaptor: UICollectionViewDataSource{
     //MARK: DataSource
-    private func numberOfSections(in collectionView: UICollectionView) -> Int {
+    public func numberOfSections(in collectionView: UICollectionView) -> Int {
         return dataSource?.count ?? 0
     }
     
@@ -45,7 +45,7 @@ extension CollectionAdaptor: UICollectionViewDataSource{
             footerView.indexPath = indexPath
             footerView.kind = kind
             footerView.sectionEventHandler = self
-            footerView.update(data: sectionViewHolder.headerData, collasped: sectionViewHolder.collapsed, count: sectionViewHolder.cellHolders.count)
+            footerView.update(data: sectionViewHolder.footerData, collasped: sectionViewHolder.collapsed, count: sectionViewHolder.cellHolders.count)
             return footerView
         }else {
             guard let context = self.context else {

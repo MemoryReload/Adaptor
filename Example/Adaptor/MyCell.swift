@@ -19,3 +19,14 @@ class MyCell: UITableViewCell
         self.textLabel?.text = data as? String ?? "-"
     }
 }
+
+class MyCollectionCell: UICollectionViewCell
+{
+    override class func awakeFromNib() {
+        print("Dada! it works")
+    }
+    override func update(data: Any?) {
+//        self.textLabel?.text = data as? String ?? "-"
+        self.contentView.backgroundColor = .red
+    }
+}

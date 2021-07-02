@@ -10,9 +10,10 @@ import Foundation
 public class CollectionCellViewHolder: CellViewHolderBaseProtocol {
     public typealias CellClass = UICollectionViewCell
     
-    public var cellHeight: CGFloat?
     public var cellData: Any?
     public var cellClass: UICollectionViewCell.Type?
+    
+    public init() { }
 }
 
 extension CollectionCellViewHolder: CollectionCellViewHolderEventProtocol {
