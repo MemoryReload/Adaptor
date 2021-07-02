@@ -39,7 +39,7 @@ class ViewController: UIViewController {
                 cellHolder.cellClass = MyCell.self
                 cellHolder.cellData = "row:\(j)"
                 cellHolder.cellHeight = 80
-                sectionHolder.cellHodlers.append(cellHolder)
+                sectionHolder.cellHolders.append(cellHolder)
             }
         }
         return sectionHolders

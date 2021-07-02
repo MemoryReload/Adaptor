@@ -21,7 +21,7 @@ extension CollectionAdaptor: UICollectionViewDataSource{
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cellHolder = dataSource?[indexPath.section].cellHodlers[indexPath.row]
+        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
         guard let cellClass = cellHolder?.cellClass else { return UICollectionViewCell() }
         let cell = cellClass.dequeue(from: collectionView, withIdentifier: NSStringFromClass(cellClass), indexPath: indexPath)
         cell.cellEventHandler = self
@@ -37,7 +37,7 @@ extension CollectionAdaptor: UICollectionViewDataSource{
             headerView.indexPath = indexPath
             headerView.kind = kind
             headerView.sectionEventHandler = self
-            headerView.update(data: sectionViewHolder.headerData, collasped: sectionViewHolder.collapsed, count: sectionViewHolder.cellHodlers.count)
+            headerView.update(data: sectionViewHolder.headerData, collasped: sectionViewHolder.collapsed, count: sectionViewHolder.cellHolders.count)
             return headerView
         }else if kind == UICollectionElementKindSectionFooter {
             guard let footerClass = sectionViewHolder.footerViewClass else { return UICollectionReusableView(frame: CGRect.zero) }
@@ -45,7 +45,7 @@ extension CollectionAdaptor: UICollectionViewDataSource{
             footerView.indexPath = indexPath
             footerView.kind = kind
             footerView.sectionEventHandler = self
-            footerView.update(data: sectionViewHolder.headerData, collasped: sectionViewHolder.collapsed, count: sectionViewHolder.cellHodlers.count)
+            footerView.update(data: sectionViewHolder.headerData, collasped: sectionViewHolder.collapsed, count: sectionViewHolder.cellHolders.count)
             return footerView
         }else {
             guard let context = self.context else {
@@ -63,12 +63,12 @@ extension CollectionAdaptor: UICollectionViewDataSource{
 
 extension CollectionAdaptor: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let cellHolder = dataSource?[indexPath.section].cellHodlers[indexPath.row]
+        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
         cellHolder?.willDisplayWith(container: collectionView, cell: cell, index: indexPath)
     }
     
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let cellHolder = dataSource?[indexPath.section].cellHodlers[indexPath.row]
+        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
         cellHolder?.didEndDisplayWith(container: collectionView, cell: cell, index: indexPath)
     }
     
@@ -105,25 +105,25 @@ extension CollectionAdaptor: UICollectionViewDelegate {
     
     public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         guard let cell = collectionView.cellForItem(at: indexPath) else { return false}
-        let cellHolder = dataSource?[indexPath.section].cellHodlers[indexPath.row]
+        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
         return cellHolder?.shouldSelectWith(container: collectionView, cell: cell, index: indexPath) ?? false
     }
     
     public func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
         guard let cell = collectionView.cellForItem(at: indexPath) else { return false}
-        let cellHolder = dataSource?[indexPath.section].cellHodlers[indexPath.row]
+        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
         return cellHolder?.shouldDeselectWith(container: collectionView, cell: cell, index: indexPath) ?? false
     }
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) else { return }
-        let cellHolder = dataSource?[indexPath.section].cellHodlers[indexPath.row]
+        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
         cellHolder?.didSelectWith(container: collectionView, cell:cell , index: indexPath)
     }
     
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) else { return }
-        let cellHolder = dataSource?[indexPath.section].cellHodlers[indexPath.row]
+        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
         cellHolder?.didDeselectWith(container: collectionView, cell: cell, index: indexPath)
     }
 }
@@ -135,7 +135,7 @@ extension CollectionAdaptor: ViewCustomEventhandling {
     func handleEvent(withName name: ViewCustomEventName, cell: UICollectionViewCell) {
         if handle(cell: cell, event: name) { return }
         guard let collection = view, let indexPath = collection.indexPath(for: cell) else { return }
-        let cellHolder = dataSource?[indexPath.section].cellHodlers[indexPath.row]
+        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
         cellHolder?.handleEvent(withName: name, container: collection, cell: cell, index: indexPath)
     }
     
@@ -158,7 +158,7 @@ extension CollectionAdaptor: ViewCustomEventhandling {
     
     @objc public func handle(cell: UICollectionViewCell, event: ViewCustomEventName) -> Bool {
         if event == CellRemovedEvent, let indexPath = self.view?.indexPath(for: cell) {
-            self.dataSource?[indexPath.section].cellHodlers.remove(at: indexPath.row)
+            self.dataSource?[indexPath.section].cellHolders.remove(at: indexPath.row)
             self.view?.deleteItems(at: [indexPath])
             return true
         }

@@ -18,7 +18,7 @@ public protocol SectionViewHolderBaseProtocol {
     var footerData: Any? { get set }
     var footerViewClass: SectionViewClass.Type? { get set }
     
-    var cellHodlers: [CellHolderClass] { get set }
+    var cellHolders: [CellHolderClass] { get set }
     var collapsed: Bool { get set }
     var cellCounts: Int { get }
 }
