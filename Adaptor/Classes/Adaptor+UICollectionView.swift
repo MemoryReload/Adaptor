@@ -171,7 +171,7 @@ extension CollectionAdaptor: ViewCustomEventhandling {
             self.view?.reloadSections([indexPath.section])
             return true
         }else if event == SectionCollapseEvent, let indexPath = sectionHeader.indexPath {
-            self.dataSource?[indexPath.section].collapsed = false
+            self.dataSource?[indexPath.section].collapsed = true
             self.view?.reloadSections([indexPath.section])
             return true
         }else {
@@ -185,7 +185,7 @@ extension CollectionAdaptor: ViewCustomEventhandling {
             self.view?.reloadSections([indexPath.section])
             return true
         }else if event == SectionCollapseEvent, let indexPath = sectionFooter.indexPath {
-            self.dataSource?[indexPath.section].collapsed = false
+            self.dataSource?[indexPath.section].collapsed = true
             self.view?.reloadSections([indexPath.section])
             return true
         }else {
