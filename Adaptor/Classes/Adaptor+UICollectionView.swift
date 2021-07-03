@@ -25,7 +25,7 @@ extension CollectionAdaptor: UICollectionViewDataSource{
         guard let cellClass = cellHolder?.cellClass else { return UICollectionViewCell() }
         let cell = cellClass.dequeue(from: collectionView, withIdentifier: NSStringFromClass(cellClass), indexPath: indexPath)
         cell.cellEventHandler = self
-        cell.update(data: cellHolder?.cellData)
+        cellHolder?.didUpdateWith(container: collectionView, cell: cell, index: indexPath)
         return cell
     }
     
@@ -33,19 +33,19 @@ extension CollectionAdaptor: UICollectionViewDataSource{
         guard let sectionViewHolder = dataSource?[indexPath.section] else { return UICollectionReusableView(frame: CGRect.zero) }
         if kind == UICollectionElementKindSectionHeader {
            guard let headerClass = sectionViewHolder.headerViewClass else { return UICollectionReusableView(frame: CGRect.zero) }
-           let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(headerClass), for: indexPath)
+            let headerView = headerClass.dequeue(from: collectionView, ofKind: kind, withReuseIdentifier: NSStringFromClass(headerClass), for: indexPath)
             headerView.indexPath = indexPath
             headerView.kind = kind
             headerView.sectionEventHandler = self
-            headerView.update(data: sectionViewHolder.headerData, collasped: sectionViewHolder.collapsed, count: sectionViewHolder.cellHolders.count)
+            sectionViewHolder.didUpdateWith(container: collectionView, header: headerView, forSection: indexPath.section)
             return headerView
         }else if kind == UICollectionElementKindSectionFooter {
             guard let footerClass = sectionViewHolder.footerViewClass else { return UICollectionReusableView(frame: CGRect.zero) }
-            let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionFooter, withReuseIdentifier: NSStringFromClass(footerClass), for: indexPath)
+            let footerView = footerClass.dequeue(from: collectionView, ofKind: kind, withReuseIdentifier: NSStringFromClass(footerClass), for: indexPath)
             footerView.indexPath = indexPath
             footerView.kind = kind
             footerView.sectionEventHandler = self
-            footerView.update(data: sectionViewHolder.footerData, collasped: sectionViewHolder.collapsed, count: sectionViewHolder.cellHolders.count)
+            sectionViewHolder.didUpdateWith(container: collectionView, footer: footerView, forSection: indexPath.section)
             return footerView
         }else {
             guard let context = self.context else {

@@ -18,6 +18,8 @@ public protocol CellViewHolderEventProtocol {
     associatedtype CellClass
     associatedtype ContainerClass
     
+    func didUpdateWith(container: ContainerClass, cell: CellClass, index:IndexPath)
+    
     func willDisplayWith(container: ContainerClass, cell: CellClass, index:IndexPath)
     func didEndDisplayWith(container: ContainerClass, cell: CellClass, index:IndexPath)
     

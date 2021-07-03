@@ -20,6 +20,10 @@ extension CollectionCellViewHolder: CollectionCellViewHolderEventProtocol {
     
     public typealias ContainerClass = UICollectionView
     
+    @objc public func didUpdateWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) {
+        cell.update(data: cellData)
+    }
+    
     @objc public func willDisplayWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
     @objc public func didEndDisplayWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
     

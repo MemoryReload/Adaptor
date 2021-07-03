@@ -24,12 +24,12 @@ extension TableAdaptor: UITableViewDataSource {
         guard let cellClass = cellHolder?.cellClass else { return UITableViewCell() }
         if let cell = cellClass.dequeue(from: tableView, withIdentifier: NSStringFromClass(cellClass)) {
             cell.cellEventHandler = self
-            cell.update(data: cellHolder?.cellData)
+            cellHolder?.didUpdateWith(container: tableView, cell: cell, index: indexPath)
             return cell
         }
         let cell = cellClass.init(style: .default, reuseIdentifier: NSStringFromClass(cellClass))
         cell.cellEventHandler = self
-        cell.update(data: cellHolder?.cellData)
+        cellHolder?.didUpdateWith(container: tableView, cell: cell, index: indexPath)
         return cell
     }
 }
@@ -93,14 +93,14 @@ extension TableAdaptor: UITableViewDelegate {
             headerView.index = section
             headerView.type = .Header
             headerView.sectionEventHandler = self
-            headerView.update(data: sectionHolder.headerData, collasped: sectionHolder.collapsed, count: sectionHolder.cellHolders.count)
+            sectionHolder.didUpdateWith(container: tableView, header: headerView, forSection: section)
             return headerView
         }
         let headerView = headerViewClass.init(reuseIdentifier:NSStringFromClass(headerViewClass))
         headerView.index = section
         headerView.type = .Header
         headerView.sectionEventHandler = self
-        headerView.update(data: sectionHolder.headerData, collasped: sectionHolder.collapsed, count: sectionHolder.cellHolders.count)
+        sectionHolder.didUpdateWith(container: tableView, header: headerView, forSection: section)
         return headerView
     }
     
@@ -120,14 +120,14 @@ extension TableAdaptor: UITableViewDelegate {
             footerView.index = section
             footerView.type = .Footer
             footerView.sectionEventHandler = self
-            footerView.update(data: sectionHolder.footerData, collasped: sectionHolder.collapsed, count: sectionHolder.cellHolders.count)
+            sectionHolder.didUpdateWith(container: tableView, footer: footerView, forSection: section)
             return footerView
         }
         let footerView = footerViewClass.init(reuseIdentifier:NSStringFromClass(footerViewClass))
         footerView.index = section
         footerView.type = .Footer
         footerView.sectionEventHandler = self
-        footerView.update(data: sectionHolder.footerData, collasped: sectionHolder.collapsed, count: sectionHolder.cellHolders.count)
+        sectionHolder.didUpdateWith(container: tableView, footer: footerView, forSection: section)
         return footerView
     }
 }

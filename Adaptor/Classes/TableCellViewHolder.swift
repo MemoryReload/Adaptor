@@ -20,6 +20,10 @@ open class TableCellViewHolder: CellViewHolderBaseProtocol {
 extension TableCellViewHolder: TableCellViewHolderEventProtocol {
     public typealias ContainerClass = UITableView
     
+    @objc public func didUpdateWith(container: UITableView, cell: UITableViewCell, index: IndexPath) {
+        cell.update(data: cellData)
+    }
+    
     @objc public func willDisplayWith(container: UITableView, cell: UITableViewCell, index: IndexPath) { }
     @objc public func didEndDisplayWith(container: UITableView, cell: UITableViewCell, index: IndexPath) { }
     

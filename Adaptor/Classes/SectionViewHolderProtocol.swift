@@ -27,9 +27,11 @@ public protocol SectionViewHolderEventProtocol {
     associatedtype SectionViewClass
     associatedtype ContainerClass
     
+    func didUpdateWith(container: ContainerClass, header:SectionViewClass, forSection section: Int )
     func willDisplayWith(container: ContainerClass, header:SectionViewClass, forSection section: Int )
     func didEndDisplayWith(container: ContainerClass, header:SectionViewClass, forSection section: Int )
     
+    func didUpdateWith(container: ContainerClass, footer:SectionViewClass, forSection section: Int)
     func willDisplayWith(container: ContainerClass, footer:SectionViewClass, forSection section: Int )
     func didEndDisplayWith(container: ContainerClass, footer:SectionViewClass, forSection section: Int )
     
