@@ -35,11 +35,18 @@ class TableExampleViewController: UIViewController {
 //            sectionHolder.footerData = "footer: \(i)"
             sectionHolders.append(sectionHolder)
             for j in 1...4 {
-                let cellHolder = TableCellViewHolder()
-                cellHolder.cellClass = MyCell.self
-                cellHolder.cellData = "row:\(j)"
-                cellHolder.cellHeight = 80
-                sectionHolder.cellHolders.append(cellHolder)
+                if j % 2 == 0 {
+                    let cellHolder = TableCellViewHolder()
+                    cellHolder.cellClass = MyAutoSizeCell.self
+                    cellHolder.cellData = "row:\(j)"
+                    sectionHolder.cellHolders.append(cellHolder)
+                }else{
+                    let cellHolder = TableCellViewHolder()
+                    cellHolder.cellClass = MyCell.self
+                    cellHolder.cellData = "row:\(j)"
+                    cellHolder.cellHeight = 80
+                    sectionHolder.cellHolders.append(cellHolder)
+                }
             }
         }
         return sectionHolders

@@ -1,27 +1,31 @@
 PODS:
-  - Adaptor (0.1.0)
+  - Adaptor (0.1.1)
   - Nimble (8.0.9)
   - Quick (2.2.1)
+  - SnapKit (4.2.0)
 
 DEPENDENCIES:
   - Adaptor (from `../`)
   - Nimble (~> 8.0.7)
   - Quick (~> 2.2.0)
+  - SnapKit
 
 SPEC REPOS:
   trunk:
     - Nimble
     - Quick
+    - SnapKit
 
 EXTERNAL SOURCES:
   Adaptor:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Adaptor: 6637e04e99c79eaacca8bfcf5c169e208ae879d8
+  Adaptor: 65ac5bad8626da3010dcb88b55297639164a8209
   Nimble: 98b888285a615fd34f20e61753cf58ea1402bde4
   Quick: f5754d69b7013f5864c29aab9ae6f0c79c5bc200
+  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
 
-PODFILE CHECKSUM: fd4bedae3c72c2e600747695d268d6370fe389db
+PODFILE CHECKSUM: fd17b17948ebc9aad9ce594be439693dd652a5b8
 
 COCOAPODS: 1.10.1
