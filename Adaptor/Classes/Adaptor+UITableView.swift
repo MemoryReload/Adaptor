@@ -156,6 +156,14 @@ extension TableAdaptor: ViewCustomEventhandling
         }
     }
     
+    /// Handle event emitted by cell.
+    /// - Parameters:
+    ///   - cell: The cell which emits the specified event
+    ///   - event: event name
+    /// - Returns: The adaptor successfully handled the event or not
+    /// - Note: If the event isn't handled by the adaptor, it will be forwarded to the cell holder
+    /// for further processing. for subclassing, you should call super  if you want the default
+    /// event handling behaviour.
     @objc public func handle(cell: UITableViewCell, event: ViewCustomEventName) -> Bool {
         if event == CellRemovedEvent, let indexPath = self.view?.indexPath(for: cell) {
             self.dataSource?[indexPath.section].cellHolders.remove(at: indexPath.row)
@@ -166,6 +174,14 @@ extension TableAdaptor: ViewCustomEventhandling
         }
     }
     
+    /// Handle event emitted by sectionHeader.
+    /// - Parameters:
+    ///   - sectionHeader: The sectionHeader which emits the specified event
+    ///   - event: event name
+    /// - Returns: The adaptor successfully handled the event or not
+    /// - Note: If the event isn't handled by the adaptor, it will be forwarded to the section view holder
+    /// for further processing. for subclassing, you should call super  if you want the default
+    /// event handling behaviour.
     @objc public func handle(sectionHeader: UITableViewHeaderFooterView, event: ViewCustomEventName) -> Bool {
         if event  == SectionExpandEvent, let index = sectionHeader.index {
             self.dataSource?[index].collapsed = false
@@ -180,6 +196,14 @@ extension TableAdaptor: ViewCustomEventhandling
         }
     }
     
+    /// Handle event emitted by sectionFooter.
+    /// - Parameters:
+    ///   - cell: The sectionFooter which emits the specified event
+    ///   - event: event name
+    /// - Returns: The adaptor successfully handled the event or not
+    /// - Note: If the event isn't handled by the adaptor, it will be forwarded to the section view holder
+    /// for further processing. for subclassing, you should call super  if you want the default
+    /// event handling behaviour.
     @objc public func handle(sectionFooter: UITableViewHeaderFooterView, event: ViewCustomEventName) -> Bool {
         if event  == SectionExpandEvent, let index = sectionFooter.index {
             self.dataSource?[index].collapsed = false
