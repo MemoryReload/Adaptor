@@ -10,6 +10,9 @@ import Foundation
 open class TableCellViewHolder: CellViewHolderBaseProtocol {
     public typealias CellClass = UITableViewCell
     
+    
+    /// If cell is fixed height, assign the proper height for the cell. If nil, the cell
+    /// will be auto-dimensioned. Default is nil.
     open var cellHeight: CGFloat?
     public var cellData: Any?
     public var cellClass: UITableViewCell.Type?
