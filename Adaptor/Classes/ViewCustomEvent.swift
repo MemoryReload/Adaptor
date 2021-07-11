@@ -39,7 +39,7 @@ protocol ViewCustomEventhandling {
 
 /// The base cell custom event sending protocol. Any cell classes that prefer to send
 /// custom event should confrim (or maybe implement) this protocol.
-protocol CellCustomEventSending {
+protocol CellEventSending {
     associatedtype A: ViewCustomEventhandling
     associatedtype CellClass
     
@@ -103,7 +103,7 @@ protocol CollectionReusableViewEventSending: SectionViewEventSending {
 
 private var eventHandlerKey = "EventHandler"
 
-extension UITableViewCell: CellCustomEventSending {
+extension UITableViewCell: CellEventSending {
     typealias A = TableAdaptor
     typealias CellClass = UITableViewCell
     
@@ -121,7 +121,7 @@ extension UITableViewCell: CellCustomEventSending {
     }
 }
 
-extension UICollectionViewCell: CellCustomEventSending {
+extension UICollectionViewCell: CellEventSending {
     typealias A = CollectionAdaptor
     typealias CellClass = UICollectionViewCell
 
