@@ -9,46 +9,95 @@ import Foundation
 
 public typealias ViewCustomEventName = String
 
+/// The section expanding event name.
 public let SectionExpandEvent: ViewCustomEventName = "SectionExpand"
+
+/// The section collapseing event name.
 public let SectionCollapseEvent: ViewCustomEventName = "SectionCollapse"
+
+/// The cell removed event name.
 public let CellRemovedEvent: ViewCustomEventName = "CellRemoved"
 
+/// The base view custom event handling protocol. Any object that prefers to handle
+/// view custom event should confirm (or maybe implement) this protocol.
 protocol ViewCustomEventhandling {
     associatedtype CellClass
     associatedtype SectionViewClass
-
+    
+    /// Called when the specified cell emits event.
+    /// - Parameters:
+    ///   - name: The event name
+    ///   - cell: The cell which emits such event.
     func handleEvent(withName name: ViewCustomEventName, cell: CellClass)
+    
+    /// Called when the specified section view emit event.
+    /// - Parameters:
+    ///   - name: The event name
+    ///   - sectionView: The section view which emits such event
     func handleEvent(withName name: ViewCustomEventName, sectionView: SectionViewClass)
 }
 
+/// The base cell custom event sending protocol. Any cell classes that prefer to send
+/// custom event should confrim (or maybe implement) this protocol.
 protocol CellCustomEventSending {
     associatedtype A: ViewCustomEventhandling
     associatedtype CellClass
     
+    /// The event handler which is honored to handle events emitted by custom cell views (generally speaking,
+    /// this should be the adaptor).
     var  cellEventHandler: A? { get set }
+    
+    /// The event tiger method. A specified cell event will be sent to the handler after calling this method.
+    /// - Parameters:
+    ///   - name: The specified event name
+    ///   - cell: The specified cell which sending the event
     func sendEvent(withName name: ViewCustomEventName, cell: CellClass)
 }
 
+/// The base section view custom event sending protocol. Any section view classes that prefer to send
+/// custom event should confrim (or maybe implement) this protocol.
 protocol SectionViewEventSending {
     associatedtype A: ViewCustomEventhandling
     associatedtype SectionViewClass
     
+    /// The event handler which is honored to handle events emitted by custom section views (generally
+    /// speaking, this should be the adaptor).
     var  sectionEventHandler: A? { get set }
+    
+    /// The event tiger method. A specified section event will be sent to the handler after calling this
+    /// method.
+    /// - Parameters:
+    ///   - name: The specified event name
+    ///   - sectionView: The specified section view which sending the event
     func sendEvent(withName name: ViewCustomEventName, sectionView: SectionViewClass)
 }
 
 enum TableSectionViewType {
+    /// header view of the table
     case Header
+    /// footer view of the table
     case Footer
 }
 
+
+/// The table section view event sending protocol.
 protocol TableSectionViewEventSending: SectionViewEventSending  {
+    
+    /// The type of the specified section view which sends custom event.
     var type: TableSectionViewType? { get set }
+    
+    /// the index of the specified section view in the table
     var index: Int? { get set }
 }
 
+
+/// The reusable view of collection view event sending protocol.
 protocol CollectionReusableViewEventSending: SectionViewEventSending {
+    
+    /// The index path of the reusable view which sends custom event.
     var  indexPath: IndexPath? { get set }
+    
+    /// The supplementary view  kind of the reusable view.
     var  kind: String? { get set }
 }
 

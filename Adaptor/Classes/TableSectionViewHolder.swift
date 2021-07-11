@@ -10,11 +10,16 @@ import Foundation
 public class TableSectionViewHolder: SectionViewHolderBaseProtocol {
     
     public var headerData: Any?
+    
+    /// If header view is fixed height, assign the proper height for the header. If nil, the header view
+    /// will be auto-dimensioned. Default is nil.
     public var headerHeight: CGFloat?
     public var headerViewClass: UITableViewHeaderFooterView.Type?
     
     
     public var footerData: Any?
+    /// If footer view is fixed height, assign the proper height for the footer. If nil, the footer view
+    /// will be auto-dimensioned. Default is nil.
     public var footerHeight: CGFloat?
     public var footerViewClass: UITableViewHeaderFooterView.Type?
     
