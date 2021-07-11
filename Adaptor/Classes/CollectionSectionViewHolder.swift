@@ -19,12 +19,10 @@ public class CollectionSectionViewHolder: SectionViewHolderBaseProtocol  {
     public var cellHolders: [CollectionCellViewHolder] = []
     public var collapsed: Bool = false
     public var cellCounts: Int {
-        get{
-            if collapsed {
-                return 0
-            }
-            return cellHolders.count
+        if collapsed {
+            return 0
         }
+        return cellHolders.count
     }
     public init() { }
 }

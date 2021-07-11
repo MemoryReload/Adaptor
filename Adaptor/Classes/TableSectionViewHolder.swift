@@ -26,12 +26,10 @@ public class TableSectionViewHolder: SectionViewHolderBaseProtocol {
     public var cellHolders: [TableCellViewHolder] = []
     public var collapsed: Bool = false
     public var cellCounts: Int {
-        get{
-            if collapsed {
-                return 0
-            }
-            return cellHolders.count
+        if collapsed {
+            return 0
         }
+        return cellHolders.count
     }
     public init() { }
 }
