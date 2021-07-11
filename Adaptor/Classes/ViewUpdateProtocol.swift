@@ -22,12 +22,12 @@ public protocol SectionViewUpdateProtocol {
     /// Called when the section view holder set data for the specified section view.
     /// - Parameters:
     ///   - data: The user custom data
-    ///   - collasped: The current display status for the specified section ( whether the section is
-    ///   collasped or not now).
+    ///   - collapsed: The current display status for the specified section ( whether the section is
+    ///   collapsed or not now).
     ///   - count: The display count for the specified section.
     /// - Note: The count here will be the actual cell view holders count of this section, even if
     ///   the section is collapsed. You should handle collapsing all by yourself.
-    func update(data:Any?, collasped:Bool, count: Int)
+    func update(data:Any?, collapsed:Bool, count: Int)
 }
 
 
@@ -86,7 +86,7 @@ extension UITableViewHeaderFooterView: TableCellViewReuseProtocol, SectionViewUp
         container.dequeueReusableHeaderFooterView(withIdentifier: withIdentifier)
     }
     
-    @objc open func update(data: Any?, collasped: Bool, count: Int) {
+    @objc open func update(data: Any?, collapsed: Bool, count: Int) {
         assert(false, "subclass override stub!")
     }
 }
@@ -99,7 +99,7 @@ extension UICollectionReusableView: CollectionReusableViewReuseProtocol, Section
         container.dequeueReusableSupplementaryView(ofKind: elementKind, withReuseIdentifier: identifier, for: indexPath)
     }
     
-    @objc open func update(data: Any?, collasped: Bool, count: Int) {
+    @objc open func update(data: Any?, collapsed: Bool, count: Int) {
         assert(false, "subclass override stub!")
     }
 }

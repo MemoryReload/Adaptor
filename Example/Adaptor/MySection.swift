@@ -31,10 +31,10 @@ class MySection: UITableViewHeaderFooterView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func update(data: Any?, collasped: Bool, count: Int) {
+    override func update(data: Any?, collapsed: Bool, count: Int) {
         let headerStr = data as? String ?? ""
         titleLabel.text = "\(headerStr): \(count)"
-        self.collapsed = collasped
+        self.collapsed = collapsed
         let title = self.collapsed ? "展开" : "收起"
         actionButton.setTitle(title, for: .normal)
     }
@@ -67,10 +67,10 @@ class MyCollectionSection: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func update(data: Any?, collasped: Bool, count: Int) {
+    override func update(data: Any?, collapsed: Bool, count: Int) {
         let headerStr = data as? String ?? ""
         titleLabel.text = "\(headerStr): \(count)"
-        self.collapsed = collasped
+        self.collapsed = collapsed
         let title = self.collapsed ? "展开" : "收起"
         actionButton.setTitle(title, for: .normal)
     }

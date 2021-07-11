@@ -32,13 +32,13 @@ public class CollectionSectionViewHolder: SectionViewHolderBaseProtocol  {
 
 extension CollectionSectionViewHolder: CollectionSectionViewHolderEventProtocol {
     public func didUpdateWith(container: UICollectionView, header: UICollectionReusableView, forSection section: Int) {
-        header.update(data: headerData, collasped: collapsed, count: cellHolders.count)
+        header.update(data: headerData, collapsed: collapsed, count: cellHolders.count)
     }
     @objc public func willDisplayWith(container: UICollectionView, header: UICollectionReusableView, forSection section: Int) { }
     @objc public func didEndDisplayWith(container: UICollectionView, header: UICollectionReusableView, forSection section: Int) { }
     
     public func didUpdateWith(container: UICollectionView, footer: UICollectionReusableView, forSection section: Int) {
-        footer.update(data: footerData, collasped: collapsed, count: cellHolders.count)
+        footer.update(data: footerData, collapsed: collapsed, count: cellHolders.count)
     }
     @objc public func willDisplayWith(container: UICollectionView, footer: UICollectionReusableView, forSection section: Int) {}
     @objc public func didEndDisplayWith(container: UICollectionView, footer: UICollectionReusableView, forSection section: Int) { }
