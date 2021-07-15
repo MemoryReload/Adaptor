@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Adaptor'
-  s.version          = '0.1.2'
+  s.version          = '0.1.3'
   s.summary          = 'An adaptor of UITableView and UICollectionView'
 
 # This description is used to generate tags and improve search results.
