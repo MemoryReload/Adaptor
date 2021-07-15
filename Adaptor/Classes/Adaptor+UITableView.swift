@@ -12,24 +12,24 @@ private var dataSourceKey = "DataSource"
 extension TableAdaptor: UITableViewDataSource {
     //MARK: DataSource
     public func numberOfSections(in tableView: UITableView) -> Int {
-        return dataSource?.count ?? 0
+        return dataSource.count
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataSource?[section].cellCounts ?? 0
+        return dataSource[section].cellCounts
     }
     
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
-        guard let cellClass = cellHolder?.cellClass else { return UITableViewCell() }
+    @objc open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
+        guard let cellClass = cellHolder.cellClass else { return UITableViewCell() }
         if let cell = cellClass.dequeue(from: tableView, withIdentifier: NSStringFromClass(cellClass)) {
             cell.cellEventHandler = self
-            cellHolder?.didUpdateWith(container: tableView, cell: cell, index: indexPath)
+            cellHolder.didUpdateWith(container: tableView, cell: cell, index: indexPath)
             return cell
         }
         let cell = cellClass.init(style: .default, reuseIdentifier: NSStringFromClass(cellClass))
         cell.cellEventHandler = self
-        cellHolder?.didUpdateWith(container: tableView, cell: cell, index: indexPath)
+        cellHolder.didUpdateWith(container: tableView, cell: cell, index: indexPath)
         return cell
     }
 }
@@ -38,57 +38,58 @@ extension TableAdaptor: UITableViewDelegate {
     //MARK: ViewDelegate
     //MARK: Cell
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
-        guard let height = cellHolder?.cellHeight else { return UITableViewAutomaticDimension }
+        let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
+        guard let height = cellHolder.cellHeight else { return UITableViewAutomaticDimension }
         return height
     }
     
-    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
-        cellHolder?.willDisplayWith(container: tableView, cell: cell, index: indexPath)
+    @objc open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
+        cellHolder.willDisplayWith(container: tableView, cell: cell, index: indexPath)
     }
     
-    public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
-        cellHolder?.didEndDisplayWith(container: tableView, cell: cell, index: indexPath)
+    @objc open func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
+        cellHolder.didEndDisplayWith(container: tableView, cell: cell, index: indexPath)
     }
     
-    public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+    @objc open func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         guard let cell = tableView.cellForRow(at: indexPath) else { return nil}
-        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
-        let shouldSelect = cellHolder?.shouldSelectWith(container: tableView, cell: cell, index: indexPath) ?? false
+        let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
+        let shouldSelect = cellHolder.shouldSelectWith(container: tableView, cell: cell, index: indexPath) 
         return shouldSelect ? indexPath : nil
     }
 
-    public func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
+    @objc open func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
         guard let cell = tableView.cellForRow(at: indexPath) else { return nil}
-        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
-        let shouldSelect = cellHolder?.shouldDeselectWith(container: tableView, cell: cell, index: indexPath) ?? false
+        let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
+        let shouldSelect = cellHolder.shouldDeselectWith(container: tableView, cell: cell, index: indexPath) 
         return shouldSelect ? indexPath : nil
     }
     
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    @objc open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
-        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
-        cellHolder?.didSelectWith(container: tableView, cell: cell, index: indexPath)
+        let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
+        cellHolder.didSelectWith(container: tableView, cell: cell, index: indexPath)
     }
     
-    public func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+    @objc open func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
-        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
-        cellHolder?.didDeselectWith(container: tableView, cell: cell, index: indexPath)
+        let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
+        cellHolder.didDeselectWith(container: tableView, cell: cell, index: indexPath)
     }
     //MARK: Section Header
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let sectionHolder = dataSource?[section]
-        if let height = sectionHolder?.headerHeight  {
+        let sectionHolder = dataSource[section]
+        if let height = sectionHolder.headerHeight  {
             return height
         }
         return UITableViewAutomaticDimension
     }
     
-    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let sectionHolder = dataSource?[section], let headerViewClass  = sectionHolder.headerViewClass  else { return nil }
+    @objc open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let sectionHolder = dataSource[section]
+        guard  let headerViewClass  = sectionHolder.headerViewClass  else { return nil }
         if let headerView = headerViewClass.dequeue(from: tableView, withIdentifier: NSStringFromClass(headerViewClass)) {
             headerView.index = section
             headerView.type = .Header
@@ -106,16 +107,16 @@ extension TableAdaptor: UITableViewDelegate {
     
     //MARK: Section Footer
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        let sectionHolder = dataSource?[section]
-        if let height = sectionHolder?.footerHeight  {
+        let sectionHolder = dataSource[section]
+        if let height = sectionHolder.footerHeight  {
             return height
         }
         return UITableViewAutomaticDimension
     }
 
-    public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        
-        guard let sectionHolder = dataSource?[section], let footerViewClass  = sectionHolder.footerViewClass else { return nil }
+    @objc open func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let sectionHolder = dataSource[section]
+        guard let footerViewClass  = sectionHolder.footerViewClass else { return nil }
         if let footerView = footerViewClass.dequeue(from: tableView, withIdentifier: NSStringFromClass(footerViewClass)) {
             footerView.index = section
             footerView.type = .Footer
@@ -140,8 +141,8 @@ extension TableAdaptor: ViewCustomEventhandling
     func handleEvent(withName name: ViewCustomEventName, cell: UITableViewCell) {
         if handle(cell: cell, event: name) { return }
         guard let table = view, let indexPath = table.indexPath(for: cell) else { return }
-        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
-        cellHolder?.handleEvent(withName: name, container: table, cell: cell, index: indexPath)
+        let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
+        cellHolder.handleEvent(withName: name, container: table, cell: cell, index: indexPath)
     }
     
     func handleEvent(withName name: ViewCustomEventName, sectionView: UITableViewHeaderFooterView) {
@@ -149,10 +150,10 @@ extension TableAdaptor: ViewCustomEventhandling
         switch type {
         case .Header:
             if handle(sectionHeader: sectionView, event: name) { return }
-            dataSource?[index].handleEvent(withName: name, container: table, header: sectionView, forSection: index)
+            dataSource[index].handleEvent(withName: name, container: table, header: sectionView, forSection: index)
         case .Footer:
             if handle(sectionFooter: sectionView, event: name) { return }
-            dataSource?[index].handleEvent(withName: name, container: table, footer: sectionView, forSection: index)
+            dataSource[index].handleEvent(withName: name, container: table, footer: sectionView, forSection: index)
         }
     }
     
@@ -164,9 +165,9 @@ extension TableAdaptor: ViewCustomEventhandling
     /// - Note: If the event isn't handled by the adaptor, it will be forwarded to the cell holder
     /// for further processing. for subclassing, you should call super  if you want the default
     /// event handling behaviour.
-    @objc public func handle(cell: UITableViewCell, event: ViewCustomEventName) -> Bool {
+    @objc open func handle(cell: UITableViewCell, event: ViewCustomEventName) -> Bool {
         if event == CellRemovedEvent, let indexPath = self.view?.indexPath(for: cell) {
-            self.dataSource?[indexPath.section].cellHolders.remove(at: indexPath.row)
+            self.dataSource[indexPath.section].cellHolders.remove(at: indexPath.row)
             self.view?.deleteRows(at: [indexPath], with: .automatic)
             return true
         }else {
@@ -182,13 +183,13 @@ extension TableAdaptor: ViewCustomEventhandling
     /// - Note: If the event isn't handled by the adaptor, it will be forwarded to the section view holder
     /// for further processing. for subclassing, you should call super  if you want the default
     /// event handling behaviour.
-    @objc public func handle(sectionHeader: UITableViewHeaderFooterView, event: ViewCustomEventName) -> Bool {
+    @objc open func handle(sectionHeader: UITableViewHeaderFooterView, event: ViewCustomEventName) -> Bool {
         if event  == SectionExpandEvent, let index = sectionHeader.index {
-            self.dataSource?[index].collapsed = false
+            self.dataSource[index].collapsed = false
             self.view?.reloadSections([index], with: .automatic)
             return true
         }else if event == SectionCollapseEvent, let index = sectionHeader.index {
-            self.dataSource?[index].collapsed = true
+            self.dataSource[index].collapsed = true
             self.view?.reloadSections([index], with: .automatic)
             return true
         }else {
@@ -204,13 +205,13 @@ extension TableAdaptor: ViewCustomEventhandling
     /// - Note: If the event isn't handled by the adaptor, it will be forwarded to the section view holder
     /// for further processing. for subclassing, you should call super  if you want the default
     /// event handling behaviour.
-    @objc public func handle(sectionFooter: UITableViewHeaderFooterView, event: ViewCustomEventName) -> Bool {
+    @objc open func handle(sectionFooter: UITableViewHeaderFooterView, event: ViewCustomEventName) -> Bool {
         if event  == SectionExpandEvent, let index = sectionFooter.index {
-            self.dataSource?[index].collapsed = false
+            self.dataSource[index].collapsed = false
             self.view?.reloadSections([index], with: .automatic)
             return true
         }else if event == SectionCollapseEvent, let index = sectionFooter.index {
-            self.dataSource?[index].collapsed = true
+            self.dataSource[index].collapsed = true
             self.view?.reloadSections([index], with: .automatic)
             return true
         }else {

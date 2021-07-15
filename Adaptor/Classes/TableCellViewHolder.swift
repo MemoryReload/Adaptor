@@ -13,7 +13,7 @@ open class TableCellViewHolder: CellViewHolderBaseProtocol {
     
     /// If cell is fixed height, assign the proper height for the cell. If nil, the cell
     /// will be auto-dimensioned. Default is nil.
-    open var cellHeight: CGFloat?
+    public var cellHeight: CGFloat?
     public var cellData: Any?
     public var cellClass: UITableViewCell.Type?
     
@@ -23,18 +23,18 @@ open class TableCellViewHolder: CellViewHolderBaseProtocol {
 extension TableCellViewHolder: TableCellViewHolderEventProtocol {
     public typealias ContainerClass = UITableView
     
-    @objc public func didUpdateWith(container: UITableView, cell: UITableViewCell, index: IndexPath) {
+    @objc open func didUpdateWith(container: UITableView, cell: UITableViewCell, index: IndexPath) {
         cell.update(data: cellData)
     }
     
-    @objc public func willDisplayWith(container: UITableView, cell: UITableViewCell, index: IndexPath) { }
-    @objc public func didEndDisplayWith(container: UITableView, cell: UITableViewCell, index: IndexPath) { }
+    @objc open func willDisplayWith(container: UITableView, cell: UITableViewCell, index: IndexPath) { }
+    @objc open func didEndDisplayWith(container: UITableView, cell: UITableViewCell, index: IndexPath) { }
     
-    @objc public func shouldSelectWith(container: UITableView, cell: UITableViewCell, index: IndexPath) -> Bool { return true }
-    @objc public func shouldDeselectWith(container: UITableView, cell: UITableViewCell, index: IndexPath) -> Bool { return true }
+    @objc open func shouldSelectWith(container: UITableView, cell: UITableViewCell, index: IndexPath) -> Bool { return true }
+    @objc open func shouldDeselectWith(container: UITableView, cell: UITableViewCell, index: IndexPath) -> Bool { return true }
     
-    @objc public func didSelectWith(container: UITableView, cell: UITableViewCell, index: IndexPath) { }
-    @objc public func didDeselectWith(container: UITableView, cell: UITableViewCell, index: IndexPath) { }
+    @objc open func didSelectWith(container: UITableView, cell: UITableViewCell, index: IndexPath) { }
+    @objc open func didDeselectWith(container: UITableView, cell: UITableViewCell, index: IndexPath) { }
     
-    @objc public func handleEvent(withName name: ViewCustomEventName, container: UITableView, cell: UITableViewCell, index: IndexPath) { }
+    @objc open func handleEvent(withName name: ViewCustomEventName, container: UITableView, cell: UITableViewCell, index: IndexPath) { }
 }

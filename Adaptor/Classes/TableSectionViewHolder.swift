@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class TableSectionViewHolder: SectionViewHolderBaseProtocol {
+open class TableSectionViewHolder: SectionViewHolderBaseProtocol {
     
     public var headerData: Any?
     
@@ -35,18 +35,18 @@ public class TableSectionViewHolder: SectionViewHolderBaseProtocol {
 }
 
 extension TableSectionViewHolder: TableSectionViewHolderEventProtocol {
-    public func didUpdateWith(container: UITableView, header: UITableViewHeaderFooterView, forSection section: Int) {
+    @objc open func didUpdateWith(container: UITableView, header: UITableViewHeaderFooterView, forSection section: Int) {
         header.update(data: headerData, collapsed: collapsed, count: cellHolders.count)
     }
-    @objc public func willDisplayWith(container: UITableView, header: UITableViewHeaderFooterView, forSection section: Int) { }
-    @objc public func didEndDisplayWith(container: UITableView, header: UITableViewHeaderFooterView, forSection section: Int) { }
+    @objc open func willDisplayWith(container: UITableView, header: UITableViewHeaderFooterView, forSection section: Int) { }
+    @objc open func didEndDisplayWith(container: UITableView, header: UITableViewHeaderFooterView, forSection section: Int) { }
     
-    public func didUpdateWith(container: UITableView, footer: UITableViewHeaderFooterView, forSection section: Int) {
+    @objc open func didUpdateWith(container: UITableView, footer: UITableViewHeaderFooterView, forSection section: Int) {
         footer.update(data: footerData, collapsed: collapsed, count: cellHolders.count)
     }
-    @objc public func willDisplayWith(container: UITableView, footer: UITableViewHeaderFooterView, forSection section: Int) { }
-    @objc public func didEndDisplayWith(container: UITableView, footer: UITableViewHeaderFooterView, forSection section: Int) { }
+    @objc open func willDisplayWith(container: UITableView, footer: UITableViewHeaderFooterView, forSection section: Int) { }
+    @objc open func didEndDisplayWith(container: UITableView, footer: UITableViewHeaderFooterView, forSection section: Int) { }
     
-    @objc public func handleEvent(withName name: ViewCustomEventName, container: UITableView, header: UITableViewHeaderFooterView, forSection section: Int) { }
-    @objc public func handleEvent(withName name: ViewCustomEventName, container: UITableView, footer: UITableViewHeaderFooterView, forSection section: Int) { }
+    @objc open func handleEvent(withName name: ViewCustomEventName, container: UITableView, header: UITableViewHeaderFooterView, forSection section: Int) { }
+    @objc open func handleEvent(withName name: ViewCustomEventName, container: UITableView, footer: UITableViewHeaderFooterView, forSection section: Int) { }
 }

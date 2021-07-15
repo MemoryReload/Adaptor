@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class CollectionCellViewHolder: CellViewHolderBaseProtocol {
+open class CollectionCellViewHolder: CellViewHolderBaseProtocol {
     public typealias CellClass = UICollectionViewCell
     
     public var cellData: Any?
@@ -20,20 +20,20 @@ extension CollectionCellViewHolder: CollectionCellViewHolderEventProtocol {
     
     public typealias ContainerClass = UICollectionView
     
-    @objc public func didUpdateWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) {
+    @objc open func didUpdateWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) {
         cell.update(data: cellData)
     }
     
-    @objc public func willDisplayWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
-    @objc public func didEndDisplayWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
+    @objc open func willDisplayWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
+    @objc open func didEndDisplayWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
     
-    @objc public func shouldSelectWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) -> Bool { true}
-    @objc public func shouldDeselectWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) -> Bool { true }
+    @objc open func shouldSelectWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) -> Bool { true}
+    @objc open func shouldDeselectWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) -> Bool { true }
     
-    @objc public func didSelectWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
-    @objc public func didDeselectWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
+    @objc open func didSelectWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
+    @objc open func didDeselectWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
     
-    @objc public func handleEvent(withName name: ViewCustomEventName, container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
+    @objc open func handleEvent(withName name: ViewCustomEventName, container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) { }
 }
 
 

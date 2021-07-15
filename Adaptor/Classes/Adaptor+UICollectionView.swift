@@ -13,24 +13,24 @@ private var delegateKey = "DelegateKey"
 extension CollectionAdaptor: UICollectionViewDataSource{
     //MARK: DataSource
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return dataSource?.count ?? 0
+        return dataSource.count
     }
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataSource?[section].cellCounts ?? 0
+        return dataSource[section].cellCounts
     }
     
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
-        guard let cellClass = cellHolder?.cellClass else { return UICollectionViewCell() }
+    @objc open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
+        guard let cellClass = cellHolder.cellClass else { return UICollectionViewCell() }
         let cell = cellClass.dequeue(from: collectionView, withIdentifier: NSStringFromClass(cellClass), indexPath: indexPath)
         cell.cellEventHandler = self
-        cellHolder?.didUpdateWith(container: collectionView, cell: cell, index: indexPath)
+        cellHolder.didUpdateWith(container: collectionView, cell: cell, index: indexPath)
         return cell
     }
     
-    public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let sectionViewHolder = dataSource?[indexPath.section] else { return UICollectionReusableView(frame: CGRect.zero) }
+    @objc open func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let sectionViewHolder = dataSource[indexPath.section]
         if kind == UICollectionElementKindSectionHeader {
            guard let headerClass = sectionViewHolder.headerViewClass else { return UICollectionReusableView(frame: CGRect.zero) }
             let headerView = headerClass.dequeue(from: collectionView, ofKind: kind, withReuseIdentifier: NSStringFromClass(headerClass), for: indexPath)
@@ -62,18 +62,18 @@ extension CollectionAdaptor: UICollectionViewDataSource{
 }
 
 extension CollectionAdaptor: UICollectionViewDelegate {
-    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
-        cellHolder?.willDisplayWith(container: collectionView, cell: cell, index: indexPath)
+    @objc open func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
+        cellHolder.willDisplayWith(container: collectionView, cell: cell, index: indexPath)
     }
     
-    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
-        cellHolder?.didEndDisplayWith(container: collectionView, cell: cell, index: indexPath)
+    @objc open func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
+        cellHolder.didEndDisplayWith(container: collectionView, cell: cell, index: indexPath)
     }
     
-    public func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
-        guard let sectionViewHolder = dataSource?[indexPath.section] else { return }
+    @objc open func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
+        let sectionViewHolder = dataSource[indexPath.section]
         if elementKind == UICollectionElementKindSectionHeader {
             sectionViewHolder.willDisplayWith(container: collectionView, header: view, forSection: indexPath.section)
         }else if elementKind == UICollectionElementKindSectionFooter {
@@ -87,8 +87,8 @@ extension CollectionAdaptor: UICollectionViewDelegate {
         }
     }
     
-    public func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
-        guard let sectionViewHolder = dataSource?[indexPath.section] else { return }
+    @objc open func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
+        let sectionViewHolder = dataSource[indexPath.section]
         if elementKind == UICollectionElementKindSectionHeader {
             sectionViewHolder.didEndDisplayWith(container: collectionView, header: view, forSection: indexPath.section)
         }else if elementKind == UICollectionElementKindSectionFooter {
@@ -103,28 +103,28 @@ extension CollectionAdaptor: UICollectionViewDelegate {
     }
     
     
-    public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+    @objc open func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         guard let cell = collectionView.cellForItem(at: indexPath) else { return false}
-        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
-        return cellHolder?.shouldSelectWith(container: collectionView, cell: cell, index: indexPath) ?? false
+        let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
+        return cellHolder.shouldSelectWith(container: collectionView, cell: cell, index: indexPath) 
     }
     
-    public func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
+    @objc open func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
         guard let cell = collectionView.cellForItem(at: indexPath) else { return false}
-        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
-        return cellHolder?.shouldDeselectWith(container: collectionView, cell: cell, index: indexPath) ?? false
+        let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
+        return cellHolder.shouldDeselectWith(container: collectionView, cell: cell, index: indexPath) 
     }
     
-    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    @objc open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) else { return }
-        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
-        cellHolder?.didSelectWith(container: collectionView, cell:cell , index: indexPath)
+        let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
+        cellHolder.didSelectWith(container: collectionView, cell:cell , index: indexPath)
     }
     
-    public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+    @objc open func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) else { return }
-        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
-        cellHolder?.didDeselectWith(container: collectionView, cell: cell, index: indexPath)
+        let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
+        cellHolder.didDeselectWith(container: collectionView, cell: cell, index: indexPath)
     }
 }
 
@@ -135,18 +135,18 @@ extension CollectionAdaptor: ViewCustomEventhandling {
     func handleEvent(withName name: ViewCustomEventName, cell: UICollectionViewCell) {
         if handle(cell: cell, event: name) { return }
         guard let collection = view, let indexPath = collection.indexPath(for: cell) else { return }
-        let cellHolder = dataSource?[indexPath.section].cellHolders[indexPath.row]
-        cellHolder?.handleEvent(withName: name, container: collection, cell: cell, index: indexPath)
+        let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
+        cellHolder.handleEvent(withName: name, container: collection, cell: cell, index: indexPath)
     }
     
     func handleEvent(withName name: ViewCustomEventName, sectionView: UICollectionReusableView) {
         guard let collection = view, let indexPath = sectionView.indexPath, let kind = sectionView.kind else { return }
         if kind == UICollectionElementKindSectionHeader {
             if handle(sectionHeader: sectionView, event: name) { return }
-            dataSource?[indexPath.section].handleEvent(withName: name, container: collection, header: sectionView, forSection: indexPath.section)
+            dataSource[indexPath.section].handleEvent(withName: name, container: collection, header: sectionView, forSection: indexPath.section)
         }else if kind == UICollectionElementKindSectionFooter {
             if handle(sectionFooter: sectionView, event: name) { return }
-            dataSource?[indexPath.section].handleEvent(withName: name, container: collection, footer: sectionView, forSection: indexPath.section)
+            dataSource[indexPath.section].handleEvent(withName: name, container: collection, footer: sectionView, forSection: indexPath.section)
         }else {
             guard let context = self.context else {
                 print("Warning: You're supposed to provide the context for handling other kinds of supplementary element event!")
@@ -165,9 +165,9 @@ extension CollectionAdaptor: ViewCustomEventhandling {
     /// - Note: If the event isn't handled by the adaptor, it will be forwarded to the cell holder
     /// for further processing. for subclassing, you should call super  if you want the default
     /// event handling behaviour.
-    @objc public func handle(cell: UICollectionViewCell, event: ViewCustomEventName) -> Bool {
+    @objc open func handle(cell: UICollectionViewCell, event: ViewCustomEventName) -> Bool {
         if event == CellRemovedEvent, let indexPath = self.view?.indexPath(for: cell) {
-            self.dataSource?[indexPath.section].cellHolders.remove(at: indexPath.row)
+            self.dataSource[indexPath.section].cellHolders.remove(at: indexPath.row)
             self.view?.deleteItems(at: [indexPath])
             return true
         }
@@ -182,13 +182,13 @@ extension CollectionAdaptor: ViewCustomEventhandling {
     /// - Note: If the event isn't handled by the adaptor, it will be forwarded to the section view holder
     /// for further processing. for subclassing, you should call super  if you want the default
     /// event handling behaviour.
-    @objc public func handle(sectionHeader: UICollectionReusableView, event: ViewCustomEventName) -> Bool {
+    @objc open func handle(sectionHeader: UICollectionReusableView, event: ViewCustomEventName) -> Bool {
         if event  == SectionExpandEvent, let indexPath = sectionHeader.indexPath {
-            self.dataSource?[indexPath.section].collapsed = false
+            self.dataSource[indexPath.section].collapsed = false
             self.view?.reloadSections([indexPath.section])
             return true
         }else if event == SectionCollapseEvent, let indexPath = sectionHeader.indexPath {
-            self.dataSource?[indexPath.section].collapsed = true
+            self.dataSource[indexPath.section].collapsed = true
             self.view?.reloadSections([indexPath.section])
             return true
         }else {
@@ -204,13 +204,13 @@ extension CollectionAdaptor: ViewCustomEventhandling {
     /// - Note: If the event isn't handled by the adaptor, it will be forwarded to the section view holder
     /// for further processing. for subclassing, you should call super  if you want the default
     /// event handling behaviour.
-    @objc public func handle(sectionFooter: UICollectionReusableView, event: ViewCustomEventName) -> Bool {
+    @objc open func handle(sectionFooter: UICollectionReusableView, event: ViewCustomEventName) -> Bool {
         if event  == SectionExpandEvent, let indexPath = sectionFooter.indexPath {
-            self.dataSource?[indexPath.section].collapsed = false
+            self.dataSource[indexPath.section].collapsed = false
             self.view?.reloadSections([indexPath.section])
             return true
         }else if event == SectionCollapseEvent, let indexPath = sectionFooter.indexPath {
-            self.dataSource?[indexPath.section].collapsed = true
+            self.dataSource[indexPath.section].collapsed = true
             self.view?.reloadSections([indexPath.section])
             return true
         }else {

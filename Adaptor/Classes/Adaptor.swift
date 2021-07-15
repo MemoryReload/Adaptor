@@ -21,7 +21,7 @@ public protocol AdaptingProtocol {
     /// The extra context that adaptor needed to work properly with controllers and so on.
     var context: C { get set }
     /// The display view model that adaptor needed to work with view.
-    var dataSource:[D]? { get set }
+    var dataSource:[D] { get set }
 }
 
 /// The adaptor protocol that works with UITableView
@@ -31,17 +31,17 @@ public protocol TableAdaptingProtocol: AdaptingProtocol, UITableViewDataSource, 
 public protocol CollectionAdaptingProtocol: AdaptingProtocol, UICollectionViewDataSource, UICollectionViewDelegate { }
 
 /// The base adaptor that  works with UITableView
-public class TableAdaptor: NSObject, TableAdaptingProtocol {
+open class TableAdaptor: NSObject, TableAdaptingProtocol {
     weak public fileprivate(set) var view: UITableView?
     public var context: AdaptorContextProtocol?
-    public var dataSource:[TableSectionViewHolder]?
+    public var dataSource:[TableSectionViewHolder] = []
 }
 
 /// The base adaptor that works with UICollectionView
-public class CollectionAdaptor:NSObject, AdaptingProtocol {
+open class CollectionAdaptor:NSObject, AdaptingProtocol {
     weak public fileprivate(set) var view: UICollectionView?
     public var context: AdaptorContextReusableProtocol?
-    public var dataSource:[CollectionSectionViewHolder]?
+    public var dataSource:[CollectionSectionViewHolder] = []
 }
 
 
