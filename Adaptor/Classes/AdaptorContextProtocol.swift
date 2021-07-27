@@ -11,7 +11,7 @@ import Foundation
 /// The outside context to work with adaptor
 public protocol AdaptorContextProtocol: NSObjectProtocol {
     /// The view controller for the view which use the specified adaptor
-    var containerVC: UIViewController? { get set}
+    var containerVC: UIViewController? { get }
 }
 
 /// The outside context to work with customized reusable supplement view of collection view

@@ -7,9 +7,6 @@
 
 import Foundation
 
-private var dataSourceKey = "DataSource"
-private var delegateKey = "DelegateKey"
-
 extension CollectionAdaptor: UICollectionViewDataSource{
     //MARK: DataSource
     public func numberOfSections(in collectionView: UICollectionView) -> Int {

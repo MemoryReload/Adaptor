@@ -33,14 +33,14 @@ public protocol CollectionAdaptingProtocol: AdaptingProtocol, UICollectionViewDa
 /// The base adaptor that  works with UITableView
 open class TableAdaptor: NSObject, TableAdaptingProtocol {
     weak public fileprivate(set) var view: UITableView?
-    public var context: AdaptorContextProtocol?
+    weak public var context: AdaptorContextProtocol?
     public var dataSource:[TableSectionViewHolder] = []
 }
 
 /// The base adaptor that works with UICollectionView
 open class CollectionAdaptor:NSObject, AdaptingProtocol {
     weak public fileprivate(set) var view: UICollectionView?
-    public var context: AdaptorContextReusableProtocol?
+    weak public var context: AdaptorContextReusableProtocol?
     public var dataSource:[CollectionSectionViewHolder] = []
 }
 

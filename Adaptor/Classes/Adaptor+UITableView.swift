@@ -7,8 +7,6 @@
 
 import Foundation
 
-private var dataSourceKey = "DataSource"
-
 extension TableAdaptor: UITableViewDataSource {
     //MARK: DataSource
     public func numberOfSections(in tableView: UITableView) -> Int {
