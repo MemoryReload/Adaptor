@@ -59,14 +59,17 @@ extension CollectionAdaptor: UICollectionViewDataSource{
 }
 
 extension CollectionAdaptor: UICollectionViewDelegate {
+    //MARK: ViewDelegate
     @objc open func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
         cellHolder.willDisplayWith(container: collectionView, cell: cell, index: indexPath)
     }
     
     @objc open func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
-        cellHolder.didEndDisplayWith(container: collectionView, cell: cell, index: indexPath)
+        if indexPath.section < dataSource.count, indexPath.row < dataSource[indexPath.section].cellCounts {
+            let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
+            cellHolder.didEndDisplayWith(container: collectionView, cell: cell, index: indexPath)
+        }
     }
     
     @objc open func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
@@ -85,17 +88,19 @@ extension CollectionAdaptor: UICollectionViewDelegate {
     }
     
     @objc open func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
-        let sectionViewHolder = dataSource[indexPath.section]
-        if elementKind == UICollectionElementKindSectionHeader {
-            sectionViewHolder.didEndDisplayWith(container: collectionView, header: view, forSection: indexPath.section)
-        }else if elementKind == UICollectionElementKindSectionFooter {
-            sectionViewHolder.didEndDisplayWith(container: collectionView, footer: view, forSection: indexPath.section)
-        }else {
-            guard let context = self.context else {
-                print("Warning: You're supposed to provide the context for handling other kinds of supplementary element event!")
-                return
+        if indexPath.section < dataSource.count {
+            let sectionViewHolder = dataSource[indexPath.section]
+            if elementKind == UICollectionElementKindSectionHeader {
+                sectionViewHolder.didEndDisplayWith(container: collectionView, header: view, forSection: indexPath.section)
+            }else if elementKind == UICollectionElementKindSectionFooter {
+                sectionViewHolder.didEndDisplayWith(container: collectionView, footer: view, forSection: indexPath.section)
+            }else {
+                guard let context = self.context else {
+                    print("Warning: You're supposed to provide the context for handling other kinds of supplementary element event!")
+                    return
+                }
+                context.collectionView(collectionView, didEndDisplayingSupplementaryView: view, forElementOfKind: elementKind, at: indexPath)
             }
-            context.collectionView(collectionView, didEndDisplayingSupplementaryView: view, forElementOfKind: elementKind, at: indexPath)
         }
     }
     

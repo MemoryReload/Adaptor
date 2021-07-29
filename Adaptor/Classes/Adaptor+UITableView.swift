@@ -47,8 +47,10 @@ extension TableAdaptor: UITableViewDelegate {
     }
     
     @objc open func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
-        cellHolder.didEndDisplayWith(container: tableView, cell: cell, index: indexPath)
+        if indexPath.section < dataSource.count, indexPath.row < dataSource[indexPath.section].cellCounts {
+            let cellHolder = dataSource[indexPath.section].cellHolders[indexPath.row]
+            cellHolder.didEndDisplayWith(container: tableView, cell: cell, index: indexPath)
+        }
     }
     
     @objc open func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
@@ -103,6 +105,18 @@ extension TableAdaptor: UITableViewDelegate {
         return headerView
     }
     
+    @objc open func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let sectionViewHolder = dataSource[section]
+        sectionViewHolder.willDisplayWith(container: tableView, header: view as! UITableViewHeaderFooterView, forSection: section)
+    }
+    
+    @objc open func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int) {
+        if section < dataSource.count {
+            let sectionViewHolder = dataSource[section]
+            sectionViewHolder.didEndDisplayWith(container: tableView, header: view as! UITableViewHeaderFooterView, forSection: section)
+        }
+    }
+    
     //MARK: Section Footer
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         let sectionHolder = dataSource[section]
@@ -128,6 +142,18 @@ extension TableAdaptor: UITableViewDelegate {
         footerView.sectionEventHandler = self
         sectionHolder.didUpdateWith(container: tableView, footer: footerView, forSection: section)
         return footerView
+    }
+    
+    @objc open func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        let sectionViewHolder = dataSource[section]
+        sectionViewHolder.willDisplayWith(container: tableView, footer: view as! UITableViewHeaderFooterView, forSection: section)
+    }
+    
+    @objc open func tableView(_ tableView: UITableView, didEndDisplayingFooterView view: UIView, forSection section: Int) {
+        if section < dataSource.count {
+            let sectionViewHolder = dataSource[section]
+            sectionViewHolder.didEndDisplayWith(container: tableView, footer: view as! UITableViewHeaderFooterView, forSection: section)
+        }
     }
 }
 
