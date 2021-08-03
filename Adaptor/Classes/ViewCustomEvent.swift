@@ -143,7 +143,7 @@ private var sectionIndexKey = "sectionIndex"
 private var elementKindKey = "elementKind"
 private var sectionTypeKey = "sectionType"
 
-extension UITableViewHeaderFooterView: SectionViewEventSending {
+extension UITableViewHeaderFooterView: TableSectionViewEventSending {
     typealias A = TableAdaptor
     typealias SectionViewClass = UITableViewHeaderFooterView
     
