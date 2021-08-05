@@ -127,7 +127,7 @@ extension UICollectionView {
     /// - Parameters:
     ///   - viewClass: the specified collection supplement view class to regist
     ///   - kind: the specified collection supplement view kind
-    public func regiserReusableView(viewClass: UICollectionReusableView.Type, forSupplementaryViewOfKind kind: String) {
+    public func registerReusableView(viewClass: UICollectionReusableView.Type, forSupplementaryViewOfKind kind: String) {
         self.register(viewClass, forSupplementaryViewOfKind: kind, withReuseIdentifier: NSStringFromClass(viewClass))
     }
 }

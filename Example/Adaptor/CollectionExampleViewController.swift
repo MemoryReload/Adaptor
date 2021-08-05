@@ -15,8 +15,8 @@ class CollectionExampleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.registerCell(cellClass: MyCollectionCell.self)
-        collectionView.regiserReusableView(viewClass: MyCollectionSection.self, forSupplementaryViewOfKind:UICollectionElementKindSectionHeader)
-        collectionView.regiserReusableView(viewClass: MyCollectionSection.self, forSupplementaryViewOfKind:UICollectionElementKindSectionFooter)
+        collectionView.registerReusableView(viewClass: MyCollectionSection.self, forSupplementaryViewOfKind:UICollectionElementKindSectionHeader)
+//        collectionView.registerReusableView(viewClass: MyCollectionSection.self, forSupplementaryViewOfKind:UICollectionElementKindSectionFooter)
         collectionView.useAdaptor()
         // Do any additional setup after loading the view, typically from a nib.
         collectionView.collectionViewLayout = getLayout()
