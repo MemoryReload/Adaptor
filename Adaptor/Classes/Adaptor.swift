@@ -38,7 +38,7 @@ open class TableAdaptor: NSObject, TableAdaptingProtocol {
 }
 
 /// The base adaptor that works with UICollectionView
-open class CollectionAdaptor:NSObject, AdaptingProtocol {
+open class CollectionAdaptor:NSObject, CollectionAdaptingProtocol {
     weak public fileprivate(set) var view: UICollectionView?
     weak public var context: AdaptorContextReusableProtocol?
     public var dataSource:[CollectionSectionViewHolder] = []
