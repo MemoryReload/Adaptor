@@ -14,6 +14,12 @@ public protocol AdaptorContextProtocol: NSObjectProtocol {
     var containerVC: UIViewController? { get }
 }
 
+extension AdaptorContextProtocol {
+    public var containerVC: UIViewController? {
+        return nil
+    }
+}
+
 /// The outside context to work with customized reusable supplement view of collection view
 public protocol AdaptorContextReusableProtocol: AdaptorContextProtocol {
     
