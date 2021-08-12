@@ -32,6 +32,17 @@ open class TableSectionViewHolder: SectionViewHolderBaseProtocol {
         return cellHolders.count
     }
     public init() { }
+    
+    convenience init(holders:[TableCellViewHolder], headerData: Any? = nil, headerClass: UITableViewHeaderFooterView.Type? = nil, headerHeight: CGFloat? = 0, footerData: Any? = nil, footerClass:UITableViewHeaderFooterView.Type? = nil, footerHeight: CGFloat? = 0) {
+        self.init()
+        cellHolders = holders
+        self.headerData = headerData
+        self.headerViewClass = headerClass
+        self.headerHeight = headerHeight
+        self.footerData = footerData
+        self.footerViewClass = footerClass
+        self.footerHeight = footerHeight
+    }
 }
 
 extension TableSectionViewHolder: TableSectionViewHolderEventProtocol {

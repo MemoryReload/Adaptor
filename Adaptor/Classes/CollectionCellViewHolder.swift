@@ -14,6 +14,12 @@ open class CollectionCellViewHolder: CellViewHolderBaseProtocol {
     public var cellClass: UICollectionViewCell.Type?
     
     public init() { }
+    
+    convenience init(data: Any?, cellClass: UICollectionViewCell.Type?) {
+        self.init()
+        cellData = data
+        self.cellClass = cellClass
+    }
 }
 
 extension CollectionCellViewHolder: CollectionCellViewHolderEventProtocol {

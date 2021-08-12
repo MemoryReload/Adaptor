@@ -18,6 +18,13 @@ open class TableCellViewHolder: CellViewHolderBaseProtocol {
     public var cellClass: UITableViewCell.Type?
     
     public init() { }
+    
+    convenience init(data: Any?, cellClass: UITableViewCell.Type?, cellHeight: CGFloat? = nil) {
+        self.init()
+        cellData = data
+        self.cellClass = cellClass
+        self.cellHeight = cellHeight
+    }
 }
 
 extension TableCellViewHolder: TableCellViewHolderEventProtocol {

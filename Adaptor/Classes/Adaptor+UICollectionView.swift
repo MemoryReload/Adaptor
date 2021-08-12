@@ -220,3 +220,61 @@ extension CollectionAdaptor: ViewCustomEventhandling {
         }
     }
 }
+
+
+
+extension  CollectionAdaptor {
+    public convenience init(section:CollectionSectionViewHolder? = nil , datas:[Any], cellClass: UICollectionViewCell.Type) {
+        self.init()
+        var singleSection: CollectionSectionViewHolder
+        if let _section = section {
+            singleSection = _section
+        }else{
+            singleSection = CollectionSectionViewHolder()
+        }
+        for data in datas {
+            let cellHolder = CollectionCellViewHolder(data: data, cellClass: cellClass)
+            singleSection.cellHolders.append(cellHolder)
+        }
+        dataSource = [singleSection]
+    }
+    
+    @discardableResult
+    func append(toSection sectionIndex: Int, withDatas datas:[Any], cellClass: UICollectionViewCell.Type, cellHeight: CGFloat? = nil) -> Bool {
+        if sectionIndex < dataSource.count {
+            let section = dataSource[sectionIndex]
+            for data in datas {
+                let cellHolder = CollectionCellViewHolder(data: data, cellClass: cellClass)
+                section.cellHolders.append(cellHolder)
+            }
+            return true
+        }
+        return false
+    }
+    
+    @discardableResult
+    func clear(section sectionIndex: Int) -> Bool {
+        if sectionIndex < dataSource.count {
+            let section = dataSource[sectionIndex]
+            section.cellHolders.removeAll()
+            return true
+        }
+        return false
+    }
+    
+    @discardableResult
+    func set(section sectionIndex: Int, withDatas datas:[Any], cellClass: UICollectionViewCell.Type) -> Bool {
+        if clear(section: sectionIndex) {
+            return append(toSection: sectionIndex, withDatas: datas, cellClass: cellClass)
+        }
+        return false
+    }
+    
+    @discardableResult
+    func appendLastSection(withDatas datas:[Any], cellClass: UICollectionViewCell.Type, cellHeight: CGFloat? = nil) -> Bool {
+        if dataSource.count > 0 {
+            append(toSection: dataSource.count - 1, withDatas: datas, cellClass: cellClass)
+        }
+        return false
+    }
+}

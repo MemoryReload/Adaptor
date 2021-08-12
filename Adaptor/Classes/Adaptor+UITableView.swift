@@ -243,3 +243,63 @@ extension TableAdaptor: ViewCustomEventhandling
         }
     }
 }
+
+
+
+extension  TableAdaptor {
+    public convenience init(section:TableSectionViewHolder? = nil , datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) {
+        self.init()
+        var singleSection: TableSectionViewHolder
+        if let _section = section {
+            singleSection = _section
+        }else{
+            singleSection = TableSectionViewHolder()
+            singleSection.headerHeight = 0
+            singleSection.footerHeight = 0
+        }
+        for data in datas {
+            let cellHolder = TableCellViewHolder(data: data, cellClass: cellClass, cellHeight: cellHeight)
+            singleSection.cellHolders.append(cellHolder)
+        }
+        dataSource = [singleSection]
+    }
+    
+    @discardableResult
+    func append(toSection sectionIndex: Int, withDatas datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) -> Bool {
+        if sectionIndex < dataSource.count {
+            let section = dataSource[sectionIndex]
+            for data in datas {
+                let cellHolder = TableCellViewHolder(data: data, cellClass: cellClass, cellHeight: cellHeight)
+                section.cellHolders.append(cellHolder)
+            }
+            return true
+        }
+        return false
+    }
+    
+    @discardableResult
+    func clear(section sectionIndex: Int) -> Bool {
+        if sectionIndex < dataSource.count {
+            let section = dataSource[sectionIndex]
+            section.cellHolders.removeAll()
+            return true
+        }
+        return false
+    }
+    
+    @discardableResult
+    func set(section sectionIndex: Int, withDatas datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) -> Bool {
+        if clear(section: sectionIndex) {
+            return append(toSection: sectionIndex, withDatas: datas, cellClass: cellClass)
+        }
+        return false
+    }
+    
+    @discardableResult
+    func appendLastSection(withDatas datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) -> Bool {
+        if dataSource.count > 0 {
+            append(toSection: dataSource.count - 1, withDatas: datas, cellClass: cellClass)
+        }
+        return false
+    }
+}
