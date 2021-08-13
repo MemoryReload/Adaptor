@@ -226,14 +226,11 @@ extension CollectionAdaptor: ViewCustomEventhandling {
 extension  CollectionAdaptor {
     public convenience init(section:CollectionSectionViewHolder? = nil , datas:[Any], cellClass: UICollectionViewCell.Type) {
         self.init()
-        if let _section = section {
-            dataSource.append(_section)
-        }
-        appendToLast(withDatas: datas, cellClass: cellClass)
+        appendToLast(section: section, datas: datas, cellClass: cellClass)
     }
     
     @discardableResult
-    func append(toSection sectionIndex: Int, withDatas datas:[Any], cellClass: UICollectionViewCell.Type, cellHeight: CGFloat? = nil) -> Bool {
+    public func append(toSection sectionIndex: Int, withDatas datas:[Any], cellClass: UICollectionViewCell.Type, cellHeight: CGFloat? = nil) -> Bool {
         if sectionIndex < dataSource.count {
             let section = dataSource[sectionIndex]
             for data in datas {
@@ -246,7 +243,7 @@ extension  CollectionAdaptor {
     }
     
     @discardableResult
-    func clear(section sectionIndex: Int) -> Bool {
+    public func clear(section sectionIndex: Int) -> Bool {
         if sectionIndex < dataSource.count {
             let section = dataSource[sectionIndex]
             section.cellHolders.removeAll()
@@ -256,16 +253,20 @@ extension  CollectionAdaptor {
     }
     
     @discardableResult
-    func set(section sectionIndex: Int, withDatas datas:[Any], cellClass: UICollectionViewCell.Type) -> Bool {
+    public func set(section sectionIndex: Int, withDatas datas:[Any], cellClass: UICollectionViewCell.Type) -> Bool {
         if clear(section: sectionIndex) {
             return append(toSection: sectionIndex, withDatas: datas, cellClass: cellClass)
         }
         return false
     }
     
-    func appendToLast(withDatas datas:[Any], cellClass: UICollectionViewCell.Type, cellHeight: CGFloat? = nil) {
-        if dataSource.count == 0 {
-            dataSource.append(CollectionSectionViewHolder())
+    public func appendToLast(section:CollectionSectionViewHolder? = nil, datas:[Any], cellClass: UICollectionViewCell.Type) {
+        if let _section = section {
+            dataSource.append(_section)
+        }else{
+            if dataSource.count == 0 {
+                dataSource.append(CollectionSectionViewHolder())
+            }
         }
         append(toSection: dataSource.count - 1, withDatas: datas, cellClass: cellClass)
     }

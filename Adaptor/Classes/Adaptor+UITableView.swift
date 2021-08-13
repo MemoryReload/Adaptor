@@ -249,14 +249,11 @@ extension TableAdaptor: ViewCustomEventhandling
 extension  TableAdaptor {
     public convenience init(section:TableSectionViewHolder? = nil , datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) {
         self.init()
-        if let _section = section {
-            dataSource.append(_section)
-        }
-        appendToLast(withDatas: datas, cellClass: cellClass)
+        appendToLast(section: section, datas: datas, cellClass: cellClass, cellHeight: cellHeight)
     }
     
     @discardableResult
-    func append(toSection sectionIndex: Int, withDatas datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) -> Bool {
+    public func append(toSection sectionIndex: Int, withDatas datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) -> Bool {
         if sectionIndex < dataSource.count {
             let section = dataSource[sectionIndex]
             for data in datas {
@@ -269,7 +266,7 @@ extension  TableAdaptor {
     }
     
     @discardableResult
-    func clear(section sectionIndex: Int) -> Bool {
+    public func clear(section sectionIndex: Int) -> Bool {
         if sectionIndex < dataSource.count {
             let section = dataSource[sectionIndex]
             section.cellHolders.removeAll()
@@ -279,19 +276,23 @@ extension  TableAdaptor {
     }
     
     @discardableResult
-    func set(section sectionIndex: Int, withDatas datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) -> Bool {
+    public func set(section sectionIndex: Int, withDatas datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) -> Bool {
         if clear(section: sectionIndex) {
             return append(toSection: sectionIndex, withDatas: datas, cellClass: cellClass)
         }
         return false
     }
     
-    func appendToLast(withDatas datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) {
-        if dataSource.count == 0 {
-            let  singleSection = TableSectionViewHolder()
-            singleSection.headerHeight = 0
-            singleSection.footerHeight = 0
-            dataSource.append(singleSection)
+    public func appendToLast(section:TableSectionViewHolder? = nil, datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) {
+        if let _section = section {
+            dataSource.append(_section)
+        }else{
+            if dataSource.count == 0 {
+                let  singleSection = TableSectionViewHolder()
+                singleSection.headerHeight = 0
+                singleSection.footerHeight = 0
+                dataSource.append(singleSection)
+            }
         }
         append(toSection: dataSource.count - 1, withDatas: datas, cellClass: cellClass)
     }
