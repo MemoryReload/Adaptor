@@ -226,17 +226,10 @@ extension CollectionAdaptor: ViewCustomEventhandling {
 extension  CollectionAdaptor {
     public convenience init(section:CollectionSectionViewHolder? = nil , datas:[Any], cellClass: UICollectionViewCell.Type) {
         self.init()
-        var singleSection: CollectionSectionViewHolder
         if let _section = section {
-            singleSection = _section
-        }else{
-            singleSection = CollectionSectionViewHolder()
+            dataSource.append(_section)
         }
-        for data in datas {
-            let cellHolder = CollectionCellViewHolder(data: data, cellClass: cellClass)
-            singleSection.cellHolders.append(cellHolder)
-        }
-        dataSource = [singleSection]
+        appendToLast(withDatas: datas, cellClass: cellClass)
     }
     
     @discardableResult
@@ -270,11 +263,10 @@ extension  CollectionAdaptor {
         return false
     }
     
-    @discardableResult
-    func appendLastSection(withDatas datas:[Any], cellClass: UICollectionViewCell.Type, cellHeight: CGFloat? = nil) -> Bool {
-        if dataSource.count > 0 {
-            append(toSection: dataSource.count - 1, withDatas: datas, cellClass: cellClass)
+    func appendToLast(withDatas datas:[Any], cellClass: UICollectionViewCell.Type, cellHeight: CGFloat? = nil) {
+        if dataSource.count == 0 {
+            dataSource.append(CollectionSectionViewHolder())
         }
-        return false
+        append(toSection: dataSource.count - 1, withDatas: datas, cellClass: cellClass)
     }
 }

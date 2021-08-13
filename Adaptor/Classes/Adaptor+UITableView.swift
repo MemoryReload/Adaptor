@@ -249,19 +249,10 @@ extension TableAdaptor: ViewCustomEventhandling
 extension  TableAdaptor {
     public convenience init(section:TableSectionViewHolder? = nil , datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) {
         self.init()
-        var singleSection: TableSectionViewHolder
         if let _section = section {
-            singleSection = _section
-        }else{
-            singleSection = TableSectionViewHolder()
-            singleSection.headerHeight = 0
-            singleSection.footerHeight = 0
+            dataSource.append(_section)
         }
-        for data in datas {
-            let cellHolder = TableCellViewHolder(data: data, cellClass: cellClass, cellHeight: cellHeight)
-            singleSection.cellHolders.append(cellHolder)
-        }
-        dataSource = [singleSection]
+        appendToLast(withDatas: datas, cellClass: cellClass)
     }
     
     @discardableResult
@@ -295,11 +286,13 @@ extension  TableAdaptor {
         return false
     }
     
-    @discardableResult
-    func appendLastSection(withDatas datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) -> Bool {
-        if dataSource.count > 0 {
-            append(toSection: dataSource.count - 1, withDatas: datas, cellClass: cellClass)
+    func appendToLast(withDatas datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) {
+        if dataSource.count == 0 {
+            let  singleSection = TableSectionViewHolder()
+            singleSection.headerHeight = 0
+            singleSection.footerHeight = 0
+            dataSource.append(singleSection)
         }
-        return false
+        append(toSection: dataSource.count - 1, withDatas: datas, cellClass: cellClass)
     }
 }
