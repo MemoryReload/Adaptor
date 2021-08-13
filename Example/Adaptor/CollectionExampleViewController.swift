@@ -20,7 +20,12 @@ class CollectionExampleViewController: UIViewController {
         collectionView.useAdaptor()
         // Do any additional setup after loading the view, typically from a nib.
         collectionView.collectionViewLayout = getLayout()
-        collectionView.adaptor?.dataSource = getData()
+        let sectionHolder = CollectionSectionViewHolder()
+        sectionHolder.headerViewClass = MyCollectionSection.self
+        sectionHolder.headerData = "header0"
+        collectionView.adaptor?.appendToLast(section:sectionHolder, datas: ["row:1","row:2","row:3",], cellClass: MyCollectionCell.self)
+        collectionView.adaptor?.dataSource.append(contentsOf: getData())
+        collectionView.adaptor?.appendToLast(datas: ["row:5","row:5","row:6",], cellClass: MyCollectionCell.self)
         collectionView.reloadData()
     }
     

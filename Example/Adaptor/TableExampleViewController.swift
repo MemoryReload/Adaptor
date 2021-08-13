@@ -18,7 +18,9 @@ class TableExampleViewController: UIViewController {
         table.registerSectionView(viewClass: MySection.self)
         table.useAdaptor()
         // Do any additional setup after loading the view, typically from a nib.
-        table.adaptor?.dataSource = getData()
+        table.adaptor?.appendToLast(datas: ["row:1","row:2","row:3",], cellClass: MyAutoSizeCell.self)
+        table.adaptor?.dataSource.append(contentsOf: getData())
+        table.adaptor?.appendToLast(datas: ["row:4","row:5","row:6"], cellClass: MyAutoSizeCell.self)
         table.reloadData()
     }
 
