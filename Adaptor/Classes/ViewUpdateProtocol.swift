@@ -31,14 +31,14 @@ public protocol SectionViewUpdateProtocol {
 }
 
 
-/// Table view cell reusing protocol.
-protocol TableCellViewReuseProtocol {
+/// Table view cell and section reusing protocol.
+protocol TableReuseProtocol {
     associatedtype V
     
-    /// Dequeue a cell with its identifier from its container.
+    /// Dequeue a cell or section with its identifier from its container.
     /// - Parameters:
-    ///   - container: The cell container
-    ///   - withIdentifier: The reusing identifier of the cell
+    ///   - container: The cell or section container
+    ///   - withIdentifier: The reusing identifier of the cell or section
     static func dequeue(from container:UITableView, withIdentifier: String ) -> V?
 }
 
@@ -65,7 +65,7 @@ protocol CollectionCellViewReuseProtocol
     static func dequeue(from container:UICollectionView, withIdentifier: String, indexPath: IndexPath ) -> UICollectionViewCell
 }
 
-extension UITableViewCell: TableCellViewReuseProtocol, CellUpdateProtocol
+extension UITableViewCell: TableReuseProtocol, CellUpdateProtocol
 {
     public typealias V =  UITableViewCell
     
@@ -78,7 +78,7 @@ extension UITableViewCell: TableCellViewReuseProtocol, CellUpdateProtocol
     }
 }
 
-extension UITableViewHeaderFooterView: TableCellViewReuseProtocol, SectionViewUpdateProtocol
+extension UITableViewHeaderFooterView: TableReuseProtocol, SectionViewUpdateProtocol
 {
     public typealias V = UITableViewHeaderFooterView
     
