@@ -297,3 +297,35 @@ extension  TableAdaptor {
         append(toSection: dataSource.count - 1, withDatas: datas, cellClass: cellClass)
     }
 }
+
+
+extension TableAdaptor {
+    func getSectionHolder(withHeaderData headerData: Any, comparisonHandler: (_ origin: Any,_ comparison: Any?) -> Bool) -> (Int?, TableSectionViewHolder?) {
+        for (index, section) in dataSource.enumerated() {
+            if comparisonHandler(headerData,section.headerData) {
+                return (index, section)
+            }
+        }
+        return (nil, nil)
+    }
+    
+    func getSectionHolder(withFooterData footerData: Any, comparisonHandler: (_ origin: Any,_ comparison: Any?) -> Bool) -> (Int?, TableSectionViewHolder?) {
+        for (index, section) in dataSource.enumerated() {
+            if comparisonHandler(footerData,section.footerData) {
+                return (index, section)
+            }
+        }
+        return (nil, nil)
+    }
+    
+    func getCellHolder(withCellData cellData: Any, comparisonHandler: (_ origin: Any,_ comparison: Any?) -> Bool) -> (IndexPath?, TableCellViewHolder?) {
+        for (sIndex, section) in dataSource.enumerated() {
+            for (cIndex, cell) in section.cellHolders.enumerated() {
+                if comparisonHandler(cellData, cell.cellData) {
+                    return (IndexPath(item: cIndex, section: sIndex), cell)
+                }
+            }
+        }
+        return (nil, nil)
+    }
+}

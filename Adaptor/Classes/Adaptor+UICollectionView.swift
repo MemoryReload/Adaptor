@@ -230,7 +230,7 @@ extension  CollectionAdaptor {
     }
     
     @discardableResult
-    public func append(toSection sectionIndex: Int, withDatas datas:[Any], cellClass: UICollectionViewCell.Type, cellHeight: CGFloat? = nil) -> Bool {
+    public func append(toSection sectionIndex: Int, withDatas datas:[Any], cellClass: UICollectionViewCell.Type) -> Bool {
         if sectionIndex < dataSource.count {
             let section = dataSource[sectionIndex]
             for data in datas {
