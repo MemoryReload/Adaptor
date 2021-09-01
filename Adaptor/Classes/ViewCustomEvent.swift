@@ -72,7 +72,7 @@ protocol SectionViewEventSending {
     func sendEvent(withName name: ViewCustomEventName, sectionView: SectionViewClass)
 }
 
-enum TableSectionViewType {
+public enum TableSectionViewType {
     /// header view of the table
     case Header
     /// footer view of the table
@@ -147,7 +147,7 @@ extension UITableViewHeaderFooterView: TableSectionViewEventSending {
     typealias A = TableAdaptor
     typealias SectionViewClass = UITableViewHeaderFooterView
     
-    var index: Int? {
+    public internal(set) var index: Int? {
         get {
             return objc_getAssociatedObject(self, &sectionIndexKey) as? Int
         }
@@ -156,7 +156,7 @@ extension UITableViewHeaderFooterView: TableSectionViewEventSending {
         }
     }
     
-    var type: TableSectionViewType? {
+    public internal(set) var type: TableSectionViewType? {
         get {
             return objc_getAssociatedObject(self, &sectionTypeKey) as? TableSectionViewType
         }
@@ -183,7 +183,7 @@ extension UICollectionReusableView: CollectionReusableViewEventSending {
     typealias A = CollectionAdaptor
     typealias SectionViewClass = UICollectionReusableView
     
-    var indexPath: IndexPath? {
+    public internal(set) var indexPath: IndexPath? {
         get {
             return objc_getAssociatedObject(self, &sectionIndexKey) as? IndexPath
         }
@@ -192,7 +192,7 @@ extension UICollectionReusableView: CollectionReusableViewEventSending {
         }
     }
     
-    var kind: String? {
+    public internal(set) var kind: String? {
         get {
             return objc_getAssociatedObject(self, &elementKindKey) as? String
         }
