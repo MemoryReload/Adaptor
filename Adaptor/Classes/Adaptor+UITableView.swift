@@ -322,7 +322,7 @@ extension TableAdaptor {
         for (sIndex, section) in dataSource.enumerated() {
             for (cIndex, cell) in section.cellHolders.enumerated() {
                 if comparisonHandler(cellData, cell.cellData) {
-                    return (IndexPath(item: cIndex, section: sIndex), cell)
+                    return (IndexPath(row: cIndex, section: sIndex), cell)
                 }
             }
         }
