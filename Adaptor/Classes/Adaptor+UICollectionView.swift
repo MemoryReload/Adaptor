@@ -224,11 +224,24 @@ extension CollectionAdaptor: ViewCustomEventhandling {
 
 
 extension  CollectionAdaptor {
+    
+    /// Convience init method to build an adaptor with single section of datas with the same display cell class.
+    /// - Parameters:
+    ///   - section: The default section which datas will be appended to. If nil, default section will be auto matically built up.
+    ///   - datas: The user data will be dispalyed.
+    ///   - cellClass: The cell class that is used to display user datas.
     public convenience init(section:CollectionSectionViewHolder? = nil , datas:[Any], cellClass: UICollectionViewCell.Type) {
         self.init()
         appendToLast(section: section, datas: datas, cellClass: cellClass)
     }
     
+    
+    /// Append user datas to the section with specified index.
+    /// - Parameters:
+    ///   - sectionIndex: The index of which section the datas will be apppended to.
+    ///   - datas: The user data will be dispalyed.
+    ///   - cellClass: The cell class that is used to display user datas.
+    /// - Returns: The result of appending operation. If the section index is out of bounds, append operation will fail and return false.
     @discardableResult
     public func append(toSection sectionIndex: Int, withDatas datas:[Any], cellClass: UICollectionViewCell.Type) -> Bool {
         if sectionIndex < dataSource.count {
@@ -242,6 +255,9 @@ extension  CollectionAdaptor {
         return false
     }
     
+    /// Remove all cell holders in the section with specified index.
+    /// - Parameter sectionIndex: The index of which section the datas will be removed.
+    /// - Returns: The result of removing operation. If the section index is out of bounds, removing operation will fail and return false.
     @discardableResult
     public func clear(section sectionIndex: Int) -> Bool {
         if sectionIndex < dataSource.count {
@@ -252,6 +268,12 @@ extension  CollectionAdaptor {
         return false
     }
     
+    /// Reset the cell holders in the section with specified index and user datas.
+    /// - Parameters:
+    ///   - sectionIndex: The index of which section the datas will be reset to new datas.
+    ///   - datas: The user data will be dispalyed.
+    ///   - cellClass: The cell class that is used to display user datas.
+    /// - Returns: The result of reseting operation. If the section index is out of bounds, reseting operation will fail and return false.
     @discardableResult
     public func set(section sectionIndex: Int, withDatas datas:[Any], cellClass: UICollectionViewCell.Type) -> Bool {
         if clear(section: sectionIndex) {
@@ -260,6 +282,11 @@ extension  CollectionAdaptor {
         return false
     }
     
+    /// Append user datas to the last section of data source.
+    /// - Parameters:
+    ///   - section: The section which user datas will be append to. This is only used when There are no sections in data source. And if this is nil, a section holder will be automatically built to satisfy subsequent operations
+    ///   - datas: The user data will be dispalyed.
+    ///   - cellClass: The cell class that is used to display user datas.
     public func appendToLast(section:CollectionSectionViewHolder? = nil, datas:[Any], cellClass: UICollectionViewCell.Type) {
         if let _section = section {
             dataSource.append(_section)
@@ -275,25 +302,43 @@ extension  CollectionAdaptor {
 
 
 extension CollectionAdaptor {
-    func getSectionHolder(withHeaderData headerData: Any, comparisonHandler: (_ origin: Any,_ comparison: Any?) -> Bool) -> (Int?, CollectionSectionViewHolder?) {
+    
+    /// Find section view holder with specified user header data.
+    /// - Parameters:
+    ///   - headerData: The specified user header data.
+    ///   - comparisonHandler: The customized comparision closure to define how to compare  the specified user header data with data source section view holder's header data.
+    /// - Returns: The section view holder and its index in the data source. nil, if not found.
+    public func getSectionHolder(withHeaderData headerData: Any, comparisonHandler: (_ origin: Any,_ comparison: Any?) -> Bool) -> (Int, CollectionSectionViewHolder)? {
         for (index, section) in dataSource.enumerated() {
             if comparisonHandler(headerData,section.headerData) {
                 return (index, section)
             }
         }
-        return (nil, nil)
+        return nil
     }
     
-    func getSectionHolder(withFooterData footerData: Any, comparisonHandler: (_ origin: Any,_ comparison: Any?) -> Bool) -> (Int?, CollectionSectionViewHolder?) {
+    
+    /// Find section view holder with specified user footer data.
+    /// - Parameters:
+    ///   - footerData: The specified user footer data.
+    ///   - comparisonHandler: The customized comparision closure to define how to compare  the specified user footer data with data source section view holder's footer data.
+    /// - Returns: The section view holder and its index in the data source. nil, if not found.
+    public func getSectionHolder(withFooterData footerData: Any, comparisonHandler: (_ origin: Any,_ comparison: Any?) -> Bool) -> (Int, CollectionSectionViewHolder)? {
         for (index, section) in dataSource.enumerated() {
             if comparisonHandler(footerData,section.footerData) {
                 return (index, section)
             }
         }
-        return (nil, nil)
+        return nil
     }
     
-    func getCellHolder(withCellData cellData: Any, comparisonHandler: (_ origin: Any,_ comparison: Any?) -> Bool) -> (IndexPath?, CollectionCellViewHolder?) {
+    
+    /// Find cell holder with specified user cell data
+    /// - Parameters:
+    ///   - cellData: The specified user cell data.
+    ///   - comparisonHandler: The customized comparision closure to define how to compare  the specified user cell data with data source cell holder's user data.
+    /// - Returns: The cell holder and its indexPath in the data source. nil, if not found.
+    public func getCellHolder(withCellData cellData: Any, comparisonHandler: (_ origin: Any,_ comparison: Any?) -> Bool) -> (IndexPath, CollectionCellViewHolder)? {
         for (sIndex, section) in dataSource.enumerated() {
             for (cIndex, cell) in section.cellHolders.enumerated() {
                 if comparisonHandler(cellData, cell.cellData) {
@@ -301,6 +346,6 @@ extension CollectionAdaptor {
                 }
             }
         }
-        return (nil, nil)
+        return nil
     }
 }

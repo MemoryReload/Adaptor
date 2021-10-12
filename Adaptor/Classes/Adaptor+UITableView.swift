@@ -247,12 +247,27 @@ extension TableAdaptor: ViewCustomEventhandling
 
 
 extension  TableAdaptor {
+    
+    /// Convience init method to build an adaptor with single section of datas with the same display cell class.
+    /// - Parameters:
+    ///   - section: The default section which datas will be appended to. If nil, default section will be auto matically built up.
+    ///   - datas: The user data will be dispalyed.
+    ///   - cellClass: The cell class that is used to display user datas.
+    ///   - cellHeight: The cell height. If nil, the cell's supposed to be auto-layout height.
     public convenience init(section:TableSectionViewHolder? = nil , datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) {
         self.init()
         appendToLast(section: section, datas: datas, cellClass: cellClass, cellHeight: cellHeight)
     }
     
+    
     @discardableResult
+    /// Append user datas to the section with specified index.
+    /// - Parameters:
+    ///   - sectionIndex: The index of which section the datas will be apppended to.
+    ///   - datas: The user data will be dispalyed.
+    ///   - cellClass: The cell class that is used to display user datas.
+    ///   - cellHeight: The cell height. If nil, the cell's supposed to be auto-layout height.
+    /// - Returns: The result of appending operation. If the section index is out of bounds, append operation will fail and return false.
     public func append(toSection sectionIndex: Int, withDatas datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) -> Bool {
         if sectionIndex < dataSource.count {
             let section = dataSource[sectionIndex]
@@ -265,7 +280,11 @@ extension  TableAdaptor {
         return false
     }
     
+    
     @discardableResult
+    /// Remove all cell holders in the section with specified index.
+    /// - Parameter sectionIndex: The index of which section the datas will be removed.
+    /// - Returns: The result of removing operation. If the section index is out of bounds, removing operation will fail and return false.
     public func clear(section sectionIndex: Int) -> Bool {
         if sectionIndex < dataSource.count {
             let section = dataSource[sectionIndex]
@@ -275,7 +294,15 @@ extension  TableAdaptor {
         return false
     }
     
+    
     @discardableResult
+    /// Reset the cell holders in the section with specified index and user datas.
+    /// - Parameters:
+    ///   - sectionIndex: The index of which section the datas will be reset to new datas.
+    ///   - datas: The user data will be dispalyed.
+    ///   - cellClass: The cell class that is used to display user datas.
+    ///   - cellHeight: The cell height. If nil, the cell's supposed to be auto-layout height.
+    /// - Returns: The result of reseting operation. If the section index is out of bounds, reseting operation will fail and return false.
     public func set(section sectionIndex: Int, withDatas datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) -> Bool {
         if clear(section: sectionIndex) {
             return append(toSection: sectionIndex, withDatas: datas, cellClass: cellClass)
@@ -283,6 +310,13 @@ extension  TableAdaptor {
         return false
     }
     
+    
+    /// Append user datas to the last section of data source.
+    /// - Parameters:
+    ///   - section: The section which user datas will be append to. This is only used when There are no sections in data source. And if this is nil, a section holder will be automatically built to satisfy subsequent operations
+    ///   - datas: The user data will be dispalyed.
+    ///   - cellClass: The cell class that is used to display user datas.
+    ///   - cellHeight: The cell height. If nil, the cell's supposed to be auto-layout height.
     public func appendToLast(section:TableSectionViewHolder? = nil, datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) {
         if let _section = section {
             dataSource.append(_section)
@@ -300,25 +334,44 @@ extension  TableAdaptor {
 
 
 extension TableAdaptor {
-    func getSectionHolder(withHeaderData headerData: Any, comparisonHandler: (_ origin: Any,_ comparison: Any?) -> Bool) -> (Int?, TableSectionViewHolder?) {
+    
+    
+    /// Find section view holder with specified user header data.
+    /// - Parameters:
+    ///   - headerData: The specified user header data.
+    ///   - comparisonHandler: The customized comparision closure to define how to compare  the specified user header data with data source section view holder's header data.
+    /// - Returns: The section view holder and its index in the data source. nil, if not found.
+    public func getSectionHolder(withHeaderData headerData: Any, comparisonHandler: (_ origin: Any,_ comparison: Any?) -> Bool) -> (Int, TableSectionViewHolder)? {
         for (index, section) in dataSource.enumerated() {
             if comparisonHandler(headerData,section.headerData) {
                 return (index, section)
             }
         }
-        return (nil, nil)
+        return nil
     }
     
-    func getSectionHolder(withFooterData footerData: Any, comparisonHandler: (_ origin: Any,_ comparison: Any?) -> Bool) -> (Int?, TableSectionViewHolder?) {
+    
+    /// Find section view holder with specified user footer data.
+    /// - Parameters:
+    ///   - footerData: The specified user footer data.
+    ///   - comparisonHandler: The customized comparision closure to define how to compare  the specified user footer data with data source section view holder's footer data.
+    /// - Returns: The section view holder and its index in the data source. nil, if not found.
+    public func getSectionHolder(withFooterData footerData: Any, comparisonHandler: (_ origin: Any,_ comparison: Any?) -> Bool) -> (Int, TableSectionViewHolder)? {
         for (index, section) in dataSource.enumerated() {
             if comparisonHandler(footerData,section.footerData) {
                 return (index, section)
             }
         }
-        return (nil, nil)
+        return nil
     }
     
-    func getCellHolder(withCellData cellData: Any, comparisonHandler: (_ origin: Any,_ comparison: Any?) -> Bool) -> (IndexPath?, TableCellViewHolder?) {
+    
+    /// Find cell holder with specified user cell data
+    /// - Parameters:
+    ///   - cellData: The specified user cell data.
+    ///   - comparisonHandler: The customized comparision closure to define how to compare  the specified user cell data with data source cell holder's user data.
+    /// - Returns: The cell holder and its indexPath in the data source. nil, if not found.
+    public func getCellHolder(withCellData cellData: Any, comparisonHandler: (_ origin: Any,_ comparison: Any?) -> Bool) -> (IndexPath, TableCellViewHolder)? {
         for (sIndex, section) in dataSource.enumerated() {
             for (cIndex, cell) in section.cellHolders.enumerated() {
                 if comparisonHandler(cellData, cell.cellData) {
@@ -326,6 +379,6 @@ extension TableAdaptor {
                 }
             }
         }
-        return (nil, nil)
+        return nil
     }
 }
