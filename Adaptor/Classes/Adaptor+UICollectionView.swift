@@ -225,17 +225,6 @@ extension CollectionAdaptor: ViewCustomEventhandling {
 
 extension  CollectionAdaptor {
     
-    /// Convience init method to build an adaptor with single section of datas with the same display cell class.
-    /// - Parameters:
-    ///   - section: The default section which datas will be appended to. If nil, default section will be auto matically built up.
-    ///   - datas: The user data will be dispalyed.
-    ///   - cellClass: The cell class that is used to display user datas.
-    public convenience init(section:CollectionSectionViewHolder? = nil , datas:[Any], cellClass: UICollectionViewCell.Type) {
-        self.init()
-        appendToLast(section: section, datas: datas, cellClass: cellClass)
-    }
-    
-    
     /// Append user datas to the section with specified index.
     /// - Parameters:
     ///   - sectionIndex: The index of which section the datas will be apppended to.
@@ -243,11 +232,19 @@ extension  CollectionAdaptor {
     ///   - cellClass: The cell class that is used to display user datas.
     /// - Returns: The result of appending operation. If the section index is out of bounds, append operation will fail and return false.
     @discardableResult
-    public func append(toSection sectionIndex: Int, withDatas datas:[Any], cellClass: UICollectionViewCell.Type) -> Bool {
+    public func append(toSection sectionIndex: Int, withDatas datas:[Any], cellClass: UICollectionViewCell.Type, cellHolderClass: CollectionCellViewHolder.Type? = nil) -> Bool {
         if sectionIndex < dataSource.count {
             let section = dataSource[sectionIndex]
             for data in datas {
-                let cellHolder = CollectionCellViewHolder(data: data, cellClass: cellClass)
+                let cellHolder: CollectionCellViewHolder
+                if let _cellHolderClass = cellHolderClass {
+                    cellHolder = _cellHolderClass.init()
+                    cellHolder.cellData = data
+                    cellHolder.cellClass = cellClass
+                }else{
+                    cellHolder = CollectionCellViewHolder(data: data, cellClass: cellClass)
+                }
+                
                 section.cellHolders.append(cellHolder)
             }
             return true
@@ -275,9 +272,9 @@ extension  CollectionAdaptor {
     ///   - cellClass: The cell class that is used to display user datas.
     /// - Returns: The result of reseting operation. If the section index is out of bounds, reseting operation will fail and return false.
     @discardableResult
-    public func set(section sectionIndex: Int, withDatas datas:[Any], cellClass: UICollectionViewCell.Type) -> Bool {
+    public func set(section sectionIndex: Int, withDatas datas:[Any], cellClass: UICollectionViewCell.Type, cellHolderClass: CollectionCellViewHolder.Type? = nil) -> Bool {
         if clear(section: sectionIndex) {
-            return append(toSection: sectionIndex, withDatas: datas, cellClass: cellClass)
+            return append(toSection: sectionIndex, withDatas: datas, cellClass: cellClass, cellHolderClass: cellHolderClass)
         }
         return false
     }
@@ -287,7 +284,7 @@ extension  CollectionAdaptor {
     ///   - section: The section which user datas will be append to. This is only used when There are no sections in data source. And if this is nil, a section holder will be automatically built to satisfy subsequent operations
     ///   - datas: The user data will be dispalyed.
     ///   - cellClass: The cell class that is used to display user datas.
-    public func appendToLast(section:CollectionSectionViewHolder? = nil, datas:[Any], cellClass: UICollectionViewCell.Type) {
+    public func appendToLast(section:CollectionSectionViewHolder? = nil, datas:[Any], cellClass: UICollectionViewCell.Type, cellHolderClass: CollectionCellViewHolder.Type? = nil) {
         if let _section = section {
             dataSource.append(_section)
         }else{
@@ -295,7 +292,7 @@ extension  CollectionAdaptor {
                 dataSource.append(CollectionSectionViewHolder())
             }
         }
-        append(toSection: dataSource.count - 1, withDatas: datas, cellClass: cellClass)
+        append(toSection: dataSource.count - 1, withDatas: datas, cellClass: cellClass, cellHolderClass: cellHolderClass)
     }
 }
 

@@ -24,7 +24,7 @@ open class CollectionSectionViewHolder: SectionViewHolderBaseProtocol  {
         }
         return cellHolders.count
     }
-    public init() { }
+    public required init() { }
     
     convenience init(holders:[CollectionCellViewHolder], headerData: Any? = nil, headerClass: UICollectionReusableView.Type? = nil, footerData: Any? = nil, footerClass:UICollectionReusableView.Type? = nil) {
         self.init()

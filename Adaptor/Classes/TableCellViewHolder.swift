@@ -17,7 +17,7 @@ open class TableCellViewHolder: CellViewHolderBaseProtocol {
     public var cellData: Any?
     public var cellClass: UITableViewCell.Type?
     
-    public init() { }
+    public required init() { }
     
     convenience init(data: Any?, cellClass: UITableViewCell.Type?, cellHeight: CGFloat? = nil) {
         self.init()

@@ -248,19 +248,6 @@ extension TableAdaptor: ViewCustomEventhandling
 
 extension  TableAdaptor {
     
-    /// Convience init method to build an adaptor with single section of datas with the same display cell class.
-    /// - Parameters:
-    ///   - section: The default section which datas will be appended to. If nil, default section will be auto matically built up.
-    ///   - datas: The user data will be dispalyed.
-    ///   - cellClass: The cell class that is used to display user datas.
-    ///   - cellHeight: The cell height. If nil, the cell's supposed to be auto-layout height.
-    public convenience init(section:TableSectionViewHolder? = nil , datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) {
-        self.init()
-        appendToLast(section: section, datas: datas, cellClass: cellClass, cellHeight: cellHeight)
-    }
-    
-    
-    @discardableResult
     /// Append user datas to the section with specified index.
     /// - Parameters:
     ///   - sectionIndex: The index of which section the datas will be apppended to.
@@ -268,11 +255,20 @@ extension  TableAdaptor {
     ///   - cellClass: The cell class that is used to display user datas.
     ///   - cellHeight: The cell height. If nil, the cell's supposed to be auto-layout height.
     /// - Returns: The result of appending operation. If the section index is out of bounds, append operation will fail and return false.
-    public func append(toSection sectionIndex: Int, withDatas datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) -> Bool {
+    @discardableResult
+    public func append(toSection sectionIndex: Int, withDatas datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil, cellHolderClass: TableCellViewHolder.Type? = nil) -> Bool {
         if sectionIndex < dataSource.count {
             let section = dataSource[sectionIndex]
             for data in datas {
-                let cellHolder = TableCellViewHolder(data: data, cellClass: cellClass, cellHeight: cellHeight)
+                let cellHolder: TableCellViewHolder
+                if let _cellHolderClass = cellHolderClass {
+                    cellHolder = _cellHolderClass.init()
+                    cellHolder.cellData = data
+                    cellHolder.cellClass = cellClass
+                    cellHolder.cellHeight = cellHeight
+                }else{
+                    cellHolder = TableCellViewHolder(data: data, cellClass: cellClass, cellHeight: cellHeight)
+                }
                 section.cellHolders.append(cellHolder)
             }
             return true
@@ -280,11 +276,10 @@ extension  TableAdaptor {
         return false
     }
     
-    
-    @discardableResult
     /// Remove all cell holders in the section with specified index.
     /// - Parameter sectionIndex: The index of which section the datas will be removed.
     /// - Returns: The result of removing operation. If the section index is out of bounds, removing operation will fail and return false.
+    @discardableResult
     public func clear(section sectionIndex: Int) -> Bool {
         if sectionIndex < dataSource.count {
             let section = dataSource[sectionIndex]
@@ -295,7 +290,6 @@ extension  TableAdaptor {
     }
     
     
-    @discardableResult
     /// Reset the cell holders in the section with specified index and user datas.
     /// - Parameters:
     ///   - sectionIndex: The index of which section the datas will be reset to new datas.
@@ -303,9 +297,10 @@ extension  TableAdaptor {
     ///   - cellClass: The cell class that is used to display user datas.
     ///   - cellHeight: The cell height. If nil, the cell's supposed to be auto-layout height.
     /// - Returns: The result of reseting operation. If the section index is out of bounds, reseting operation will fail and return false.
-    public func set(section sectionIndex: Int, withDatas datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) -> Bool {
+    @discardableResult
+    public func set(section sectionIndex: Int, withDatas datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil, cellHolderClass: TableCellViewHolder.Type? = nil) -> Bool {
         if clear(section: sectionIndex) {
-            return append(toSection: sectionIndex, withDatas: datas, cellClass: cellClass)
+            return append(toSection: sectionIndex, withDatas: datas, cellClass: cellClass, cellHeight:cellHeight, cellHolderClass: cellHolderClass)
         }
         return false
     }
@@ -317,7 +312,7 @@ extension  TableAdaptor {
     ///   - datas: The user data will be dispalyed.
     ///   - cellClass: The cell class that is used to display user datas.
     ///   - cellHeight: The cell height. If nil, the cell's supposed to be auto-layout height.
-    public func appendToLast(section:TableSectionViewHolder? = nil, datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil) {
+    public func appendToLast(section:TableSectionViewHolder? = nil, datas:[Any], cellClass: UITableViewCell.Type, cellHeight: CGFloat? = nil, cellHolderClass: TableCellViewHolder.Type? = nil) {
         if let _section = section {
             dataSource.append(_section)
         }else{
@@ -328,7 +323,7 @@ extension  TableAdaptor {
                 dataSource.append(singleSection)
             }
         }
-        append(toSection: dataSource.count - 1, withDatas: datas, cellClass: cellClass)
+        append(toSection: dataSource.count - 1, withDatas: datas, cellClass: cellClass, cellHeight: cellHeight, cellHolderClass: cellHolderClass)
     }
 }
 

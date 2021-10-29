@@ -13,7 +13,7 @@ open class CollectionCellViewHolder: CellViewHolderBaseProtocol {
     public var cellData: Any?
     public var cellClass: UICollectionViewCell.Type?
     
-    public init() { }
+    public required init() { }
     
     convenience init(data: Any?, cellClass: UICollectionViewCell.Type?) {
         self.init()
