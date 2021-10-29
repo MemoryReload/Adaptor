@@ -18,9 +18,9 @@ class TableExampleViewController: UIViewController {
         table.registerSectionView(viewClass: MySection.self)
         table.useAdaptor()
         // Do any additional setup after loading the view, typically from a nib.
-        table.adaptor?.appendToLast(datas: ["row:1","row:2","row:3",], cellClass: MyAutoSizeCell.self)
+        table.adaptor?.appendToLast(datas: ["row:1","row:2","row:3",], cellClass: MyAutoSizeCell.self, cellHolderClass: MyCellViewHolder.self)
         table.adaptor?.dataSource.append(contentsOf: getData())
-        table.adaptor?.appendToLast(datas: ["row:4","row:5","row:6"], cellClass: MyAutoSizeCell.self)
+        table.adaptor?.appendToLast(datas: ["row:4","row:5","row:6"], cellClass: MyCell.self,cellHeight: 80, cellHolderClass: MyCellViewHolder.self)
         table.reloadData()
     }
 
@@ -59,5 +59,11 @@ class TableExampleViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+}
+
+class MyCellViewHolder: TableCellViewHolder {
+    override func didSelectWith(container: UITableView, cell: UITableViewCell, index: IndexPath) {
+        debugPrint("Table Cell Clicked!")
+    }
 }
 

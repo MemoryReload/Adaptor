@@ -23,9 +23,9 @@ class CollectionExampleViewController: UIViewController {
         let sectionHolder = CollectionSectionViewHolder()
         sectionHolder.headerViewClass = MyCollectionSection.self
         sectionHolder.headerData = "header0"
-        collectionView.adaptor?.appendToLast(section:sectionHolder, datas: ["row:1","row:2","row:3",], cellClass: MyCollectionCell.self)
+        collectionView.adaptor?.appendToLast(section:sectionHolder, datas: ["row:1","row:2","row:3",], cellClass: MyCollectionCell.self, cellHolderClass: MyCollectionCellViewHolder.self)
         collectionView.adaptor?.dataSource.append(contentsOf: getData())
-        collectionView.adaptor?.appendToLast(datas: ["row:5","row:5","row:6",], cellClass: MyCollectionCell.self)
+        collectionView.adaptor?.appendToLast(datas: ["row:5","row:5","row:6",], cellClass: MyCollectionCell.self, cellHolderClass: MyCollectionCellViewHolder.self)
         collectionView.reloadData()
     }
     
@@ -57,5 +57,11 @@ class CollectionExampleViewController: UIViewController {
         layout.headerReferenceSize = CGSize(width: 44, height: 44)
 //        layout.footerReferenceSize = CGSize(width: 44, height: 44)
         return layout
+    }
+}
+
+class MyCollectionCellViewHolder: CollectionCellViewHolder {
+    override func didSelectWith(container: UICollectionView, cell: UICollectionViewCell, index: IndexPath) {
+        debugPrint("Collection Cell Clicked!")
     }
 }
