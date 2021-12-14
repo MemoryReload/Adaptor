@@ -19,7 +19,7 @@ open class TableCellViewHolder: CellViewHolderBaseProtocol {
     
     public required init() { }
     
-    convenience init(data: Any?, cellClass: UITableViewCell.Type?, cellHeight: CGFloat? = nil) {
+    public convenience init(data: Any?, cellClass: UITableViewCell.Type?, cellHeight: CGFloat? = nil) {
         self.init()
         cellData = data
         self.cellClass = cellClass

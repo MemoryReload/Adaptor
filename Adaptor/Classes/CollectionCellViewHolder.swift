@@ -15,7 +15,7 @@ open class CollectionCellViewHolder: CellViewHolderBaseProtocol {
     
     public required init() { }
     
-    convenience init(data: Any?, cellClass: UICollectionViewCell.Type?) {
+    public convenience init(data: Any?, cellClass: UICollectionViewCell.Type?) {
         self.init()
         cellData = data
         self.cellClass = cellClass

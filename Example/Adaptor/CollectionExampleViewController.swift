@@ -35,16 +35,12 @@ class CollectionExampleViewController: UIViewController {
     [CollectionSectionViewHolder] {
         var sectionHolders: [CollectionSectionViewHolder] = []
         for i in 1...3 {
-            let sectionHolder = CollectionSectionViewHolder()
-            sectionHolder.headerViewClass = MyCollectionSection.self
-            sectionHolder.headerData = "header\(i)"
+            let sectionHolder = CollectionSectionViewHolder(headerData: "header\(i)", headerClass: MyCollectionSection.self)
 //            sectionHolder.footerViewClass = MyCollectionSection.self
 //            sectionHolder.footerData = "footer: \(i)"
             sectionHolders.append(sectionHolder)
             for j in 1...4 {
-                let cellHolder = CollectionCellViewHolder()
-                cellHolder.cellClass = MyCollectionCell.self
-                cellHolder.cellData = "row:\(j)"
+                let cellHolder = CollectionCellViewHolder(data: "row:\(j)", cellClass: MyCollectionCell.self)
                 sectionHolder.cellHolders.append(cellHolder)
             }
         }

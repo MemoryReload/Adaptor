@@ -33,9 +33,11 @@ open class TableSectionViewHolder: SectionViewHolderBaseProtocol {
     }
     public required init() { }
     
-    convenience init(holders:[TableCellViewHolder], headerData: Any? = nil, headerClass: UITableViewHeaderFooterView.Type? = nil, headerHeight: CGFloat? = 0, footerData: Any? = nil, footerClass:UITableViewHeaderFooterView.Type? = nil, footerHeight: CGFloat? = 0) {
+    public convenience init(holders:[TableCellViewHolder]? = nil, headerData: Any? = nil, headerClass: UITableViewHeaderFooterView.Type? = nil, headerHeight: CGFloat? = 0, footerData: Any? = nil, footerClass:UITableViewHeaderFooterView.Type? = nil, footerHeight: CGFloat? = 0) {
         self.init()
-        cellHolders = holders
+        if let _holders = holders {
+            cellHolders = _holders
+        }
         self.headerData = headerData
         self.headerViewClass = headerClass
         self.headerHeight = headerHeight

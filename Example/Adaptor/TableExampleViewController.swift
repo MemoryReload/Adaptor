@@ -30,10 +30,7 @@ class TableExampleViewController: UIViewController {
     [TableSectionViewHolder] {
         var sectionHolders: [TableSectionViewHolder] = []
         for i in 1...3 {
-            let sectionHolder = TableSectionViewHolder()
-            sectionHolder.headerViewClass = MySection.self
-            sectionHolder.headerHeight = 44
-            sectionHolder.headerData = "header\(i)"
+            let sectionHolder = TableSectionViewHolder(headerData: "header\(i)", headerClass: MySection.self, headerHeight: 44)
 //            sectionHolder.footerViewClass = MySection.self
 //            sectionHolder.footerHeight = 20
 //            sectionHolder.footerData = "footer: \(i)"
@@ -45,10 +42,7 @@ class TableExampleViewController: UIViewController {
                     cellHolder.cellData = "row:\(j)"
                     sectionHolder.cellHolders.append(cellHolder)
                 }else{
-                    let cellHolder = TableCellViewHolder()
-                    cellHolder.cellClass = MyCell.self
-                    cellHolder.cellData = "row:\(j)"
-                    cellHolder.cellHeight = 80
+                    let cellHolder = TableCellViewHolder(data: "row:\(j)", cellClass: MyCell.self, cellHeight: 80)
                     sectionHolder.cellHolders.append(cellHolder)
                 }
             }
