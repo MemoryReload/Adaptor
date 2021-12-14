@@ -34,6 +34,24 @@ open class CollectionSectionViewHolder: SectionViewHolderBaseProtocol  {
         self.footerData = footerData
         self.footerViewClass = footerClass
     }
+    
+    public subscript(_ index: Int) -> CollectionCellViewHolder {
+        get {
+            cellHolders[index]
+        }
+        set {
+            cellHolders[index] = newValue
+        }
+    }
+    
+    public subscript(_ index: Int) -> Any? {
+        get {
+            self[index].cellData
+        }
+        set {
+            self[index].cellData = newValue
+        }
+    }
 }
 
 

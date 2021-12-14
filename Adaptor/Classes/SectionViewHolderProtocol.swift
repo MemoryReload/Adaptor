@@ -33,6 +33,9 @@ public protocol SectionViewHolderBaseProtocol {
     
     /// The displayed cells counts. If not collapsed, should be equal to cellHolders.count. If not, return 0.
     var cellCounts: Int { get }
+    
+    /// the subscription support
+    subscript(_ index: Int) -> CellHolderClass { get set }
 }
 
 public protocol SectionViewHolderEventProtocol {

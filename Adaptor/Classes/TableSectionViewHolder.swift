@@ -43,6 +43,24 @@ open class TableSectionViewHolder: SectionViewHolderBaseProtocol {
         self.footerViewClass = footerClass
         self.footerHeight = footerHeight
     }
+    
+    public subscript(_ index: Int) -> TableCellViewHolder {
+        get {
+            cellHolders[index]
+        }
+        set {
+            cellHolders[index] = newValue
+        }
+    }
+    
+    public subscript(_ index: Int) -> Any? {
+        get {
+            self[index].cellData
+        }
+        set {
+            self[index].cellData = newValue
+        }
+    }
 }
 
 extension TableSectionViewHolder: TableSectionViewHolderEventProtocol {

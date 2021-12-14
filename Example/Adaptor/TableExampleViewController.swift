@@ -21,6 +21,7 @@ class TableExampleViewController: UIViewController {
         table.adaptor?.appendToLast(datas: ["row:1","row:2","row:3",], cellClass: MyAutoSizeCell.self, cellHolderClass: MyCellViewHolder.self)
         table.adaptor?.dataSource.append(contentsOf: getData())
         table.adaptor?.appendToLast(datas: ["row:4","row:5","row:6"], cellClass: MyCell.self,cellHeight: 80, cellHolderClass: MyCellViewHolder.self)
+        testSectionSubscrib()
         table.reloadData()
     }
 
@@ -59,6 +60,10 @@ class TableExampleViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    func testSectionSubscrib(){
+        table.adaptor?.dataSource[0][0].cellData = "test1"
+        table.adaptor?.dataSource[0][1] = "test2"
+    }
 }
 
 class MyCellViewHolder: TableCellViewHolder {
