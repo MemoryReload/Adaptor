@@ -22,6 +22,7 @@ class TableExampleViewController: UIViewController {
         table.adaptor?.dataSource.append(contentsOf: getData())
         table.adaptor?.appendToLast(datas: ["row:4","row:5","row:6"], cellClass: MyCell.self,cellHeight: 80, cellHolderClass: MyCellViewHolder.self)
         testSectionSubscrib()
+        testAdaptorSubscrib()
         table.reloadData()
     }
 
@@ -63,6 +64,11 @@ class TableExampleViewController: UIViewController {
     func testSectionSubscrib(){
         table.adaptor?.dataSource[0][0].cellData = "test1"
         table.adaptor?.dataSource[0][1] = "test2"
+    }
+    
+    func testAdaptorSubscrib() {
+        table.adaptor?[IndexPath(row: 0, section: 1)].cellData = "AdTest1"
+        table.adaptor?[IndexPath(row: 1, section: 1)].cellData = "AdTest2"
     }
 }
 

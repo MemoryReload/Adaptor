@@ -300,6 +300,51 @@ extension  CollectionAdaptor {
 
 extension CollectionAdaptor {
     
+    public subscript(_ index: Int) -> CollectionSectionViewHolder {
+        get {
+            self.dataSource[index]
+        }
+        set {
+            self.dataSource[index] = newValue
+        }
+    }
+    
+    public subscript(_ indexPath: IndexPath) -> CollectionCellViewHolder {
+        get {
+            self.dataSource[indexPath.section][indexPath.item]
+        }
+        set {
+            self.dataSource[indexPath.section][indexPath.item] = newValue
+        }
+    }
+    
+    public subscript(_ indexPath: IndexPath) -> Any? {
+        get {
+            self.dataSource[indexPath.section][indexPath.item].cellData
+        }
+        set {
+            self.dataSource[indexPath.section][indexPath.item].cellData = newValue
+        }
+    }
+    
+    public subscript(section: Int, item: Int) -> CollectionCellViewHolder {
+        get {
+            self[IndexPath(item: item, section: section)]
+        }
+        set {
+            self[IndexPath(item: item, section: section)] = newValue
+        }
+    }
+    
+    public subscript(section: Int, item: Int) -> Any? {
+        get {
+            self[IndexPath(item: item, section: section)].cellData
+        }
+        set {
+            self[IndexPath(item: item, section: section)].cellData = newValue
+        }
+    }
+    
     /// Find section view holder with specified user header data.
     /// - Parameters:
     ///   - headerData: The specified user header data.

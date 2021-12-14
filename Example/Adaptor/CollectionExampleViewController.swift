@@ -27,6 +27,7 @@ class CollectionExampleViewController: UIViewController {
         collectionView.adaptor?.dataSource.append(contentsOf: getData())
         collectionView.adaptor?.appendToLast(datas: ["row:5","row:5","row:6",], cellClass: MyCollectionCell.self, cellHolderClass: MyCollectionCellViewHolder.self)
         testSectionSubscrib()
+        testAdaptorSubscrib()
         collectionView.reloadData()
     }
     
@@ -63,6 +64,11 @@ class CollectionExampleViewController: UIViewController {
     func testSectionSubscrib(){
         collectionView.adaptor?.dataSource[0][0].cellData = "test1"
         collectionView.adaptor?.dataSource[0][1] = "test2"
+    }
+    
+    func testAdaptorSubscrib() {
+        collectionView.adaptor?[IndexPath(item: 0, section: 1)].cellData = "AdTest1"
+        collectionView.adaptor?[IndexPath(item: 1, section: 1)].cellData = "AdTest2"
     }
 }
 

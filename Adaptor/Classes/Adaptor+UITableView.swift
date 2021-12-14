@@ -330,6 +330,50 @@ extension  TableAdaptor {
 
 extension TableAdaptor {
     
+    public subscript(_ index: Int) -> TableSectionViewHolder {
+        get {
+            self.dataSource[index]
+        }
+        set {
+            self.dataSource[index] = newValue
+        }
+    }
+    
+    public subscript(_ indexPath: IndexPath) -> TableCellViewHolder {
+        get {
+            self.dataSource[indexPath.section][indexPath.row]
+        }
+        set {
+            self.dataSource[indexPath.section][indexPath.row] = newValue
+        }
+    }
+    
+    public subscript(_ indexPath: IndexPath) -> Any? {
+        get {
+            self.dataSource[indexPath.section][indexPath.row].cellData
+        }
+        set {
+            self.dataSource[indexPath.section][indexPath.row].cellData = newValue
+        }
+    }
+    
+    public subscript(section: Int, row: Int) -> TableCellViewHolder {
+        get {
+            self[IndexPath(row: row, section: section)]
+        }
+        set {
+            self[IndexPath(row: row, section: section)] = newValue
+        }
+    }
+    
+    public subscript(section: Int, row: Int) -> Any? {
+        get {
+            self[IndexPath(row: row, section: section)].cellData
+        }
+        set {
+            self[IndexPath(row: row, section: section)].cellData = newValue
+        }
+    }
     
     /// Find section view holder with specified user header data.
     /// - Parameters:
