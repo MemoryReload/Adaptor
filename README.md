@@ -27,3 +27,6 @@ MemoryReload, heping_tsdwx@163.com
 ## License
 
 Adaptor is available under the MIT license. See the LICENSE file for more info.
+
+## More Infomation
+For more detailed information, please see [here](Adaptor视图适配器框架介绍.md).
