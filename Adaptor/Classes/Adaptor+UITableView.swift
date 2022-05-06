@@ -318,8 +318,8 @@ extension  TableAdaptor {
         }else{
             if dataSource.count == 0 {
                 let  singleSection = TableSectionViewHolder()
-                singleSection.headerHeight = 0
-                singleSection.footerHeight = 0
+                singleSection.headerHeight = .leastNormalMagnitude
+                singleSection.footerHeight = .leastNormalMagnitude
                 dataSource.append(singleSection)
             }
         }

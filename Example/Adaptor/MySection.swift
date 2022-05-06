@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Adaptor
+import SnapKit
 
 class MySection: UITableViewHeaderFooterView {
     var collapsed: Bool!
@@ -42,6 +43,33 @@ class MySection: UITableViewHeaderFooterView {
     @IBAction func doAction(_ sender: Any) {
         let event = self.collapsed ? SectionExpandEvent : SectionCollapseEvent
         sendEvent(withName: event)
+    }
+}
+
+class AutoResizeSection: UITableViewHeaderFooterView {
+    
+    lazy var titleLabel: UILabel = {
+        let tl = UILabel()
+        return tl
+    }()
+    
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+        contentView.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(12)
+            make.top.equalToSuperview().offset(10)
+            make.bottom.equalToSuperview().offset(-10)
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func update(data: Any?, collapsed: Bool, count: Int) {
+        let headerStr = data as? String ?? ""
+        titleLabel.text = "\(headerStr)-\(count)"
     }
 }
 

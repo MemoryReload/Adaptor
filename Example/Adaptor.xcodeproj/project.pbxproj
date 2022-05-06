@@ -19,6 +19,7 @@
 		63885C27264E1FDF00D8A480 /* MySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63885C26264E1FDF00D8A480 /* MySection.swift */; };
 		63885C2B264E8EF800D8A480 /* MySection.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63885C2A264E8EF800D8A480 /* MySection.xib */; };
 		63B6854A263FDAE100A9BB67 /* MyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B68549263FDAE100A9BB67 /* MyCell.swift */; };
+		EEC00D9D2825700600C3D562 /* GroupTableExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC00D9C2825700600C3D562 /* GroupTableExampleViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		6FF91E51BA28FED02C903616 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		81124F67507F459814F0F742 /* Adaptor.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Adaptor.podspec; path = ../Adaptor.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		CD2B8A454632B6E16B7F442B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		EEC00D9C2825700600C3D562 /* GroupTableExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTableExampleViewController.swift; sourceTree = "<group>"; };
 		FD4C641D9978EB0FB07631D0 /* Pods-Adaptor_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Adaptor_Example.release.xcconfig"; path = "Target Support Files/Pods-Adaptor_Example/Pods-Adaptor_Example.release.xcconfig"; sourceTree = "<group>"; };
 		FD68727D8DC0320746FD335A /* Pods-Adaptor_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Adaptor_Example.debug.xcconfig"; path = "Target Support Files/Pods-Adaptor_Example/Pods-Adaptor_Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -113,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
+				EEC00D9C2825700600C3D562 /* GroupTableExampleViewController.swift */,
 				607FACD71AFB9204008FA782 /* TableExampleViewController.swift */,
 				63803F7E268F187C00D7D61E /* CollectionExampleViewController.swift */,
 				63B68549263FDAE100A9BB67 /* MyCell.swift */,
@@ -369,6 +372,7 @@
 			files = (
 				63B6854A263FDAE100A9BB67 /* MyCell.swift in Sources */,
 				63885C27264E1FDF00D8A480 /* MySection.swift in Sources */,
+				EEC00D9D2825700600C3D562 /* GroupTableExampleViewController.swift in Sources */,
 				607FACD81AFB9204008FA782 /* TableExampleViewController.swift in Sources */,
 				63803F7F268F187C00D7D61E /* CollectionExampleViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
