@@ -389,6 +389,16 @@ extension TableAdaptor {
         return nil
     }
     
+    //convenient way to find section view holder by header data, when header data type confirms to Equatable.
+    public func getSectionHolder<T: Equatable> (withHeaderData headerData: T) -> (Int, TableSectionViewHolder)? {
+        for (index, section) in dataSource.enumerated() {
+            if let h = section.headerData as? T, h == headerData {
+                return (index, section)
+            }
+        }
+        return nil
+    }
+    
     
     /// Find section view holder with specified user footer data.
     /// - Parameters:
@@ -405,6 +415,16 @@ extension TableAdaptor {
     }
     
     
+    //convenient way to find section view holder by footer data, when footerData type confirms to Equatable.
+    public func getSectionHolder<T: Equatable> (withFooterData footerData: T) -> (Int, TableSectionViewHolder)? {
+        for (index, section) in dataSource.enumerated() {
+            if let f = section.footerData as? T, f == footerData {
+                return (index, section)
+            }
+        }
+        return nil
+    }
+    
     /// Find cell holder with specified user cell data
     /// - Parameters:
     ///   - cellData: The specified user cell data.
@@ -414,6 +434,18 @@ extension TableAdaptor {
         for (sIndex, section) in dataSource.enumerated() {
             for (cIndex, cell) in section.cellHolders.enumerated() {
                 if comparisonHandler(cellData, cell.cellData) {
+                    return (IndexPath(row: cIndex, section: sIndex), cell)
+                }
+            }
+        }
+        return nil
+    }
+    
+    //convenient way to find cell holder by cell data, when cell data type confirms to Equatable.
+    public func getCellHolder<T: Equatable>(withCellData cellData: T) -> (IndexPath, TableCellViewHolder)? {
+        for (sIndex, section) in dataSource.enumerated() {
+            for (cIndex, cell) in section.cellHolders.enumerated() {
+                if let c = cell.cellData as? T, c == cellData {
                     return (IndexPath(row: cIndex, section: sIndex), cell)
                 }
             }

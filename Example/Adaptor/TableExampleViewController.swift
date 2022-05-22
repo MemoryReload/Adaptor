@@ -23,6 +23,7 @@ class TableExampleViewController: UIViewController {
         table.adaptor?.appendToLast(datas: ["row:4","row:5","row:6"], cellClass: MyCell.self,cellHeight: 80, cellHolderClass: MyCellViewHolder.self)
         testSectionSubscrib()
         testAdaptorSubscrib()
+        testSearch()
         table.reloadData()
     }
 
@@ -63,6 +64,21 @@ class TableExampleViewController: UIViewController {
     func testAdaptorSubscrib() {
         table.adaptor?[IndexPath(row: 0, section: 1)].cellData = "AdTest1"
         table.adaptor?[IndexPath(row: 1, section: 1)].cellData = "AdTest2"
+    }
+    
+    func testSearch() {
+        if let section = table.adaptor?.getSectionHolder(withHeaderData: "header1", comparisonHandler: { $0 as? String == $1 as? String}) {
+            print("found1 at Index \(section.0), section \(section.1)")
+        }
+        if let section = table.adaptor?.getSectionHolder(withHeaderData: "header1") {
+            print("found2 foun at Index \(section.0), section \(section.1)")
+        }
+        if let c = table.adaptor?.getCellHolder(withCellData: "AdTest1", comparisonHandler: {$0 as? String == $1 as? String}) {
+            print("found1 at index \(c.0), cell \(c.1)")
+        }
+        if let c = table.adaptor?.getCellHolder(withCellData: "AdTest2") {
+            print("found2 at index \(c.0), cell \(c.1)")
+        }
     }
 }
 
