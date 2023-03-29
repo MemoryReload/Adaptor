@@ -45,54 +45,55 @@ open class CollectionAdaptor:NSObject, CollectionAdaptingProtocol {
 }
 
 
-//MARK: AdaptorProtocol
+//MARK: AdaptorCompatible
 
-/// The protocol used to inject adaptor to the specified view
-public protocol AdaptorProtocol: AnyObject {
-    associatedtype T
-    /// The adaptor for the specified view to work with
-    var adaptor: T? { get }
-    
-    /// Connet the adaptor with the specified view
-    /// - Parameter adaptor: the adaptor to use
-    func useAdaptor(_ adaptor: T?)
+public struct AdaptorWrapper<Base>{
+    public var base: Base
+    init(_ base: Base) {
+        self.base = base
+    }
 }
 
-private var adaptorKey = "Adaptor"
+public protocol AdaptorCompatible {
+    associatedtype V
+    var ac: AdaptorWrapper<V> { get }
+}
 
-extension UITableView: AdaptorProtocol {
-    public private(set) var adaptor: TableAdaptor? {
-        get {
-            return objc_getAssociatedObject(self, &adaptorKey) as? TableAdaptor
-        }
-        set {
-            objc_setAssociatedObject(self, &adaptorKey, newValue, .OBJC_ASSOCIATION_RETAIN)
-        }
+extension AdaptorCompatible {
+    public var ac: AdaptorWrapper<Self> {
+       return AdaptorWrapper(self)
     }
-    
+}
+
+extension UITableView: AdaptorCompatible { }
+extension UICollectionView: AdaptorCompatible { }
+
+private var adaptorKey: Void?
+
+extension AdaptorWrapper where Base: UITableView {
+    public var adaptor: TableAdaptor? {
+            return objc_getAssociatedObject(base, &adaptorKey) as? TableAdaptor
+    }
+
     public func useAdaptor(_ adaptor: TableAdaptor? = TableAdaptor()) {
-        self.adaptor = adaptor
-        self.adaptor?.view = self
-        self.delegate = adaptor
-        self.dataSource = adaptor
+        objc_setAssociatedObject(base, &adaptorKey, adaptor, .OBJC_ASSOCIATION_RETAIN)
+        adaptor?.view = base
+        base.delegate = adaptor
+        base.dataSource = adaptor
     }
 }
 
-extension UICollectionView: AdaptorProtocol {
-    public private(set) var adaptor: CollectionAdaptor? {
-        get {
-            return objc_getAssociatedObject(self, &adaptorKey) as? CollectionAdaptor
-        }
-        set {
-            objc_setAssociatedObject(self, &adaptorKey, newValue, .OBJC_ASSOCIATION_RETAIN)
-        }
+
+extension AdaptorWrapper where Base: UICollectionView {
+    public var adaptor: CollectionAdaptor? {
+            return objc_getAssociatedObject(base, &adaptorKey) as? CollectionAdaptor
     }
-    
-    public func useAdaptor(_ adaptor: CollectionAdaptor? = CollectionAdaptor()) {
-        self.adaptor = adaptor
-        self.adaptor?.view = self
-        self.delegate = adaptor
-        self.dataSource = adaptor
+
+   public func useAdaptor(_ adaptor: CollectionAdaptor? = CollectionAdaptor()) {
+        objc_setAssociatedObject(base, &adaptorKey, adaptor, .OBJC_ASSOCIATION_RETAIN)
+        adaptor?.view = base
+        base.delegate = adaptor
+        base.dataSource = adaptor
     }
 }
 

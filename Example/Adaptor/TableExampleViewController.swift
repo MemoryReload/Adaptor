@@ -16,11 +16,11 @@ class TableExampleViewController: UIViewController {
         super.viewDidLoad()
         table.registerCell(cellClass: MyCell.self)
         table.registerSectionView(viewClass: MySection.self)
-        table.useAdaptor()
+        table.ac.useAdaptor()
         // Do any additional setup after loading the view, typically from a nib.
-        table.adaptor?.appendToLast(datas: ["row:1","row:2","row:3",], cellClass: MyAutoSizeCell.self, cellHolderClass: MyCellViewHolder.self)
-        table.adaptor?.dataSource.append(contentsOf: getData())
-        table.adaptor?.appendToLast(datas: ["row:4","row:5","row:6"], cellClass: MyCell.self,cellHeight: 80, cellHolderClass: MyCellViewHolder.self)
+        table.ac.adaptor?.appendToLast(datas: ["row:1","row:2","row:3",], cellClass: MyAutoSizeCell.self, cellHolderClass: MyCellViewHolder.self)
+        table.ac.adaptor?.dataSource.append(contentsOf: getData())
+        table.ac.adaptor?.appendToLast(datas: ["row:4","row:5","row:6"], cellClass: MyCell.self,cellHeight: 80, cellHolderClass: MyCellViewHolder.self)
         testSectionSubscrib()
         testAdaptorSubscrib()
         testSearch()
@@ -57,26 +57,26 @@ class TableExampleViewController: UIViewController {
     }
 
     func testSectionSubscrib(){
-        table.adaptor?.dataSource[0][0].cellData = "test1"
-        table.adaptor?.dataSource[0][1] = "test2"
+        table.ac.adaptor?.dataSource[0][0].cellData = "test1"
+        table.ac.adaptor?.dataSource[0][1] = "test2"
     }
     
     func testAdaptorSubscrib() {
-        table.adaptor?[IndexPath(row: 0, section: 1)].cellData = "AdTest1"
-        table.adaptor?[IndexPath(row: 1, section: 1)].cellData = "AdTest2"
+        table.ac.adaptor?[IndexPath(row: 0, section: 1)].cellData = "AdTest1"
+        table.ac.adaptor?[IndexPath(row: 1, section: 1)].cellData = "AdTest2"
     }
     
     func testSearch() {
-        if let section = table.adaptor?.getSectionHolder(withHeaderData: "header1", comparisonHandler: { $0 as? String == $1 as? String}) {
+        if let section = table.ac.adaptor?.getSectionHolder(withHeaderData: "header1", comparisonHandler: { $0 as? String == $1 as? String}) {
             print("found1 at Index \(section.0), section \(section.1)")
         }
-        if let section = table.adaptor?.getSectionHolder(withHeaderData: "header1") {
+        if let section = table.ac.adaptor?.getSectionHolder(withHeaderData: "header1") {
             print("found2 foun at Index \(section.0), section \(section.1)")
         }
-        if let c = table.adaptor?.getCellHolder(withCellData: "AdTest1", comparisonHandler: {$0 as? String == $1 as? String}) {
+        if let c = table.ac.adaptor?.getCellHolder(withCellData: "AdTest1", comparisonHandler: {$0 as? String == $1 as? String}) {
             print("found1 at index \(c.0), cell \(c.1)")
         }
-        if let c = table.adaptor?.getCellHolder(withCellData: "AdTest2") {
+        if let c = table.ac.adaptor?.getCellHolder(withCellData: "AdTest2") {
             print("found2 at index \(c.0), cell \(c.1)")
         }
     }
